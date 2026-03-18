@@ -90,7 +90,7 @@ final class ResourceRouteCollectionFactoryTest extends TestCase
 
     public function testItSkipsNonHttpOperations(): void
     {
-        $nonHttpOperation = new class() extends Operation {
+        $nonHttpOperation = new class () extends Operation {
             public function getShortName(): ?string
             {
                 return 'custom';

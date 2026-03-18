@@ -67,7 +67,7 @@ final class DoctrineTargetEntitiesResolverPassTest extends AbstractCompilerPassT
 
     protected function registerCompilerPass(ContainerBuilder $container): void
     {
-        $targetEntitiesResolver = new class() implements TargetEntitiesResolverInterface {
+        $targetEntitiesResolver = new class () implements TargetEntitiesResolverInterface {
             public function resolve(array $resourcesConfiguration): array
             {
                 if ($resourcesConfiguration === ['app.loremipsum' => ['classes' => ['model' => \stdClass::class, 'interface' => \Countable::class]]]) {

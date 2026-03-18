@@ -79,7 +79,6 @@ class Subscription implements ResourceInterface
         #[ORM\Column(type: 'integer', unique: true)]
         #[ORM\GeneratedValue(strategy: 'AUTO')]
         public ?int $id = null,
-
         #[Assert\NotBlank]
         #[Assert\Email]
         #[ORM\Column(name: 'name', nullable: false)]

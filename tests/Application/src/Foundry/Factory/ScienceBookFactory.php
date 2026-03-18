@@ -16,7 +16,9 @@ namespace App\Foundry\Factory;
 use App\Entity\Author;
 use App\Entity\ScienceBook;
 use Doctrine\Persistence\Proxy;
+
 use function Zenstruck\Foundry\lazy;
+
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**

@@ -39,9 +39,9 @@ final class TargetEntitiesResolver implements TargetEntitiesResolverInterface
             }
         }
 
-        $interfaces = array_filter($interfaces, static fn(array $classes): bool => count($classes) === 1);
+        $interfaces = array_filter($interfaces, static fn (array $classes): bool => count($classes) === 1);
 
-        $interfaces = array_map(static fn(array $classes): string => current($classes), $interfaces);
+        $interfaces = array_map(static fn (array $classes): string => current($classes), $interfaces);
 
         foreach ($resourcesConfiguration as $alias => $configuration) {
             if (isset($configuration['classes']['interface'])) {

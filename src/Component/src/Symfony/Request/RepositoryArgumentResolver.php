@@ -63,7 +63,7 @@ final class RepositoryArgumentResolver
      */
     private function filterPrivateArguments(array $arguments): array
     {
-        return array_filter($arguments, fn(string $key): bool => !str_starts_with($key, '_'), \ARRAY_FILTER_USE_KEY);
+        return array_filter($arguments, fn (string $key): bool => !str_starts_with($key, '_'), \ARRAY_FILTER_USE_KEY);
     }
 
     private function hasOnlyOneRequiredArrayParameter(\ReflectionFunctionAbstract $reflector): bool
@@ -71,7 +71,7 @@ final class RepositoryArgumentResolver
         /** @var array|\ReflectionParameter[] $parameters */
         $parameters = $reflector->getParameters();
 
-        $parameters = array_filter($parameters, fn(\ReflectionParameter $parameter): bool => !$parameter->isDefaultValueAvailable());
+        $parameters = array_filter($parameters, fn (\ReflectionParameter $parameter): bool => !$parameter->isDefaultValueAvailable());
 
         if (1 !== \count($parameters)) {
             return false;

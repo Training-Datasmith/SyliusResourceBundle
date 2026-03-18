@@ -45,6 +45,6 @@ final class PhpFileResourceExtractor extends AbstractResourceExtractor
      */
     private function getPHPFileClosure(string $filePath): \Closure
     {
-        return \Closure::bind(fn(): mixed => require $filePath, null, null);
+        return \Closure::bind(fn (): mixed => require $filePath, null, null);
     }
 }

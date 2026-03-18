@@ -43,7 +43,7 @@ final readonly class RecursiveTransformer implements DataTransformerInterface
              *
              * @return mixed
              */
-            fn($currentValue) => $this->decoratedTransformer->transform($currentValue),
+            fn ($currentValue) => $this->decoratedTransformer->transform($currentValue),
         );
     }
 
@@ -62,7 +62,7 @@ final readonly class RecursiveTransformer implements DataTransformerInterface
              *
              * @return mixed
              */
-            fn($currentValue) => $this->decoratedTransformer->reverseTransform($currentValue),
+            fn ($currentValue) => $this->decoratedTransformer->reverseTransform($currentValue),
         );
     }
 

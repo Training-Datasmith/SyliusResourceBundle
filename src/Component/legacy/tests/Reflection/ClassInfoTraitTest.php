@@ -21,7 +21,7 @@ final class ClassInfoTraitTest extends TestCase
 {
     private function getClassInfoTraitImplementation(): object
     {
-        return new class() {
+        return new class () {
             use ClassInfoTrait {
                 ClassInfoTrait::getRealClassName as public;
             }

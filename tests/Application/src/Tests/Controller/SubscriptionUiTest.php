@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\Registry;
 use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
 use Zenstruck\Foundry\Attribute\ResetDatabase;
+
 use function Zenstruck\Foundry\Persistence\refresh;
 
 #[ResetDatabase]

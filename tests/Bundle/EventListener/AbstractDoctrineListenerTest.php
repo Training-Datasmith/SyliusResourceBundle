@@ -35,7 +35,7 @@ final class AbstractDoctrineListenerTest extends KernelTestCase
         $this->entityManager = $this->getContainer()->get(EntityManagerInterface::class);
 
         $resourceRegistry = $this->getContainer()->get(RegistryInterface::class);
-        $this->listener = new class($resourceRegistry) extends AbstractDoctrineListener {
+        $this->listener = new class ($resourceRegistry) extends AbstractDoctrineListener {
             public function publicIsResource(ClassMetadata $metadata): bool
             {
                 return $this->isResource($metadata);
@@ -75,7 +75,7 @@ final class AbstractDoctrineListenerTest extends KernelTestCase
     public function testConstructorAcceptsResourceRegistry(): void
     {
         $resourceRegistry = $this->getContainer()->get(RegistryInterface::class);
-        $listener = new class($resourceRegistry) extends AbstractDoctrineListener {
+        $listener = new class ($resourceRegistry) extends AbstractDoctrineListener {
         };
 
         $this->assertInstanceOf(AbstractDoctrineListener::class, $listener);
@@ -100,7 +100,7 @@ final class AbstractDoctrineListenerTest extends KernelTestCase
     public function testReflectionServiceIsLazilyInitialized(): void
     {
         $resourceRegistry = $this->getContainer()->get(RegistryInterface::class);
-        $newListener = new class($resourceRegistry) extends AbstractDoctrineListener {
+        $newListener = new class ($resourceRegistry) extends AbstractDoctrineListener {
             public function hasReflectionService(): bool
             {
                 return $this->getReflectionService() instanceof RuntimeReflectionService;

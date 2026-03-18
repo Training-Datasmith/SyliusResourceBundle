@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Zenstruck\Foundry\Attribute\ResetDatabase;
+
 use function Zenstruck\Foundry\Persistence\refresh;
 
 #[ResetDatabase]

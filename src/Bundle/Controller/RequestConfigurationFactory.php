@@ -36,8 +36,7 @@ final readonly class RequestConfigurationFactory implements RequestConfiguration
          */
         private string $configurationClass,
         private array $defaultParameters = []
-    )
-    {
+    ) {
     }
 
     public function create(MetadataInterface $metadata, Request $request): RequestConfiguration

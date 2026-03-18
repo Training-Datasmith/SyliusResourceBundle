@@ -40,7 +40,7 @@ final class ORMMappedSuperClassSubscriberTest extends TestCase
 
         $configuration = new Configuration();
         $configuration->setNamingStrategy($namingStrategy);
-        $configuration->setMetadataDriverImpl(new class() implements MappingDriver {
+        $configuration->setMetadataDriverImpl(new class () implements MappingDriver {
             /** @param ClassMetadata $metadata */
             public function loadMetadataForClass(string $className, ClassMetadataInterface $metadata): void
             {

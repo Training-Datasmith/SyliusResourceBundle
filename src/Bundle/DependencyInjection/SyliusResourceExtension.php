@@ -48,6 +48,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Finder\Finder;
+
 use function Symfony\Component\String\u;
 
 final class SyliusResourceExtension extends Extension implements PrependExtensionInterface
@@ -247,7 +248,7 @@ final class SyliusResourceExtension extends Extension implements PrependExtensio
 
         $this->checkConfiguredDrivers($drivers, $availableDrivers, $resourceDrivers);
 
-        $integrateDoctrine = array_reduce($drivers, fn(bool $result, string $driver): bool => $result || in_array($driver, [SyliusResourceBundle::DRIVER_DOCTRINE_ORM, SyliusResourceBundle::DRIVER_DOCTRINE_PHPCR_ODM, SyliusResourceBundle::DRIVER_DOCTRINE_MONGODB_ODM], true), false);
+        $integrateDoctrine = array_reduce($drivers, fn (bool $result, string $driver): bool => $result || in_array($driver, [SyliusResourceBundle::DRIVER_DOCTRINE_ORM, SyliusResourceBundle::DRIVER_DOCTRINE_PHPCR_ODM, SyliusResourceBundle::DRIVER_DOCTRINE_MONGODB_ODM], true), false);
 
         if ($integrateDoctrine) {
             $loader->load('services/integrations/doctrine.php');
@@ -279,10 +280,10 @@ final class SyliusResourceExtension extends Extension implements PrependExtensio
      */
     private function getResourceDrivers(array $resources): array
     {
-        $resourceDrivers = array_map(fn(array $resource): string|false => $resource['driver'] ?? false, $resources);
+        $resourceDrivers = array_map(fn (array $resource): string|false => $resource['driver'] ?? false, $resources);
 
         // Remove resources with disabled driver
-        return array_filter($resourceDrivers, fn(string|false $driver): bool => false !== $driver);
+        return array_filter($resourceDrivers, fn (string|false $driver): bool => false !== $driver);
     }
 
     private function getAvailableDrivers(ContainerBuilder $container): array

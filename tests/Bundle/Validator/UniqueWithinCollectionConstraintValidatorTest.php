@@ -195,7 +195,7 @@ final class UniqueWithinCollectionConstraintValidatorTest extends ConstraintVali
 
     private function createEntityWithCode(?string $code): object
     {
-        return new class($code) {
+        return new class ($code) {
             public function __construct(
                 private readonly ?string $code,
             ) {
@@ -210,7 +210,7 @@ final class UniqueWithinCollectionConstraintValidatorTest extends ConstraintVali
 
     private function createEntityWithCustomAttribute(string $attributeName, mixed $value): object
     {
-        return new class($attributeName, $value) {
+        return new class ($attributeName, $value) {
             public function __construct(
                 private readonly string $attributeName,
                 private readonly mixed $value,

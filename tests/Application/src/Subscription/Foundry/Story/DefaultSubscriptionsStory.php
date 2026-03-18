@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace App\Subscription\Foundry\Story;
 
 use App\Subscription\Foundry\Factory\SubscriptionFactory;
+
 use function Zenstruck\Foundry\Persistence\flush_after;
+
 use Zenstruck\Foundry\Story;
 
 final class DefaultSubscriptionsStory extends Story

@@ -53,7 +53,7 @@ final class FixedCollectionType extends AbstractType
         $resolver->setRequired('entry_name');
         $resolver->setAllowedTypes('entry_name', ['callable']);
 
-        $resolver->setDefault('entry_options', fn() => []);
+        $resolver->setDefault('entry_options', fn () => []);
         $resolver->setAllowedTypes('entry_options', ['array', 'callable']);
         $resolver->setNormalizer('entry_options', $this->optionalCallableNormalizer());
     }
@@ -76,7 +76,7 @@ final class FixedCollectionType extends AbstractType
                     return $value;
                 }
 
-                return /** @return mixed */ fn() => $value;
+                return /** @return mixed */ fn () => $value;
             }
         ;
     }

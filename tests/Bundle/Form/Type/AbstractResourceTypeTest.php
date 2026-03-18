@@ -113,7 +113,7 @@ final class AbstractResourceTypeTest extends TestCase
      */
     private function createFormType(string $dataClass, array $validationGroups = []): AbstractResourceType
     {
-        return new class($dataClass, $validationGroups) extends AbstractResourceType {
+        return new class ($dataClass, $validationGroups) extends AbstractResourceType {
         };
     }
 }

@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\ApiTestCase;
 use Zenstruck\Foundry\Attribute\ResetDatabase;
+
 use function Zenstruck\Foundry\Persistence\refresh;
 
 #[ResetDatabase]

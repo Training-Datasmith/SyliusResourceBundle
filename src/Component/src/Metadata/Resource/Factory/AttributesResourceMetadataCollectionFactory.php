@@ -95,7 +95,7 @@ final readonly class AttributesResourceMetadataCollectionFactory implements Reso
                     $resource = $this->getResourceWithDefaults($resourceClass, $resource, $resourceConfiguration);
 
                     $resources[++$index] = $resource;
-                } catch(\InvalidArgumentException) {
+                } catch (\InvalidArgumentException) {
                 }
             }
 

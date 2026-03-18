@@ -27,7 +27,7 @@ final class NotNullExpressionFunctionProvider implements ExpressionFunctionProvi
                 /**
                  * @param mixed $result
                  */
-                fn($result): string => sprintf('(null !== %1$s) ? %1$s : throw new NotFoundHttpException(\'Requested page is invalid.\')', $result),
+                fn ($result): string => sprintf('(null !== %1$s) ? %1$s : throw new NotFoundHttpException(\'Requested page is invalid.\')', $result),
                 /**
                  * @param mixed $arguments
                  * @param mixed $result

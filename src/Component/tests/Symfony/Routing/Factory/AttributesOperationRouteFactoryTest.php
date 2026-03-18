@@ -104,7 +104,7 @@ final class AttributesOperationRouteFactoryTest extends TestCase
             'driver' => 'dummy_driver',
         ]));
 
-        $nonHttpOperation = new class() extends Operation {
+        $nonHttpOperation = new class () extends Operation {
             public function getShortName(): ?string
             {
                 return 'custom';
