@@ -22,7 +22,7 @@ use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
 /**
  * @experimental
  */
-final class EventDispatcherBulkAwareProcessor implements ProcessorInterface
+final readonly class EventDispatcherBulkAwareProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $decorated,

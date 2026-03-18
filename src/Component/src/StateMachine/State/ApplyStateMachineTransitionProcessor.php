@@ -18,7 +18,7 @@ use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\State\ProcessorInterface;
 use Sylius\Resource\StateMachine\OperationStateMachineInterface;
 
-final class ApplyStateMachineTransitionProcessor implements ProcessorInterface
+final readonly class ApplyStateMachineTransitionProcessor implements ProcessorInterface
 {
     public function __construct(
         private OperationStateMachineInterface $stateMachine,

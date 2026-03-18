@@ -16,7 +16,7 @@ namespace Sylius\Resource\Translation;
 use Sylius\Resource\Model\TranslatableInterface;
 use Sylius\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 
-final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
+final readonly class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
     public function __construct(private TranslationLocaleProviderInterface $translationLocaleProvider)
     {

@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @experimental
  */
-final class FormProvider implements ProviderInterface
+final readonly class FormProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $decorated,

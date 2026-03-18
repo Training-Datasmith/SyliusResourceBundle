@@ -21,26 +21,23 @@ trigger_deprecation('sylius/resource-bundle', '1.3', 'The "%s" class is deprecat
 
 final class ODMRepositoryClassSubscriber extends AbstractDoctrineSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
         ];
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $this->setCustomRepositoryClass($eventArgs->getClassMetadata());
     }
 
-    private function setCustomRepositoryClass(ClassMetadata $metadata)
+    private function setCustomRepositoryClass(ClassMetadata $metadata): void
     {
         try {
             $resourceMetadata = $this->resourceRegistry->getByClass($metadata->getName());
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 

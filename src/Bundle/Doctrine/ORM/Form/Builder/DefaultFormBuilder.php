@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 class DefaultFormBuilder implements DefaultFormBuilderInterface
 {
-    private EntityManagerInterface $entityManager;
+    private readonly EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -53,7 +53,7 @@ class DefaultFormBuilder implements DefaultFormBuilderInterface
             $options = [];
 
             // Skip fields coming from embeddables
-            if (strpos($fieldName, '.') !== false) {
+            if (str_contains($fieldName, '.')) {
                 continue;
             }
 

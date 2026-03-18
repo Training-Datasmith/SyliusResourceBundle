@@ -42,7 +42,7 @@ trait OperationDefaultsTrait
         }
 
         if (null === $resource->getName()) {
-            $resource = $resource->withName($resourceConfiguration->getName());
+            return $resource->withName($resourceConfiguration->getName());
         }
 
         return $resource;
@@ -152,7 +152,7 @@ trait OperationDefaultsTrait
         $validationGroups = $operation->getValidationContext()['groups'] ?? null;
 
         if (null !== $validationGroups) {
-            $formOptions = array_merge(['validation_groups' => $validationGroups], $formOptions);
+            return array_merge(['validation_groups' => $validationGroups], $formOptions);
         }
 
         return $formOptions;

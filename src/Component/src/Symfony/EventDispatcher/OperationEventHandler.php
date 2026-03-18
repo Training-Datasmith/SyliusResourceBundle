@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * @experimental
  */
-final class OperationEventHandler implements OperationEventHandlerInterface
+final readonly class OperationEventHandler implements OperationEventHandlerInterface
 {
     public function __construct(
         private RedirectHandlerInterface $redirectHandler,

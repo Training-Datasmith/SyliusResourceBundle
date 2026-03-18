@@ -18,7 +18,7 @@ use Sylius\Bundle\ResourceBundle\Form\Type\ResourceAutocompleteChoiceType as Res
 use Sylius\Resource\Symfony\Form\Factory\FormFactory;
 use Sylius\Resource\Symfony\Form\Factory\FormFactoryInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

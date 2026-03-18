@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 /**
  * @deprecated use ResourceRouteCollectionFactory instead
  */
-final class AttributesOperationRouteFactory implements AttributesOperationRouteFactoryInterface
+final readonly class AttributesOperationRouteFactory implements AttributesOperationRouteFactoryInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,

@@ -28,27 +28,18 @@ final class ODMTranslatableListener implements EventSubscriber
     /** @var string */
     private $currentLocale;
 
-    private string $fallbackLocale;
-
-    private array $mappings;
-
-    /**
-     * @param string $fallbackLocale
-     */
-    public function __construct(array $mappings, $fallbackLocale)
+    public function __construct(private array $mappings, private readonly string $fallbackLocale)
     {
-        $this->mappings = $mappings;
-        $this->fallbackLocale = $fallbackLocale;
     }
 
-    public function setCurrentLocale($currentLocale)
+    public function setCurrentLocale($currentLocale): self
     {
         $this->currentLocale = $currentLocale;
 
         return $this;
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
@@ -59,7 +50,7 @@ final class ODMTranslatableListener implements EventSubscriber
     /**
      * Add mapping to translatable entities
      */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $classMetadata = $eventArgs->getClassMetadata();
         $reflection = $classMetadata->reflClass;
@@ -80,7 +71,7 @@ final class ODMTranslatableListener implements EventSubscriber
     /**
      * Add mapping data to a translatable entity
      */
-    private function mapTranslatable(ClassMetadata $metadata)
+    private function mapTranslatable(ClassMetadata $metadata): void
     {
         // In the case A -> B -> TranslatableInterface, B might not have mapping defined as it
         // is probably defined in A, so in that case, we just return.
@@ -101,7 +92,7 @@ final class ODMTranslatableListener implements EventSubscriber
     /**
      * Add mapping data to a translation entity
      */
-    private function mapTranslation(ClassMetadata $metadata)
+    private function mapTranslation(ClassMetadata $metadata): void
     {
         // In the case A -> B -> TranslationInterface, B might not have mapping defined as it
         // is probably defined in A, so in that case, we just return;
@@ -140,12 +131,12 @@ final class ODMTranslatableListener implements EventSubscriber
     /**
      * Load translations
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $document = $args->getDocument();
 
         // Sometimes $document is a doctrine proxy class, we therefore need to retrieve it's real class
-        $name = $args->getDocumentManager()->getClassMetadata(get_class($document))->getName();
+        $name = $args->getDocumentManager()->getClassMetadata($document::class)->getName();
 
         if (!isset($this->mappings[$name])) {
             return;

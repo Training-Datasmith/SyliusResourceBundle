@@ -27,7 +27,7 @@ use Sylius\Bundle\ResourceBundle\Grid\View\ResourceGridViewFactoryInterface;
 use Sylius\Resource\Grid\View\Factory\GridViewFactory;
 use Sylius\Resource\Grid\View\Factory\GridViewFactoryInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @experimental
  */
-final class ReadProvider implements ProviderInterface
+final readonly class ReadProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $provider,

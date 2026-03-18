@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-final class AsResource
+final readonly class AsResource
 {
     /**
      * @param array<string, string>|null $routeRequirements

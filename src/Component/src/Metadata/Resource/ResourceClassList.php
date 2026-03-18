@@ -18,12 +18,12 @@ namespace Sylius\Resource\Metadata\Resource;
  *
  * @experimental
  */
-final class ResourceClassList implements \IteratorAggregate, \Countable
+final readonly class ResourceClassList implements \IteratorAggregate, \Countable
 {
     /**
      * @param string[] $classes
      */
-    public function __construct(private readonly array $classes = [])
+    public function __construct(private array $classes = [])
     {
     }
 

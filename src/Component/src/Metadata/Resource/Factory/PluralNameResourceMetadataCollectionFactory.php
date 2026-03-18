@@ -22,13 +22,13 @@ use Sylius\Resource\Metadata\ResourceMetadata;
 /**
  * @experimental
  */
-final class PluralNameResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class PluralNameResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
-        private readonly ResourceMetadataCollectionFactoryInterface $decorated,
-        private readonly InflectorInterface $inflector,
-        private readonly bool $routingBcLayerEnabled = true,
-        private readonly ?RegistryInterface $resourceRegistry = null,
+        private ResourceMetadataCollectionFactoryInterface $decorated,
+        private InflectorInterface $inflector,
+        private bool $routingBcLayerEnabled = true,
+        private ?RegistryInterface $resourceRegistry = null,
     ) {
     }
 

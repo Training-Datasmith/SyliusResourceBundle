@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @experimental
  */
-final class OperationEventDispatcher implements OperationEventDispatcherInterface
+final readonly class OperationEventDispatcher implements OperationEventDispatcherInterface
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,

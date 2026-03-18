@@ -36,7 +36,7 @@ use Sylius\Resource\Symfony\Routing\Factory\RoutePath\UpdateOperationRoutePathFa
 use Sylius\Resource\Symfony\Routing\RedirectHandler;
 use Sylius\Resource\Symfony\Routing\RedirectHandlerInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $container->import('routing/**/**.php');
 

@@ -146,7 +146,7 @@ trait ControllerTrait
     protected function file($file, ?string $fileName = null, string $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT): BinaryFileResponse
     {
         $response = new BinaryFileResponse($file);
-        $response->setContentDisposition($disposition, null === $fileName ? $response->getFile()->getFilename() : $fileName);
+        $response->setContentDisposition($disposition, $fileName ?? $response->getFile()->getFilename());
 
         return $response;
     }
@@ -273,13 +273,13 @@ trait ControllerTrait
 
             $templating = $this->container->get('templating');
 
-            $callback = function () use ($templating, $view, $parameters) {
+            $callback = function () use ($templating, $view, $parameters): void {
                 $templating->stream($view, $parameters);
             };
         } elseif ($this->container->has('twig')) {
             $twig = $this->container->get('twig');
 
-            $callback = function () use ($twig, $view, $parameters) {
+            $callback = function () use ($twig, $view, $parameters): void {
                 $twig->display($view, $parameters);
             };
         } else {
@@ -370,15 +370,13 @@ trait ControllerTrait
     /**
      * Get a user from the Security Token Storage.
      *
-     * @return UserInterface|object|null
      *
      * @throws \LogicException If SecurityBundle is not available
      *
      * @see TokenInterface::getUser()
-     *
      * @final
      */
-    protected function getUser()
+    protected function getUser(): ?object
     {
         if (!$this->container->has('security.token_storage')) {
             throw new \LogicException('The SecurityBundle is not registered in your application. Try running "composer require symfony/security-bundle".');

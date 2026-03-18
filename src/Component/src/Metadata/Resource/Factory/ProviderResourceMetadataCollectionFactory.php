@@ -21,7 +21,7 @@ use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 use Sylius\Resource\Symfony\Request\State\Provider;
 
-final class ProviderResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class ProviderResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private ResourceMetadataCollectionFactoryInterface $decorated,
@@ -63,7 +63,7 @@ final class ProviderResourceMetadataCollectionFactory implements ResourceMetadat
         }
 
         if (null === $operation->getProvider()) {
-            $operation = $operation->withProvider(Provider::class);
+            return $operation->withProvider(Provider::class);
         }
 
         return $operation;

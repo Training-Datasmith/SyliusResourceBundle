@@ -23,7 +23,7 @@ use Sylius\Resource\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryI
 use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 
-final class DoctrineResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class DoctrineResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,
@@ -61,7 +61,7 @@ final class DoctrineResourceMetadataCollectionFactory implements ResourceMetadat
         $driver = $metadata->getDriver();
 
         if ($driver && str_starts_with($driver, 'doctrine/')) {
-            $operation = $operation->withProcessor($this->getProcessor($operation));
+            return $operation->withProcessor($this->getProcessor($operation));
         }
 
         return $operation;

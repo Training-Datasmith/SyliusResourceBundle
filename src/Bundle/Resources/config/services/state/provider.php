@@ -21,7 +21,7 @@ use Sylius\Resource\Symfony\Form\State\FormProvider;
 use Sylius\Resource\Symfony\Serializer\State\DeserializeProvider;
 use Sylius\Resource\Symfony\Validator\State\ValidateProvider;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.state_provider.read', ReadProvider::class)

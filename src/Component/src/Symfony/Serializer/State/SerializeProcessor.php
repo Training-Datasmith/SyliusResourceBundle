@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @experimental
  */
-final class SerializeProcessor implements ProcessorInterface
+final readonly class SerializeProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $processor,

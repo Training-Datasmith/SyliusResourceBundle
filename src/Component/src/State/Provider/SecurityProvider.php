@@ -22,11 +22,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @experimental
  */
-final class SecurityProvider implements ProviderInterface
+final readonly class SecurityProvider implements ProviderInterface
 {
     public function __construct(
-        private readonly ProviderInterface $provider,
-        private readonly OperationAccessCheckerInterface $operationAccessChecker,
+        private ProviderInterface $provider,
+        private OperationAccessCheckerInterface $operationAccessChecker,
     ) {
     }
 

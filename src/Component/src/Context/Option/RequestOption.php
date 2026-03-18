@@ -15,7 +15,7 @@ namespace Sylius\Resource\Context\Option;
 
 use Symfony\Component\HttpFoundation\Request;
 
-final class RequestOption
+final readonly class RequestOption
 {
     public function __construct(private Request $request)
     {

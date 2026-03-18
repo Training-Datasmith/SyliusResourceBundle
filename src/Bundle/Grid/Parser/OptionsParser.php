@@ -73,19 +73,19 @@ final class OptionsParser implements OptionsParserInterface
             return $parameter;
         }
 
-        if (0 === strpos($parameter, '$')) {
+        if (str_starts_with($parameter, '$')) {
             return $this->getFromRequest($request, substr($parameter, 1));
         }
 
-        if (0 === strpos($parameter, 'expr:')) {
+        if (str_starts_with($parameter, 'expr:')) {
             return $this->parseOptionExpression(substr($parameter, 5), $request);
         }
 
-        if (0 === strpos($parameter, 'resource.')) {
+        if (str_starts_with($parameter, 'resource.')) {
             return $this->parseOptionResourceField(substr($parameter, 9), $data);
         }
 
-        if (0 === strpos($parameter, 'resource[')) {
+        if (str_starts_with($parameter, 'resource[')) {
             return $this->parseOptionResourceField(substr($parameter, 8), $data);
         }
 

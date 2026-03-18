@@ -19,7 +19,7 @@ use Sylius\Resource\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryI
 use Sylius\Resource\Symfony\ExpressionLanguage\VarsResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class HttpOperationInitiator implements HttpOperationInitiatorInterface
+final readonly class HttpOperationInitiator implements HttpOperationInitiatorInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,

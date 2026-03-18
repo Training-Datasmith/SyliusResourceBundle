@@ -20,7 +20,7 @@ use Sylius\Resource\Metadata\ShowOperationInterface;
 /**
  * @experimental
  */
-final class ShowOperationRoutePathFactory implements OperationRoutePathFactoryInterface
+final readonly class ShowOperationRoutePathFactory implements OperationRoutePathFactoryInterface
 {
     public function __construct(
         private OperationRoutePathFactoryInterface $decorated,

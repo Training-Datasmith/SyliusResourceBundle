@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * @experimental
  */
-final class RequestVariables implements VariablesInterface
+final readonly class RequestVariables implements VariablesInterface
 {
     public function __construct(private RequestStack $requestStack)
     {

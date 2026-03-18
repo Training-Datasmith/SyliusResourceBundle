@@ -30,7 +30,7 @@ use Webmozart\Assert\Assert;
  *
  * @see \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
  */
-final class HttpFoundationRequestHandler implements RequestHandlerInterface
+final readonly class HttpFoundationRequestHandler implements RequestHandlerInterface
 {
     private ServerParams $serverParams;
 

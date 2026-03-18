@@ -15,10 +15,10 @@ namespace Sylius\Resource\Symfony\ExpressionLanguage;
 
 use Psr\Container\ContainerInterface;
 
-final class SyliusRepositoriesVariables implements VariablesInterface
+final readonly class SyliusRepositoriesVariables implements VariablesInterface
 {
     public function __construct(
-        private readonly ContainerInterface $repositories,
+        private ContainerInterface $repositories,
     ) {
     }
 

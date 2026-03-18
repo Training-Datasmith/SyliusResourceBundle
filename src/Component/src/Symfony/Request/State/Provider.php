@@ -31,7 +31,7 @@ use Sylius\Resource\Symfony\Request\RepositoryArgumentResolver;
 /**
  * @experimental
  */
-final class Provider implements ProviderInterface
+final readonly class Provider implements ProviderInterface
 {
     public function __construct(
         private ContainerInterface $locator,

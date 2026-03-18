@@ -22,13 +22,13 @@ use Sylius\Resource\Metadata\ResourceMetadata;
 use Sylius\Resource\Reflection\ClassReflection;
 use Sylius\Resource\Symfony\Routing\Factory\RouteName\OperationRouteNameFactoryInterface;
 
-final class AttributesResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class AttributesResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     use OperationDefaultsTrait;
 
     public function __construct(
-        private readonly RegistryInterface $resourceRegistry,
-        private readonly OperationRouteNameFactoryInterface $operationRouteNameFactory,
+        private RegistryInterface $resourceRegistry,
+        private OperationRouteNameFactoryInterface $operationRouteNameFactory,
     ) {
     }
 

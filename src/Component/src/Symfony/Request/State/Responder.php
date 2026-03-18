@@ -22,7 +22,7 @@ use Sylius\Resource\State\ResponderInterface;
 /**
  * @experimental
  */
-final class Responder implements ResponderInterface
+final readonly class Responder implements ResponderInterface
 {
     private const RESPONDER_HTML = 'sylius.state_responder.html';
 

@@ -23,7 +23,7 @@ use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
 /**
  * @experimental
  */
-final class DispatchPostReadEventProvider implements ProviderInterface
+final readonly class DispatchPostReadEventProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $provider,

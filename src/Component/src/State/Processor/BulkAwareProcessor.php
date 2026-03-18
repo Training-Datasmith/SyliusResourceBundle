@@ -21,7 +21,7 @@ use Sylius\Resource\State\ProcessorInterface;
 /**
  * @experimental
  */
-final class BulkAwareProcessor implements ProcessorInterface
+final readonly class BulkAwareProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $processor,

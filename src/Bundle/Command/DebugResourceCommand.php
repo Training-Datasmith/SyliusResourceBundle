@@ -32,8 +32,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 final class DebugResourceCommand extends Command
 {
     public function __construct(
-        private RegistryInterface $registry,
-        private ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory,
+        private readonly RegistryInterface $registry,
+        private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory,
     ) {
         parent::__construct();
     }
@@ -95,7 +95,7 @@ EOT
         }
 
         if ($input->getOption('legacy')) {
-            $this->debugLegacyResourceMetadata($metadata, $input, $io, $dumper);
+            $this->debugLegacyResourceMetadata($metadata, $io, $dumper);
 
             return Command::SUCCESS;
         }
@@ -127,12 +127,11 @@ EOT
 
         $this->debugResourceMetadata($resourceMetadataCollection, $io, $dumper);
 
-        $this->debugResourceCollectionOperation($metadata, $input, $io, $dumper);
+        $this->debugResourceCollectionOperation($metadata, $input, $io);
     }
 
     private function debugLegacyResourceMetadata(
         MetadataInterface $metadata,
-        InputInterface $input,
         SymfonyStyle $io,
         Dumper $dumper,
     ): void {
@@ -192,7 +191,7 @@ EOT
         }
     }
 
-    private function debugResourceCollectionOperation(MetadataInterface $metadata, InputInterface $input, SymfonyStyle $io, Dumper $dumper): void
+    private function debugResourceCollectionOperation(MetadataInterface $metadata, InputInterface $input, SymfonyStyle $io): void
     {
         $io->section('Operations');
 

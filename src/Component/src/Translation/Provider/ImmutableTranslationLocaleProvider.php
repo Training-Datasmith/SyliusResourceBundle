@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Resource\Translation\Provider;
 
-final class ImmutableTranslationLocaleProvider implements TranslationLocaleProviderInterface
+final readonly class ImmutableTranslationLocaleProvider implements TranslationLocaleProviderInterface
 {
     public function __construct(
         private array $definedLocalesCodes,

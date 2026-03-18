@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class Responder implements ResponderInterface
+final readonly class Responder implements ResponderInterface
 {
     public function __construct(private ContainerInterface $locator)
     {

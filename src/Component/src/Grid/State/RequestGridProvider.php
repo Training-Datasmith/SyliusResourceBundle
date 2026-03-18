@@ -23,7 +23,7 @@ use Sylius\Resource\Metadata\GridAwareOperationInterface;
 use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\State\ProviderInterface;
 
-final class RequestGridProvider implements ProviderInterface
+final readonly class RequestGridProvider implements ProviderInterface
 {
     private const DEFAULT_MAX_PER_PAGE = 10;
 
@@ -33,7 +33,7 @@ final class RequestGridProvider implements ProviderInterface
     ) {
     }
 
-    public function provide(Operation $operation, Context $context): object|array|null
+    public function provide(Operation $operation, Context $context): ?object
     {
         if (null === $this->gridViewFactory || null === $this->gridProvider) {
             throw new \LogicException('You can not use a grid if Sylius Grid Bundle is not available. Try running "composer require sylius/grid-bundle".');

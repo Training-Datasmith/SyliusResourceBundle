@@ -31,18 +31,14 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ResourceLoader extends Loader
 {
-    private InflectorInterface $inflector;
-
     public function __construct(
-        private RegistryInterface $resourceRegistry,
-        private RouteFactoryInterface $routeFactory,
+        private readonly RegistryInterface $resourceRegistry,
+        private readonly RouteFactoryInterface $routeFactory,
         ?string $env = null,
-        private ?bool $routingPathBcLayer = null,
-        ?InflectorInterface $inflector = null,
+        private readonly ?bool $routingPathBcLayer = null,
+        private readonly ?InflectorInterface $inflector = new Inflector(),
     ) {
         parent::__construct($env);
-
-        $this->inflector = $inflector ?? new Inflector();
     }
 
     public function load($resource, $type = null): RouteCollection
@@ -75,7 +71,6 @@ final class ResourceLoader extends Loader
         $rootPath = $configuration['path'] ?? $this->getRootPath($metadata->getPluralName());
         $identifier = sprintf('{%s}', $configuration['identifier']);
 
-        /** @var bool $bcLayerEnabled */
         $bcLayerEnabled = $this->routingPathBcLayer ?? true;
         $trailingSlash = $bcLayerEnabled ? '/' : '';
 
@@ -186,7 +181,7 @@ final class ResourceLoader extends Loader
         }
         if (isset($configuration['templates']) && in_array($actionName, ['show', 'index', 'create', 'update'], true)) {
             $defaults['_sylius']['template'] = sprintf(
-                false === strpos($configuration['templates'], ':') ? '%s/%s.html.twig' : '%s:%s.html.twig',
+                !str_contains($configuration['templates'], ':') ? '%s/%s.html.twig' : '%s:%s.html.twig',
                 $configuration['templates'],
                 $actionName,
             );

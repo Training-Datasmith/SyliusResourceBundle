@@ -16,7 +16,7 @@ namespace Sylius\Bundle\ResourceBundle\Controller;
 use SM\Factory\FactoryInterface;
 use Sylius\Resource\Model\ResourceInterface;
 
-final class StateMachine implements StateMachineInterface
+final readonly class StateMachine implements StateMachineInterface
 {
     private FactoryInterface $stateMachineFactory;
 

@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ValidationExceptionListener
 {
-    public function __construct(private ?SerializerInterface $serializer = null)
+    public function __construct(private readonly ?SerializerInterface $serializer = null)
     {
     }
 

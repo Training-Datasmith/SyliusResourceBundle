@@ -21,7 +21,7 @@ use Sylius\Resource\Metadata\ResourceMetadata;
 final class TemplatesDirResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
-        private ResourceMetadataCollectionFactoryInterface $decorated,
+        private readonly ResourceMetadataCollectionFactoryInterface $decorated,
         private array $settings = [],
     ) {
     }

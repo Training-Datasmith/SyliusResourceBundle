@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @experimental
  */
-final class MainController
+final readonly class MainController
 {
     public function __construct(
         private HttpOperationInitiatorInterface $operationInitiator,

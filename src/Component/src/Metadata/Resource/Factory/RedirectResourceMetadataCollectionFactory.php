@@ -24,7 +24,7 @@ use Sylius\Resource\Metadata\ResourceMetadata;
 use Sylius\Resource\Metadata\UpdateOperationInterface;
 use Sylius\Resource\Symfony\Routing\Factory\RouteName\OperationRouteNameFactory;
 
-final class RedirectResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class RedirectResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private OperationRouteNameFactory $operationRouteNameFactory,

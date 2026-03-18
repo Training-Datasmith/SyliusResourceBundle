@@ -28,7 +28,7 @@ use Sylius\Resource\Metadata\Resource\Factory\StateMachineResourceMetadataCollec
 use Sylius\Resource\Metadata\Resource\Factory\TemplatesDirResourceMetadataCollectionFactory;
 use Sylius\Resource\Metadata\Resource\Factory\VarsResourceMetadataCollectionFactory;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.cache.metadata.resource_collection')

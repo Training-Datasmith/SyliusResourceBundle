@@ -27,7 +27,7 @@ if (Kernel::MAJOR_VERSION >= 6) {
             $result = parent::get($key, $default);
 
             if (null === $result && $default !== null && $this->has($key)) {
-                $result = $default;
+                return $default;
             }
 
             return $result;
@@ -46,7 +46,7 @@ if (Kernel::MAJOR_VERSION >= 6) {
             $result = parent::get($key, $default);
 
             if (null === $result && $default !== null && $this->has($key)) {
-                $result = $default;
+                return $default;
             }
 
             return $result;

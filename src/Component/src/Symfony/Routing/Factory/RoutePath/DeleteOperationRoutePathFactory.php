@@ -21,7 +21,7 @@ use Sylius\Resource\Metadata\Operation\PathSegmentNameGeneratorInterface;
 /**
  * @experimental
  */
-final class DeleteOperationRoutePathFactory implements OperationRoutePathFactoryInterface
+final readonly class DeleteOperationRoutePathFactory implements OperationRoutePathFactoryInterface
 {
     public function __construct(
         private OperationRoutePathFactoryInterface $decorated,

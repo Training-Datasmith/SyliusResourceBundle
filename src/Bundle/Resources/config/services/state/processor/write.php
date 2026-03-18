@@ -18,7 +18,7 @@ use Sylius\Resource\State\Processor\BulkAwareProcessor;
 use Sylius\Resource\Symfony\EventDispatcher\State\DispatchPostWriteEventProcessor;
 use Sylius\Resource\Symfony\EventDispatcher\State\DispatchPreWriteEventProcessor;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.state_processor.locator', Processor::class)

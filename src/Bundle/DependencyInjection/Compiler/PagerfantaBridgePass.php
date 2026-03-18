@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @internal
  */
-final class PagerfantaBridgePass implements CompilerPassInterface
+final readonly class PagerfantaBridgePass implements CompilerPassInterface
 {
     public function __construct(private bool $internalUse = false)
     {

@@ -19,7 +19,7 @@ use Sylius\Resource\Context\Option\MetadataOption;
 use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\Twig\Context\Factory\ContextFactoryInterface;
 
-final class LegacyContextFactory implements ContextFactoryInterface
+final readonly class LegacyContextFactory implements ContextFactoryInterface
 {
     public function __construct(private ContextFactoryInterface $decorated)
     {

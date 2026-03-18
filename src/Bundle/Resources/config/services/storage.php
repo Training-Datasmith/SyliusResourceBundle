@@ -18,7 +18,7 @@ use Sylius\Bundle\ResourceBundle\Storage\CookieStorage as CookieStorageInterface
 use Sylius\Bundle\ResourceBundle\Storage\SessionStorage;
 use Sylius\Bundle\ResourceBundle\Storage\SessionStorage as SessionStorageInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

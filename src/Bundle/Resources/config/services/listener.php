@@ -17,7 +17,7 @@ use Negotiation\Negotiator;
 use Sylius\Resource\Symfony\EventListener\AddFormatListener;
 use Sylius\Resource\Symfony\Validator\EventListener\ValidationExceptionListener;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.negotiator', Negotiator::class);

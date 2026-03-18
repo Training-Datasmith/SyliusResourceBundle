@@ -17,7 +17,7 @@ use Sylius\Resource\Model\ResourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
-final class ResourceFormFactory implements ResourceFormFactoryInterface
+final readonly class ResourceFormFactory implements ResourceFormFactoryInterface
 {
     private FormFactoryInterface $formFactory;
 

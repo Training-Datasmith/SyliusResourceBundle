@@ -24,24 +24,18 @@ use Twig\Environment;
 
 final class TwigGridRenderer implements GridRendererInterface
 {
-    private GridRendererInterface $gridRenderer;
+    private readonly GridRendererInterface $gridRenderer;
 
-    private Environment $twig;
-
-    private OptionsParserInterface $optionsParser;
-
-    private array $actionTemplates;
+    private readonly Environment $twig;
 
     public function __construct(
         GridRendererInterface $gridRenderer,
         Environment $twig,
-        OptionsParserInterface $optionsParser,
-        array $actionTemplates = [],
+        private readonly OptionsParserInterface $optionsParser,
+        private array $actionTemplates = [],
     ) {
         $this->gridRenderer = $gridRenderer;
         $this->twig = $twig;
-        $this->optionsParser = $optionsParser;
-        $this->actionTemplates = $actionTemplates;
     }
 
     public function render(GridViewInterface $gridView, ?string $template = null): string

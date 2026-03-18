@@ -23,7 +23,7 @@ use Sylius\Resource\State\ProviderInterface;
 /**
  * @experimental
  */
-final class FactoryProvider implements ProviderInterface
+final readonly class FactoryProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $decorated,

@@ -22,7 +22,7 @@ use Sylius\Resource\Metadata\RegistryInterface;
 use Sylius\Resource\Symfony\ExpressionLanguage\VarsResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class LegacyRequestContextInitiator implements RequestContextInitiatorInterface
+final readonly class LegacyRequestContextInitiator implements RequestContextInitiatorInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,

@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 /**
  * @experimental
  */
-final class AddFormatListener
+final readonly class AddFormatListener
 {
     public function __construct(
         private HttpOperationInitiatorInterface $operationInitiator,

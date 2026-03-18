@@ -20,7 +20,7 @@ use Sylius\Resource\Metadata\Operation\PathSegmentNameGeneratorInterface;
 /**
  * @experimental
  */
-final class CreateOperationRoutePathFactory implements OperationRoutePathFactoryInterface
+final readonly class CreateOperationRoutePathFactory implements OperationRoutePathFactoryInterface
 {
     public function __construct(
         private OperationRoutePathFactoryInterface $decorated,

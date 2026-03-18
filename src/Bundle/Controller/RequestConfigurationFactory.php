@@ -16,7 +16,7 @@ namespace Sylius\Bundle\ResourceBundle\Controller;
 use Sylius\Resource\Metadata\MetadataInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class RequestConfigurationFactory implements RequestConfigurationFactoryInterface
+final readonly class RequestConfigurationFactory implements RequestConfigurationFactoryInterface
 {
     private const API_VERSION_HEADER = 'Accept';
 
@@ -26,24 +26,18 @@ final class RequestConfigurationFactory implements RequestConfigurationFactoryIn
 
     private const API_GROUPS_REGEXP = '/(g|groups)=(?P<groups>[a-z,_\s]+)/i';
 
-    private ParametersParserInterface $parametersParser;
-
-    /**
-     * @var string
-     * @psalm-var class-string<RequestConfiguration>
-     */
-    private $configurationClass;
-
-    private array $defaultParameters;
-
     /**
      * @psalm-param class-string<RequestConfiguration> $configurationClass
      */
-    public function __construct(ParametersParserInterface $parametersParser, string $configurationClass, array $defaultParameters = [])
+    public function __construct(
+        private ParametersParserInterface $parametersParser,
+        /**
+         * @psalm-var class-string<RequestConfiguration>
+         */
+        private string $configurationClass,
+        private array $defaultParameters = []
+    )
     {
-        $this->parametersParser = $parametersParser;
-        $this->configurationClass = $configurationClass;
-        $this->defaultParameters = $defaultParameters;
     }
 
     public function create(MetadataInterface $metadata, Request $request): RequestConfiguration
@@ -79,7 +73,7 @@ final class RequestConfigurationFactory implements RequestConfigurationFactoryIn
         $apiGroupsHeaders = $request->headers->all(self::API_GROUPS_HEADER);
         foreach ($apiGroupsHeaders as $apiGroupsHeader) {
             if (preg_match(self::API_GROUPS_REGEXP, $apiGroupsHeader, $matches)) {
-                $parameters['serialization_groups'] = array_intersect($allowedSerializationGroups, array_map('trim', explode(',', $matches['groups'])));
+                $parameters['serialization_groups'] = array_intersect($allowedSerializationGroups, array_map(trim(...), explode(',', $matches['groups'])));
             }
         }
 

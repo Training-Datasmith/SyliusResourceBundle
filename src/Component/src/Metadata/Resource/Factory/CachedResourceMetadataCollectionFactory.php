@@ -29,8 +29,8 @@ final class CachedResourceMetadataCollectionFactory implements ResourceMetadataC
     private array $localCache = [];
 
     public function __construct(
-        private CacheItemPoolInterface $cacheItemPool,
-        private ResourceMetadataCollectionFactoryInterface $decorated,
+        private readonly CacheItemPoolInterface $cacheItemPool,
+        private readonly ResourceMetadataCollectionFactoryInterface $decorated,
     ) {
     }
 

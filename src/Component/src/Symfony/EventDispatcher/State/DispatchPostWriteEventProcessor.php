@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @experimental
  */
-final class DispatchPostWriteEventProcessor implements ProcessorInterface
+final readonly class DispatchPostWriteEventProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $processor,

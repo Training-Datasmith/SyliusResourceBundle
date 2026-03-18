@@ -20,12 +20,12 @@ use Sylius\Resource\Metadata\Operations;
 use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 
-final class MutatorResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class MutatorResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
-        private readonly ResourceMutatorCollectionInterface $resourceMutators,
-        private readonly OperationMutatorCollectionInterface $operationMutators,
-        private readonly ?ResourceMetadataCollectionFactoryInterface $decorated = null,
+        private ResourceMutatorCollectionInterface $resourceMutators,
+        private OperationMutatorCollectionInterface $operationMutators,
+        private ?ResourceMetadataCollectionFactoryInterface $decorated = null,
     ) {
     }
 

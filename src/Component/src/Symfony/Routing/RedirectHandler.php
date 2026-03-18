@@ -29,7 +29,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @experimental
  */
-final class RedirectHandler implements RedirectHandlerInterface
+final readonly class RedirectHandler implements RedirectHandlerInterface
 {
     public function __construct(
         private RouterInterface $router,

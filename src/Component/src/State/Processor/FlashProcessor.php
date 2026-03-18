@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @experimental
  */
-final class FlashProcessor implements ProcessorInterface
+final readonly class FlashProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $processor,

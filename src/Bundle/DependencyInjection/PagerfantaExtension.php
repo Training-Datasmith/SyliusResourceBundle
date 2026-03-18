@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
  */
 final class PagerfantaExtension extends Extension implements PrependExtensionInterface
 {
-    public function __construct(private bool $internalUse = false)
+    public function __construct(private readonly bool $internalUse = false)
     {
     }
 

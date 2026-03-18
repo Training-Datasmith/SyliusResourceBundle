@@ -26,7 +26,7 @@ use Sylius\Resource\Generator\RandomnessGeneratorInterface;
 use Sylius\Resource\Metadata\Registry;
 use Sylius\Resource\Metadata\RegistryInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $parameters = $container->parameters();
     $container->import('services/console.php');
@@ -45,7 +45,7 @@ return static function (ContainerConfigurator $container) {
     $container->import('services/storage.php');
     $container->import('services/twig.php');
 
-    $parameters->set('sylius.state_machine.class', 'Sylius\Resource\StateMachine\StateMachine');
+    $parameters->set('sylius.state_machine.class', \Sylius\Resource\StateMachine\StateMachine::class);
 
     $services->defaults()
         ->public();
@@ -101,7 +101,7 @@ return static function (ContainerConfigurator $container) {
     $services->set('sylius.registry.form_builder', ServiceRegistry::class)
         ->private()
         ->args([
-            'Sylius\Bundle\ResourceBundle\Form\Builder\DefaultFormBuilderInterface',
+            \Sylius\Bundle\ResourceBundle\Form\Builder\DefaultFormBuilderInterface::class,
             'form builder',
         ]);
 };

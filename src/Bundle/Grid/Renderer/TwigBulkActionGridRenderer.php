@@ -23,20 +23,14 @@ use Webmozart\Assert\Assert;
 
 final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterface
 {
-    private Environment $twig;
-
-    private OptionsParserInterface $optionsParser;
-
-    private array $bulkActionTemplates;
+    private readonly Environment $twig;
 
     public function __construct(
         Environment $twig,
-        OptionsParserInterface $optionsParser,
-        array $bulkActionTemplates = [],
+        private readonly OptionsParserInterface $optionsParser,
+        private array $bulkActionTemplates = [],
     ) {
         $this->twig = $twig;
-        $this->optionsParser = $optionsParser;
-        $this->bulkActionTemplates = $bulkActionTemplates;
     }
 
     public function renderBulkAction(GridViewInterface $gridView, Action $bulkAction, $data = null): string

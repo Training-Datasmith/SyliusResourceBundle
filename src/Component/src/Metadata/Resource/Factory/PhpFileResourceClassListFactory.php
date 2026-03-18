@@ -21,11 +21,11 @@ use Sylius\Resource\Metadata\Resource\ResourceClassList;
  *
  * @experimental
  */
-final class PhpFileResourceClassListFactory implements ResourceClassListFactoryInterface
+final readonly class PhpFileResourceClassListFactory implements ResourceClassListFactoryInterface
 {
     public function __construct(
-        private readonly ResourceExtractorInterface $phpFileResourceMetadataExtractor,
-        private readonly ?ResourceClassListFactoryInterface $decorated = null,
+        private ResourceExtractorInterface $phpFileResourceMetadataExtractor,
+        private ?ResourceClassListFactoryInterface $decorated = null,
     ) {
     }
 

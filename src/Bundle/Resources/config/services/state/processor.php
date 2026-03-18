@@ -18,7 +18,7 @@ use Sylius\Resource\State\Processor\RespondProcessor;
 use Sylius\Resource\State\Processor\WriteProcessor;
 use Sylius\Resource\Symfony\Serializer\State\SerializeProcessor;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->alias('sylius.state_processor.main', 'sylius.state_processor.respond');

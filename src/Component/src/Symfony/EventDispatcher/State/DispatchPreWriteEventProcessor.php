@@ -24,7 +24,7 @@ use Sylius\Resource\Symfony\EventDispatcher\OperationEventHandlerInterface;
 /**
  * @experimental
  */
-final class DispatchPreWriteEventProcessor implements ProcessorInterface
+final readonly class DispatchPreWriteEventProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $processor,

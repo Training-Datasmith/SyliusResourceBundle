@@ -17,7 +17,7 @@ use FOS\RestBundle\View\ConfigurableViewHandlerInterface;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ViewHandler implements ViewHandlerInterface
+final readonly class ViewHandler implements ViewHandlerInterface
 {
     public function __construct(private ConfigurableViewHandlerInterface $restViewHandler)
     {

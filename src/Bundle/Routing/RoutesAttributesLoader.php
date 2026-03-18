@@ -25,8 +25,8 @@ final class RoutesAttributesLoader implements RouteLoaderInterface
 {
     public function __construct(
         private array $mapping,
-        private RouteAttributesFactoryInterface $routesAttributesFactory,
-        private AttributesOperationRouteFactoryInterface $attributesOperationRouteFactory,
+        private readonly RouteAttributesFactoryInterface $routesAttributesFactory,
+        private readonly AttributesOperationRouteFactoryInterface $attributesOperationRouteFactory,
     ) {
     }
 

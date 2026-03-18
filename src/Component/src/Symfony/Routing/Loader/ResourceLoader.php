@@ -21,11 +21,11 @@ use Symfony\Component\Routing\RouteCollection;
 /**
  * @experimental
  */
-final class ResourceLoader implements RouteLoaderInterface
+final readonly class ResourceLoader implements RouteLoaderInterface
 {
     public function __construct(
-        private readonly ResourceClassListFactoryInterface $resourceClassListFactory,
-        private readonly ResourceRouteCollectionFactoryInterface $resourceRouteCollectionFactory,
+        private ResourceClassListFactoryInterface $resourceClassListFactory,
+        private ResourceRouteCollectionFactoryInterface $resourceRouteCollectionFactory,
     ) {
     }
 

@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class ApiResponder implements ResponderInterface
+final readonly class ApiResponder implements ResponderInterface
 {
     public function __construct(private HeadersInitiatorInterface $headersInitializer)
     {

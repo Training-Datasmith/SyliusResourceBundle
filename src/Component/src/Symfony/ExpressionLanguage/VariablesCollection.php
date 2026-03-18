@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class VariablesCollection implements VariablesCollectionInterface
+final readonly class VariablesCollection implements VariablesCollectionInterface
 {
     /** @param iterable<int, VariablesInterface> $iterator */
     public function __construct(private iterable $iterator)

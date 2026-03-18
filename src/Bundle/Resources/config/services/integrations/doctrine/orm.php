@@ -21,7 +21,7 @@ use Sylius\Bundle\ResourceBundle\EventListener\ORMMappedSuperClassSubscriber;
 use Sylius\Bundle\ResourceBundle\EventListener\ORMRepositoryClassSubscriber;
 use Sylius\Bundle\ResourceBundle\EventListener\ORMTranslatableListener as TranslatableListener;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $parameters = $container->parameters();
     $parameters->set('sylius.orm.repository.class', EntityRepository::class);

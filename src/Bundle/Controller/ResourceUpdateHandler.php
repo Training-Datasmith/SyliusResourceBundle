@@ -16,13 +16,10 @@ namespace Sylius\Bundle\ResourceBundle\Controller;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Resource\Model\ResourceInterface;
 
-final class ResourceUpdateHandler implements ResourceUpdateHandlerInterface
+final readonly class ResourceUpdateHandler implements ResourceUpdateHandlerInterface
 {
-    private ?StateMachineInterface $stateMachine;
-
-    public function __construct(?StateMachineInterface $stateMachine)
+    public function __construct(private ?StateMachineInterface $stateMachine)
     {
-        $this->stateMachine = $stateMachine;
     }
 
     public function handle(

@@ -20,39 +20,24 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class RequestConfiguration
 {
-    private Request $request;
+    private readonly Request $request;
 
-    private MetadataInterface $metadata;
-
-    private Parameters $parameters;
-
-    public function __construct(MetadataInterface $metadata, Request $request, Parameters $parameters)
+    public function __construct(private readonly MetadataInterface $metadata, Request $request, private readonly Parameters $parameters)
     {
-        $this->metadata = $metadata;
         $this->request = $request;
-        $this->parameters = $parameters;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): \Symfony\Component\HttpFoundation\Request
     {
         return $this->request;
     }
 
-    /**
-     * @return MetadataInterface
-     */
-    public function getMetadata()
+    public function getMetadata(): \Sylius\Resource\Metadata\MetadataInterface
     {
         return $this->metadata;
     }
 
-    /**
-     * @return Parameters
-     */
-    public function getParameters()
+    public function getParameters(): \Sylius\Bundle\ResourceBundle\Controller\Parameters
     {
         return $this->parameters;
     }
@@ -60,29 +45,24 @@ class RequestConfiguration
     /**
      * @return string|null
      */
-    public function getSection()
+    public function getSection(): mixed
     {
         return $this->parameters->get('section');
     }
 
-    /**
-     * @return bool
-     */
-    public function isHtmlRequest()
+    public function isHtmlRequest(): bool
     {
         return 'html' === $this->request->getRequestFormat();
     }
 
     /**
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getDefaultTemplate($name)
+    public function getDefaultTemplate($name): string
     {
         $templatesNamespace = (string) $this->metadata->getTemplatesNamespace();
 
-        if (false !== strpos($templatesNamespace, ':')) {
+        if (str_contains($templatesNamespace, ':')) {
             return sprintf('%s:%s.%s', $templatesNamespace, $name, 'twig');
         }
 
@@ -128,19 +108,14 @@ class RequestConfiguration
     public function getFormOptions()
     {
         $form = $this->parameters->get('form');
-        if (isset($form['options'])) {
-            return $form['options'];
-        }
 
-        return [];
+        return $form['options'] ?? [];
     }
 
     /**
      * @param string $name
-     *
-     * @return string
      */
-    public function getRouteName($name)
+    public function getRouteName($name): string
     {
         $section = $this->getSection();
         $sectionPrefix = $section ? $section . '_' : '';
@@ -174,10 +149,8 @@ class RequestConfiguration
 
     /**
      * Get url hash fragment (#text) which is you configured.
-     *
-     * @return string
      */
-    public function getRedirectHash()
+    public function getRedirectHash(): string
     {
         $redirect = $this->parameters->get('redirect');
 
@@ -214,10 +187,8 @@ class RequestConfiguration
 
     /**
      * @param object|null $resource
-     *
-     * @return array
      */
-    public function getRedirectParameters($resource = null)
+    public function getRedirectParameters($resource = null): array
     {
         $redirect = $this->parameters->get('redirect');
 
@@ -233,7 +204,7 @@ class RequestConfiguration
         $parameters = $this->addExtraRedirectParameters($parameters);
 
         if (null !== $resource) {
-            $parameters = $this->parseResourceValues($parameters, $resource);
+            return $this->parseResourceValues($parameters, $resource);
         }
 
         return $parameters;
@@ -258,50 +229,33 @@ class RequestConfiguration
         return $parameters;
     }
 
-    /**
-     * @return bool
-     */
-    public function isLimited()
+    public function isLimited(): bool
     {
         return (bool) $this->parameters->get('limit', false);
     }
 
-    /**
-     * @return int|null
-     */
-    public function getLimit()
+    public function getLimit(): ?int
     {
-        $limit = null;
-
         if ($this->isLimited()) {
-            $limit = (int) $this->parameters->get('limit', 10);
+            return (int) $this->parameters->get('limit', 10);
         }
 
-        return $limit;
+        return null;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPaginated()
+    public function isPaginated(): bool
     {
         $pagination = $this->parameters->get('paginate', true);
 
         return $pagination !== false && $pagination !== null;
     }
 
-    /**
-     * @return int
-     */
-    public function getPaginationMaxPerPage()
+    public function getPaginationMaxPerPage(): int
     {
         return (int) $this->parameters->get('paginate', 10);
     }
 
-    /**
-     * @return bool
-     */
-    public function isFilterable()
+    public function isFilterable(): bool
     {
         return (bool) $this->parameters->get('filterable', false);
     }
@@ -320,10 +274,7 @@ class RequestConfiguration
         return $defaultCriteria;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSortable()
+    public function isSortable(): bool
     {
         return (bool) $this->parameters->get('sortable', false);
     }
@@ -350,12 +301,10 @@ class RequestConfiguration
     }
 
     /**
-     * @param string $parameter
      * @param array $defaults
      *
-     * @return array
      */
-    public function getRequestParameter($parameter, $defaults = [])
+    public function getRequestParameter(string $parameter, $defaults = []): array
     {
         return array_replace_recursive(
             $defaults,
@@ -377,10 +326,7 @@ class RequestConfiguration
         return is_array($repository) ? $repository['method'] : $repository;
     }
 
-    /**
-     * @return array
-     */
-    public function getRepositoryArguments()
+    public function getRepositoryArguments(): array
     {
         if (!$this->parameters->has('repository')) {
             return [];
@@ -409,10 +355,7 @@ class RequestConfiguration
         return is_array($factory) ? $factory['method'] : $factory;
     }
 
-    /**
-     * @return array
-     */
-    public function getFactoryArguments()
+    public function getFactoryArguments(): array
     {
         if (!$this->parameters->has('factory')) {
             return [];
@@ -432,7 +375,7 @@ class RequestConfiguration
      *
      * @return mixed|null
      */
-    public function getFlashMessage($message)
+    public function getFlashMessage($message): mixed
     {
         return $this->parameters->get('flash', sprintf('%s.%s.%s', $this->metadata->getApplicationName(), $this->metadata->getName(), $message));
     }
@@ -440,7 +383,7 @@ class RequestConfiguration
     /**
      * @return mixed|null
      */
-    public function getSortablePosition()
+    public function getSortablePosition(): mixed
     {
         return $this->parameters->get('sortable_position', 'position');
     }
@@ -448,7 +391,7 @@ class RequestConfiguration
     /**
      * @return array|null
      */
-    public function getSerializationGroups()
+    public function getSerializationGroups(): mixed
     {
         return $this->parameters->get('serialization_groups', []);
     }
@@ -456,7 +399,7 @@ class RequestConfiguration
     /**
      * @return mixed|null
      */
-    public function getSerializationVersion()
+    public function getSerializationVersion(): mixed
     {
         return $this->parameters->get('serialization_version');
     }
@@ -464,15 +407,12 @@ class RequestConfiguration
     /**
      * @return string|null
      */
-    public function getEvent()
+    public function getEvent(): mixed
     {
         return $this->parameters->get('event');
     }
 
-    /**
-     * @return bool
-     */
-    public function hasPermission()
+    public function hasPermission(): bool
     {
         return false !== $this->parameters->get('permission', false);
     }
@@ -520,7 +460,7 @@ class RequestConfiguration
     /**
      * @return array
      */
-    public function getVars()
+    public function getVars(): mixed
     {
         return $this->parameters->get('vars', []);
     }
@@ -541,7 +481,7 @@ class RequestConfiguration
                 $parameters[$key] = $this->parseResourceValues($value, $resource);
             }
 
-            if (is_string($value) && 0 === strpos($value, 'resource.')) {
+            if (is_string($value) && str_starts_with($value, 'resource.')) {
                 $parameters[$key] = $accessor->getValue($resource, substr($value, 9));
             }
         }
@@ -562,7 +502,7 @@ class RequestConfiguration
      *
      * @throws \LogicException
      */
-    public function getGrid()
+    public function getGrid(): mixed
     {
         if (!$this->hasGrid()) {
             throw new \LogicException('Current action does not use grid.');
@@ -602,7 +542,7 @@ class RequestConfiguration
     /**
      * @return bool
      */
-    public function isCsrfProtectionEnabled()
+    public function isCsrfProtectionEnabled(): mixed
     {
         return $this->parameters->get('csrf_protection', true);
     }

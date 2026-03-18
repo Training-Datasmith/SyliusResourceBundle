@@ -18,10 +18,10 @@ use Sylius\Resource\Metadata\Inflector\InflectorInterface;
 /**
  * Generate a path name with an underscore separator according to a string and whether it's a collection or not.
  */
-final class UnderscorePathSegmentNameGenerator implements PathSegmentNameGeneratorInterface
+final readonly class UnderscorePathSegmentNameGenerator implements PathSegmentNameGeneratorInterface
 {
     public function __construct(
-        private readonly InflectorInterface $inflector,
+        private InflectorInterface $inflector,
     ) {
     }
 

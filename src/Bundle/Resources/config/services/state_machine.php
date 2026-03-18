@@ -18,7 +18,7 @@ use Sylius\Resource\StateMachine\OperationStateMachineInterface;
 use Sylius\Resource\Symfony\Workflow\OperationStateMachine as SymfonyOperationStateMachine;
 use Sylius\Resource\Winzou\StateMachine\OperationStateMachine as WinzouOperationStateMachine;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.state_machine.operation', OperationStateMachine::class)

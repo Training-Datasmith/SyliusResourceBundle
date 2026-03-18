@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class Provider implements ProviderInterface
+final readonly class Provider implements ProviderInterface
 {
     public function __construct(
         private ContainerInterface $locator,

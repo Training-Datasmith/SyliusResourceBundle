@@ -25,17 +25,14 @@ trigger_deprecation('sylius/resource-bundle', '1.3', 'The "%s" class is deprecat
  */
 final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 {
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::loadClassMetadata,
         ];
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $metadata = $eventArgs->getClassMetadata();
 
@@ -48,7 +45,7 @@ final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    private function convertToDocumentIfNeeded(ClassMetadataInfo $metadata)
+    private function convertToDocumentIfNeeded(ClassMetadataInfo $metadata): void
     {
         if (false === $metadata->isMappedSuperclass) {
             return;
@@ -56,7 +53,7 @@ final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
         try {
             $resourceMetadata = $this->resourceRegistry->getByClass($metadata->getName());
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 
@@ -68,7 +65,7 @@ final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
     /**
      * @param $configuration
      */
-    private function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
+    private function setAssociationMappings(ClassMetadataInfo $metadata, $configuration): void
     {
         foreach (class_parents($metadata->getName()) as $parent) {
             if (false === in_array($parent, $configuration->getMetadataDriverImpl()->getAllClassNames())) {
@@ -100,7 +97,7 @@ final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
         }
     }
 
-    private function unsetAssociationMappings(ClassMetadataInfo $metadata)
+    private function unsetAssociationMappings(ClassMetadataInfo $metadata): void
     {
         if (false === $this->isResource($metadata)) {
             return;
@@ -115,10 +112,8 @@ final class ODMMappedSuperClassSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param string $type
-     *
-     * @return bool
      */
-    private function isRelation($type)
+    private function isRelation($type): bool
     {
         return in_array(
             $type,

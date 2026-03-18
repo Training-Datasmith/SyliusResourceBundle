@@ -31,7 +31,6 @@ final class PhpFileResourceExtractor extends AbstractResourceExtractor
         $resourceReflection = new \ReflectionClass($resource);
 
         foreach ($resourceReflection->getProperties() as $property) {
-            $property->setAccessible(true);
             $resolvedValue = $this->resolve($property->getValue($resource));
             $property->setValue($resource, $resolvedValue);
         }
@@ -46,8 +45,6 @@ final class PhpFileResourceExtractor extends AbstractResourceExtractor
      */
     private function getPHPFileClosure(string $filePath): \Closure
     {
-        return \Closure::bind(function () use ($filePath): mixed {
-            return require $filePath;
-        }, null, null);
+        return \Closure::bind(fn(): mixed => require $filePath, null, null);
     }
 }

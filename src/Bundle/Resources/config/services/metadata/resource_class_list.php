@@ -20,7 +20,7 @@ use Sylius\Resource\Metadata\Resource\Factory\PhpFileResourceClassListFactory;
 use Sylius\Resource\Metadata\Resource\Factory\PhpFileResourceClassListFactory as PhpFileResourceClassListFactoryInterface;
 use Sylius\Resource\Metadata\Resource\Factory\ResourceClassListFactoryInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.cache.metadata.resource_class_list')

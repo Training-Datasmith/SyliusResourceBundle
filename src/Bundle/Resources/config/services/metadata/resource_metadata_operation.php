@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Metadata\Operation\HttpOperationInitiator;
 use Sylius\Resource\Metadata\Operation\HttpOperationInitiatorInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.resource_metadata_operation.initiator.http_operation', HttpOperationInitiator::class)

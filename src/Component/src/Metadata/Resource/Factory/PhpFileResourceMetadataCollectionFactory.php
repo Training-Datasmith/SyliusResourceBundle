@@ -23,15 +23,15 @@ use Sylius\Resource\Symfony\Routing\Factory\RouteName\OperationRouteNameFactoryI
 /**
  * @experimental
  */
-final class PhpFileResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class PhpFileResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     use OperationDefaultsTrait;
 
     public function __construct(
-        private readonly RegistryInterface $resourceRegistry,
-        private readonly OperationRouteNameFactoryInterface $operationRouteNameFactory,
-        private readonly ResourceExtractorInterface $phpfileResourceMetadataExtractor,
-        private readonly ?ResourceMetadataCollectionFactoryInterface $decorated = null,
+        private RegistryInterface $resourceRegistry,
+        private OperationRouteNameFactoryInterface $operationRouteNameFactory,
+        private ResourceExtractorInterface $phpfileResourceMetadataExtractor,
+        private ?ResourceMetadataCollectionFactoryInterface $decorated = null,
     ) {
     }
 

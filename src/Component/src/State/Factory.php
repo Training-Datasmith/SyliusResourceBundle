@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class Factory implements FactoryInterface
+final readonly class Factory implements FactoryInterface
 {
     public function __construct(
         private ContainerInterface $locator,
@@ -69,19 +69,19 @@ final class Factory implements FactoryInterface
     private function parseArgumentValues(array $arguments): array
     {
         foreach ($arguments as $key => $value) {
-            if (!str_starts_with($value, '@=')) {
+            if (!str_starts_with((string) $value, '@=')) {
                 $value = '@=' . $value;
                 trigger_deprecation('sylius/resource-bundle', '1.14', 'You passed "%s" as a string value in your repository arguments. If this is a value that needs to be parsed using the expression language, please prefix your string with "@=". In your case, use "@=%s"."', $value, $value);
             }
 
             // Not reachable as long as the BC layer above is there
-            if (!str_starts_with($value, '@=')) {
+            if (!str_starts_with((string) $value, '@=')) {
                 $arguments[$key] = $value;
 
                 continue;
             }
 
-            $value = substr($value, 2);
+            $value = substr((string) $value, 2);
             $arguments[$key] = $this->argumentParser->parseExpression($value);
         }
 

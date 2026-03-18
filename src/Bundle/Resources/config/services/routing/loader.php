@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Symfony\Routing\Loader\ResourceLoader;
 use Sylius\Resource\Symfony\Routing\Loader\ResourceLoader as ResourceLoaderInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.symfony.routing.loader.resource', ResourceLoader::class)

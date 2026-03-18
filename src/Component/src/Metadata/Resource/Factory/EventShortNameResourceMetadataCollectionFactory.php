@@ -20,7 +20,7 @@ use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 use Sylius\Resource\ResourceActions;
 
-final class EventShortNameResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class EventShortNameResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private ResourceMetadataCollectionFactoryInterface $decorated,

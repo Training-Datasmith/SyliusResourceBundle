@@ -19,7 +19,7 @@ use Sylius\Resource\Twig\Context\Factory\ContextFactoryInterface;
 use Sylius\Resource\Twig\Context\Factory\DefaultContextFactory;
 use Sylius\Resource\Twig\Context\Factory\RequestContextFactory;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.twig.context.factory', ContextFactory::class)

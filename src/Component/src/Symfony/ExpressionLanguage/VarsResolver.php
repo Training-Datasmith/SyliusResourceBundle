@@ -16,10 +16,10 @@ namespace Sylius\Resource\Symfony\ExpressionLanguage;
 /**
  * @experimental
  */
-final class VarsResolver implements VarsResolverInterface
+final readonly class VarsResolver implements VarsResolverInterface
 {
     public function __construct(
-        private readonly ArgumentParser $argumentParser,
+        private ArgumentParser $argumentParser,
     ) {
     }
 
@@ -33,7 +33,7 @@ final class VarsResolver implements VarsResolverInterface
             }
 
             // Parse only vars that contain expressions
-            if (!str_starts_with($value, '@=')) {
+            if (!str_starts_with((string) $value, '@=')) {
                 continue;
             }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Resource\Context\Option;
 
-final class ResourceClassOption
+final readonly class ResourceClassOption
 {
     /** @param class-string $resourceClass */
     public function __construct(private string $resourceClass)

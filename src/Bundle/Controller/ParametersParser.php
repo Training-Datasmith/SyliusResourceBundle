@@ -63,15 +63,15 @@ final class ParametersParser implements ParametersParserInterface
             return $parameter;
         }
 
-        if (0 === strpos($parameter, '$')) {
+        if (str_starts_with($parameter, '$')) {
             return RequestParameterProvider::provide($request, substr($parameter, 1));
         }
 
-        if (0 === strpos($parameter, 'expr:')) {
+        if (str_starts_with($parameter, 'expr:')) {
             return $this->parseRequestValueExpression(substr($parameter, 5), $request);
         }
 
-        if (0 === strpos($parameter, '!!')) {
+        if (str_starts_with($parameter, '!!')) {
             return $this->parseRequestValueTypecast($parameter, $request);
         }
 

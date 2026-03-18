@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class ContextFactory implements ContextFactoryInterface
+final readonly class ContextFactory implements ContextFactoryInterface
 {
     public function __construct(private ContainerInterface $locator)
     {

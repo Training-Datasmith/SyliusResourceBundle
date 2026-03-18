@@ -20,16 +20,13 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Resource\Metadata\MetadataInterface;
 
-final class ResourceGridViewFactory implements ResourceGridViewFactoryInterface
+final readonly class ResourceGridViewFactory implements ResourceGridViewFactoryInterface
 {
     private DataProviderInterface $dataProvider;
 
-    private ParametersParserInterface $parametersParser;
-
-    public function __construct(DataProviderInterface $dataProvider, ParametersParserInterface $parametersParser)
+    public function __construct(DataProviderInterface $dataProvider, private ParametersParserInterface $parametersParser)
     {
         $this->dataProvider = $dataProvider;
-        $this->parametersParser = $parametersParser;
     }
 
     public function create(

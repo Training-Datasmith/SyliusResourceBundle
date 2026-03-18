@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormInterface;
 /**
  * @experimental
  */
-final class RequestContextFactory implements ContextFactoryInterface
+final readonly class RequestContextFactory implements ContextFactoryInterface
 {
     public function __construct(private ContextFactoryInterface $decorated)
     {

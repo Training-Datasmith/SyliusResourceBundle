@@ -17,7 +17,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain;
 use Sylius\Resource\Doctrine\Common\State\PersistProcessor;
 use Sylius\Resource\Doctrine\Common\State\RemoveProcessor;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set(ResourceMappingDriverChain::class)

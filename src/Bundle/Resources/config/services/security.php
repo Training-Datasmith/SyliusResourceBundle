@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Metadata\OperationAccessCheckerInterface;
 use Sylius\Resource\Symfony\Security\OperationAccessChecker;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.security.operation_access_checker', OperationAccessChecker::class)

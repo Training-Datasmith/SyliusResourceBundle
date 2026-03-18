@@ -21,8 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionStorage implements StorageInterface
 {
-    /** @var RequestStack|SessionInterface */
-    private $requestStack;
+    private readonly \Symfony\Component\HttpFoundation\RequestStack|\Symfony\Component\HttpFoundation\Session\SessionInterface $requestStack;
 
     /**
      * @param RequestStack|SessionInterface $requestStack

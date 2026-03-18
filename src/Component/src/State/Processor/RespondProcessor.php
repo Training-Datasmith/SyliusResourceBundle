@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class RespondProcessor implements ProcessorInterface
+final readonly class RespondProcessor implements ProcessorInterface
 {
     public function __construct(
         private ResponderInterface $responder,

@@ -23,12 +23,12 @@ use Sylius\Resource\Reflection\ReflectionClassRecursiveIterator;
  *
  * @experimental
  */
-final class AttributesResourceClassListFactory implements ResourceClassListFactoryInterface
+final readonly class AttributesResourceClassListFactory implements ResourceClassListFactoryInterface
 {
     /** @param array{paths: string[]} $mapping */
     public function __construct(
-        private readonly array $mapping,
-        private readonly ?ResourceClassListFactoryInterface $decorated = null,
+        private array $mapping,
+        private ?ResourceClassListFactoryInterface $decorated = null,
     ) {
     }
 

@@ -18,7 +18,7 @@ use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
 use Sylius\Resource\Symfony\EventDispatcher\OperationEventHandler;
 use Sylius\Resource\Symfony\EventDispatcher\OperationEventHandlerInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.dispatcher.operation', OperationEventDispatcher::class)

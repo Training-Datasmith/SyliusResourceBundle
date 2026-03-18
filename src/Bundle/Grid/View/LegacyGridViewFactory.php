@@ -21,7 +21,7 @@ use Sylius\Resource\Context\Context;
 use Sylius\Resource\Context\Option\MetadataOption;
 use Sylius\Resource\Grid\View\Factory\GridViewFactoryInterface;
 
-final class LegacyGridViewFactory implements GridViewFactoryInterface
+final readonly class LegacyGridViewFactory implements GridViewFactoryInterface
 {
     public function __construct(
         private ResourceGridViewFactoryInterface $resourceGridViewFactory,

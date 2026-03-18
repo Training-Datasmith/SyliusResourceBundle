@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Symfony\Session\Flash\FlashHelper;
 use Sylius\Resource\Symfony\Session\Flash\FlashHelperInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.helper.flash', FlashHelper::class)

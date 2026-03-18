@@ -25,17 +25,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class FlashHelper implements FlashHelperInterface
 {
-    /** @var RequestStack|SessionInterface */
-    private $requestStack;
+    private readonly \Symfony\Component\HttpFoundation\RequestStack|\Symfony\Component\HttpFoundation\Session\SessionInterface $requestStack;
 
-    private TranslatorInterface $translator;
-
-    private string $defaultLocale;
+    private readonly TranslatorInterface $translator;
 
     /**
      * @param RequestStack|SessionInterface $requestStack
      */
-    public function __construct(/* RequestStack */ $requestStack, TranslatorInterface $translator, string $defaultLocale)
+    public function __construct(/* RequestStack */ $requestStack, TranslatorInterface $translator, private readonly string $defaultLocale)
     {
         /** @phpstan-ignore-next-line */
         if (!$requestStack instanceof SessionInterface && !$requestStack instanceof RequestStack) {
@@ -55,7 +52,6 @@ final class FlashHelper implements FlashHelperInterface
 
         $this->requestStack = $requestStack;
         $this->translator = $translator;
-        $this->defaultLocale = $defaultLocale;
     }
 
     public function addSuccessFlash(

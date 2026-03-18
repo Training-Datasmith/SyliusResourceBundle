@@ -20,22 +20,16 @@ use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 
-final class ResourcesResolver implements ResourcesResolverInterface
+final readonly class ResourcesResolver implements ResourcesResolverInterface
 {
-    private ResourcesResolverInterface $decoratedResolver;
-
     private GridProviderInterface $gridProvider;
 
-    private ResourceGridViewFactoryInterface $gridViewFactory;
-
     public function __construct(
-        ResourcesResolverInterface $decoratedResolver,
+        private ResourcesResolverInterface $decoratedResolver,
         GridProviderInterface $gridProvider,
-        ResourceGridViewFactoryInterface $gridViewFactory,
+        private ResourceGridViewFactoryInterface $gridViewFactory,
     ) {
-        $this->decoratedResolver = $decoratedResolver;
         $this->gridProvider = $gridProvider;
-        $this->gridViewFactory = $gridViewFactory;
     }
 
     /**

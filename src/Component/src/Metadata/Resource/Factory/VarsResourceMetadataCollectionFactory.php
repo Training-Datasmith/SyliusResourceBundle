@@ -19,7 +19,7 @@ use Sylius\Resource\Metadata\Operations;
 use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 
-final class VarsResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class VarsResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private ResourceMetadataCollectionFactoryInterface $decorated,
@@ -54,7 +54,7 @@ final class VarsResourceMetadataCollectionFactory implements ResourceMetadataCol
         return $resourceCollectionMetadata;
     }
 
-    private function addDefaults(ResourceMetadata $resource, HttpOperation $operation): Operation
+    private function addDefaults(ResourceMetadata $resource, HttpOperation $operation): \Sylius\Resource\Metadata\HttpOperation
     {
         if (null === $resourceVars = $resource->getVars()) {
             return $operation;

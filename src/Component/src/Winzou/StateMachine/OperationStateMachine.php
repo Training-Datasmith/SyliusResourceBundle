@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class OperationStateMachine implements OperationStateMachineInterface
+final readonly class OperationStateMachine implements OperationStateMachineInterface
 {
     public function __construct(private ?Factory $factory = null)
     {

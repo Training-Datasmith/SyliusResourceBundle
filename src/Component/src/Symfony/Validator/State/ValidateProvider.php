@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @experimental
  */
-final class ValidateProvider implements ProviderInterface
+final readonly class ValidateProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $decorated,

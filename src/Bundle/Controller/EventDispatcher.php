@@ -17,13 +17,10 @@ use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Resource\Model\ResourceInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 
-final class EventDispatcher implements EventDispatcherInterface
+final readonly class EventDispatcher implements EventDispatcherInterface
 {
-    private SymfonyEventDispatcherInterface $eventDispatcher;
-
-    public function __construct(SymfonyEventDispatcherInterface $eventDispatcher)
+    public function __construct(private SymfonyEventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function dispatch(

@@ -22,7 +22,7 @@ use Sylius\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterf
 use Sylius\Resource\Translation\Provider\ImmutableTranslationLocaleProvider as ResourceImmutableTranslationLocaleProvider;
 use Sylius\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()

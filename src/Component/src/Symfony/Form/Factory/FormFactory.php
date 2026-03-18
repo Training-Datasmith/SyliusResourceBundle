@@ -24,11 +24,11 @@ use Symfony\Component\Form\FormInterface;
 /**
  * @experimental
  */
-final class FormFactory implements FormFactoryInterface
+final readonly class FormFactory implements FormFactoryInterface
 {
     public function __construct(
-        private readonly SymfonyFormFactoryInterface $formFactory,
-        private readonly ArgumentParserInterface $argumentParser,
+        private SymfonyFormFactoryInterface $formFactory,
+        private ArgumentParserInterface $argumentParser,
     ) {
     }
 
@@ -67,8 +67,10 @@ final class FormFactory implements FormFactoryInterface
             if (!\is_scalar($value)) {
                 throw new InvalidArgumentException(sprintf('Parameter "%s" should be a scalar or an array.', $key));
             }
-
-            if (!is_string($value) || !str_starts_with($value, '@=')) {
+            if (!is_string($value)) {
+                continue;
+            }
+            if (!str_starts_with($value, '@=')) {
                 continue;
             }
 

@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Metadata\Operation\DashPathSegmentNameGenerator;
 use Sylius\Resource\Metadata\Operation\UnderscorePathSegmentNameGenerator;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.metadata.path_segment_name_generator.underscore', UnderscorePathSegmentNameGenerator::class)

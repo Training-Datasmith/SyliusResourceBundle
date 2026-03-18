@@ -19,7 +19,7 @@ use Pagerfanta\Pagerfanta;
 use Sylius\Bundle\ResourceBundle\Grid\View\ResourceGridView;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 
-final class ResourcesCollectionProvider implements ResourcesCollectionProviderInterface
+final readonly class ResourcesCollectionProvider implements ResourcesCollectionProviderInterface
 {
     public function __construct(
         private ResourcesResolverInterface $resourcesResolver,

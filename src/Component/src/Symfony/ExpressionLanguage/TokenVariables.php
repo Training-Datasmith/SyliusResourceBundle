@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * @experimental
  */
-final class TokenVariables implements VariablesInterface
+final readonly class TokenVariables implements VariablesInterface
 {
     public function __construct(private ?TokenStorageInterface $tokenStorage = null)
     {

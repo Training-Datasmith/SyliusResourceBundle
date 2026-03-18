@@ -15,7 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Sylius\Resource\Metadata\Extractor\PhpFileResourceExtractor;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.metadata.resource_extractor.php_file', PhpFileResourceExtractor::class)

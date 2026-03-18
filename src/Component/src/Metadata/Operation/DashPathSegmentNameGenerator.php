@@ -18,10 +18,10 @@ use Sylius\Resource\Metadata\Inflector\InflectorInterface;
 /**
  * Generate a path name with a dash separator according to a string and whether it's a collection or not.
  */
-final class DashPathSegmentNameGenerator implements PathSegmentNameGeneratorInterface
+final readonly class DashPathSegmentNameGenerator implements PathSegmentNameGeneratorInterface
 {
     public function __construct(
-        private readonly InflectorInterface $inflector,
+        private InflectorInterface $inflector,
     ) {
     }
 

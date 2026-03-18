@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ReadableCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-final class RecursiveTransformer implements DataTransformerInterface
+final readonly class RecursiveTransformer implements DataTransformerInterface
 {
     private DataTransformerInterface $decoratedTransformer;
 
@@ -43,9 +43,7 @@ final class RecursiveTransformer implements DataTransformerInterface
              *
              * @return mixed
              */
-            function ($currentValue) {
-                return $this->decoratedTransformer->transform($currentValue);
-            },
+            fn($currentValue) => $this->decoratedTransformer->transform($currentValue),
         );
     }
 
@@ -64,9 +62,7 @@ final class RecursiveTransformer implements DataTransformerInterface
              *
              * @return mixed
              */
-            function ($currentValue) {
-                return $this->decoratedTransformer->reverseTransform($currentValue);
-            },
+            fn($currentValue) => $this->decoratedTransformer->reverseTransform($currentValue),
         );
     }
 
@@ -82,7 +78,7 @@ final class RecursiveTransformer implements DataTransformerInterface
                 sprintf(
                     'Expected "%s", but got "%s"',
                     $expectedType,
-                    is_object($value) ? get_class($value) : gettype($value),
+                    get_debug_type($value),
                 ),
             );
         }

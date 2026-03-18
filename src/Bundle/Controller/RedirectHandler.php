@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
-final class RedirectHandler implements RedirectHandlerInterface
+final readonly class RedirectHandler implements RedirectHandlerInterface
 {
     private RouterInterface $router;
 
@@ -37,7 +37,7 @@ final class RedirectHandler implements RedirectHandlerInterface
                 (string) $configuration->getRedirectRoute(ResourceActions::SHOW),
                 $configuration->getRedirectParameters($resource),
             );
-        } catch (RouteNotFoundException $exception) {
+        } catch (RouteNotFoundException) {
             return $this->redirectToRoute(
                 $configuration,
                 (string) $configuration->getRedirectRoute(ResourceActions::INDEX),

@@ -20,11 +20,11 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class ArgumentParser implements ArgumentParserInterface
+final readonly class ArgumentParser implements ArgumentParserInterface
 {
     public function __construct(
-        private readonly ExpressionLanguage $expressionLanguage,
-        private readonly VariablesCollectionInterface $variablesCollection,
+        private ExpressionLanguage $expressionLanguage,
+        private VariablesCollectionInterface $variablesCollection,
         ?iterable $providers = null,
     ) {
         foreach ($providers ?? [] as $provider) {

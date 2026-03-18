@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Route;
 /**
  * @experimental
  */
-final class OperationRouteFactory implements OperationRouteFactoryInterface
+final readonly class OperationRouteFactory implements OperationRouteFactoryInterface
 {
     public function __construct(
         private OperationRoutePathFactoryInterface $routePathFactory,

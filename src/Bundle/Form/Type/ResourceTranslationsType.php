@@ -26,9 +26,9 @@ use Webmozart\Assert\Assert;
 final class ResourceTranslationsType extends AbstractType
 {
     /** @var string[] */
-    private array $definedLocalesCodes;
+    private readonly array $definedLocalesCodes;
 
-    private string $defaultLocaleCode;
+    private readonly string $defaultLocaleCode;
 
     public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {
@@ -38,7 +38,7 @@ final class ResourceTranslationsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
             /** @var TranslationInterface[]|null[] $translations */
             $translations = $event->getData();
 
@@ -67,14 +67,10 @@ final class ResourceTranslationsType extends AbstractType
     {
         $resolver->setDefaults([
             'entries' => $this->definedLocalesCodes,
-            'entry_name' => function (string $localeCode): string {
-                return $localeCode;
-            },
-            'entry_options' => function (string $localeCode): array {
-                return [
-                    'required' => $localeCode === $this->defaultLocaleCode,
-                ];
-            },
+            'entry_name' => fn(string $localeCode): string => $localeCode,
+            'entry_options' => fn(string $localeCode): array => [
+                'required' => $localeCode === $this->defaultLocaleCode,
+            ],
         ]);
     }
 

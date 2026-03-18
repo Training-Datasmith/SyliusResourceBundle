@@ -25,7 +25,7 @@ use Sylius\Resource\Symfony\Request\State\TwigResponder;
 use Sylius\Resource\Symfony\Response\ApiHeadersInitiator;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $container->import('state/**/*.php');
 
@@ -49,7 +49,7 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias(ResponderInterface::class, 'sylius.state_responder');
 
-    $services->set('Sylius\Resource\Symfony\Request\State\Provider')
+    $services->set(\Sylius\Resource\Symfony\Request\State\Provider::class)
         ->args([
             tagged_locator('sylius.repository'),
             service('sylius.repository_argument_resolver.request'),
@@ -57,14 +57,14 @@ return static function (ContainerConfigurator $container) {
         ])
         ->tag('sylius.state_provider');
 
-    $services->set('Sylius\Resource\StateMachine\State\ApplyStateMachineTransitionProcessor')
+    $services->set(\Sylius\Resource\StateMachine\State\ApplyStateMachineTransitionProcessor::class)
         ->args([
             service('sylius.state_machine.operation'),
             service(PersistProcessor::class)->nullOnInvalid(),
         ])
         ->tag('sylius.state_processor');
 
-    $services->set('Sylius\Resource\Symfony\Request\State\Responder')
+    $services->set(\Sylius\Resource\Symfony\Request\State\Responder::class)
         ->args([tagged_locator('sylius.state_responder')])
         ->tag('sylius.state_responder');
 
@@ -82,7 +82,7 @@ return static function (ContainerConfigurator $container) {
         ->args([service('sylius.headers_initiator.api')])
         ->tag('sylius.state_responder');
 
-    $services->set('Sylius\Resource\Grid\State\RequestGridProvider')
+    $services->set(\Sylius\Resource\Grid\State\RequestGridProvider::class)
         ->args([
             service('sylius.grid.view_factory.resource')->nullOnInvalid(),
             service('sylius.grid.provider')->nullOnInvalid(),

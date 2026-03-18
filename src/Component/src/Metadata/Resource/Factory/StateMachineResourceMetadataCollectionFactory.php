@@ -22,7 +22,7 @@ use Sylius\Resource\Metadata\ResourceMetadata;
 use Sylius\Resource\Metadata\StateMachineAwareOperationInterface;
 use Sylius\Resource\StateMachine\State\ApplyStateMachineTransitionProcessor;
 
-final class StateMachineResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class StateMachineResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,
@@ -77,7 +77,7 @@ final class StateMachineResourceMetadataCollectionFactory implements ResourceMet
             null !== $operation->getStateMachineTransition() &&
             null === $operation->getProcessor()
         ) {
-            $operation = $operation->withProcessor(ApplyStateMachineTransitionProcessor::class);
+            return $operation->withProcessor(ApplyStateMachineTransitionProcessor::class);
         }
 
         return $operation;

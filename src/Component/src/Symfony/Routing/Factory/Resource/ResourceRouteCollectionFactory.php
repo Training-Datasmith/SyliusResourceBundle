@@ -27,12 +27,12 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class ResourceRouteCollectionFactory implements ResourceRouteCollectionFactoryInterface
+final readonly class ResourceRouteCollectionFactory implements ResourceRouteCollectionFactoryInterface
 {
     public function __construct(
-        private readonly OperationRouteFactoryInterface $operationRouteFactory,
-        private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataFactory,
-        private readonly RegistryInterface $resourceRegistry,
+        private OperationRouteFactoryInterface $operationRouteFactory,
+        private ResourceMetadataCollectionFactoryInterface $resourceMetadataFactory,
+        private RegistryInterface $resourceRegistry,
     ) {
     }
 

@@ -18,13 +18,10 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-final class CollectionToStringTransformer implements DataTransformerInterface
+final readonly class CollectionToStringTransformer implements DataTransformerInterface
 {
-    private string $delimiter;
-
-    public function __construct(string $delimiter)
+    public function __construct(private string $delimiter)
     {
-        $this->delimiter = $delimiter;
     }
 
     public function transform($value): string
@@ -34,7 +31,7 @@ final class CollectionToStringTransformer implements DataTransformerInterface
                 sprintf(
                     'Expected "%s", but got "%s"',
                     Collection::class,
-                    is_object($value) ? get_class($value) : gettype($value),
+                    get_debug_type($value),
                 ),
             );
         }
@@ -52,7 +49,7 @@ final class CollectionToStringTransformer implements DataTransformerInterface
             throw new TransformationFailedException(
                 sprintf(
                     'Expected string, but got "%s"',
-                    is_object($value) ? get_class($value) : gettype($value),
+                    get_debug_type($value),
                 ),
             );
         }

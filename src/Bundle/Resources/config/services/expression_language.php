@@ -22,7 +22,7 @@ use Sylius\Resource\Symfony\ExpressionLanguage\VariablesCollection;
 use Sylius\Resource\Symfony\ExpressionLanguage\VarsResolver;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.metadata.expression_language', ExpressionLanguage::class);

@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @experimental
  */
-final class DeserializeProvider implements ProviderInterface
+final readonly class DeserializeProvider implements ProviderInterface
 {
     public function __construct(
         private ProviderInterface $decorated,

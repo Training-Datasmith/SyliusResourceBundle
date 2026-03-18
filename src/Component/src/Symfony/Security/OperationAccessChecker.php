@@ -24,14 +24,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-final class OperationAccessChecker implements OperationAccessCheckerInterface
+final readonly class OperationAccessChecker implements OperationAccessCheckerInterface
 {
     public function __construct(
-        private readonly ?ExpressionLanguage $expressionLanguage = null,
-        private readonly ?AuthenticationTrustResolverInterface $authenticationTrustResolver = null,
-        private readonly ?RoleHierarchyInterface $roleHierarchy = null,
-        private readonly ?TokenStorageInterface $tokenStorage = null,
-        private readonly ?AuthorizationCheckerInterface $authorizationChecker = null,
+        private ?ExpressionLanguage $expressionLanguage = null,
+        private ?AuthenticationTrustResolverInterface $authenticationTrustResolver = null,
+        private ?RoleHierarchyInterface $roleHierarchy = null,
+        private ?TokenStorageInterface $tokenStorage = null,
+        private ?AuthorizationCheckerInterface $authorizationChecker = null,
     ) {
     }
 

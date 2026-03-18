@@ -21,7 +21,7 @@ use Sylius\Resource\Metadata\RegistryInterface;
 use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
 use Sylius\Resource\Metadata\ResourceMetadata;
 
-final class FactoryResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class FactoryResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
 {
     public function __construct(
         private RegistryInterface $resourceRegistry,
@@ -48,7 +48,7 @@ final class FactoryResourceMetadataCollectionFactory implements ResourceMetadata
                 $key = $operation->getName();
 
                 /** @var Operation&FactoryAwareOperationInterface $operation */
-                $operation = $this->addDefaults($resourceConfiguration, $resource, $operation);
+                $operation = $this->addDefaults($resourceConfiguration, $operation);
 
                 $operations->add($key, $operation);
             }
@@ -61,14 +61,14 @@ final class FactoryResourceMetadataCollectionFactory implements ResourceMetadata
         return $resourceCollectionMetadata;
     }
 
-    private function addDefaults(MetadataInterface $resourceConfiguration, ResourceMetadata $resource, FactoryAwareOperationInterface $operation): FactoryAwareOperationInterface
+    private function addDefaults(MetadataInterface $resourceConfiguration, FactoryAwareOperationInterface $operation): FactoryAwareOperationInterface
     {
         if (null === $operation->getFactory() && str_starts_with($resourceConfiguration->getDriver() ?: '', 'doctrine')) {
             $operation = $operation->withFactory($resourceConfiguration->getServiceId('factory'));
         }
 
         if (null === $operation->getFactoryMethod()) {
-            $operation = $operation->withFactoryMethod('createNew');
+            return $operation->withFactoryMethod('createNew');
         }
 
         return $operation;

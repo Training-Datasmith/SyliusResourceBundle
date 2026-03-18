@@ -17,7 +17,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ODM\MongoDB\DocumentRepository;
 use Sylius\Bundle\ResourceBundle\EventListener\ODMMappedSuperClassSubscriber;
 use Sylius\Bundle\ResourceBundle\EventListener\ODMRepositoryClassSubscriber;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
     $parameters = $container->parameters();
     $parameters->set('sylius.mongodb_odm.repository.class', DocumentRepository::class);

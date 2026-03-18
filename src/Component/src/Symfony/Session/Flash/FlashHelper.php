@@ -31,7 +31,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class FlashHelper implements FlashHelperInterface
+final readonly class FlashHelper implements FlashHelperInterface
 {
     public function __construct(
         private TranslatorInterface $translator,

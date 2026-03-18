@@ -44,7 +44,7 @@ use Sylius\Bundle\ResourceBundle\Controller\ViewHandler;
 use Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Sylius\Resource\Symfony\Controller\MainController;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.main_controller', MainController::class)

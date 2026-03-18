@@ -29,7 +29,7 @@ use Twig\Environment;
 /**
  * @experimental
  */
-final class TwigResponder implements ResponderInterface
+final readonly class TwigResponder implements ResponderInterface
 {
     public function __construct(
         private RedirectHandlerInterface $redirectHandler,

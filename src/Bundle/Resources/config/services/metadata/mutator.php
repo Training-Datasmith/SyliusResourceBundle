@@ -16,7 +16,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Sylius\Resource\Metadata\Mutator\OperationMutatorCollection;
 use Sylius\Resource\Metadata\Mutator\ResourceMutatorCollection;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('sylius.metadata.mutator_collection.resource', ResourceMutatorCollection::class)

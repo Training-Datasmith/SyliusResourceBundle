@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 /**
  * @experimental
  */
-final class Processor implements ProcessorInterface
+final readonly class Processor implements ProcessorInterface
 {
     public function __construct(private ContainerInterface $locator)
     {

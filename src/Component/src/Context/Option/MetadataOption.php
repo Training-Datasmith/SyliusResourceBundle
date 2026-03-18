@@ -15,7 +15,7 @@ namespace Sylius\Resource\Context\Option;
 
 use Sylius\Resource\Metadata\MetadataInterface;
 
-final class MetadataOption
+final readonly class MetadataOption
 {
     public function __construct(private MetadataInterface $metadata)
     {
