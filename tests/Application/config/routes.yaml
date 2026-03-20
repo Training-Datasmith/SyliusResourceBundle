@@ -44,7 +44,7 @@ app_book_sortable_index:
     path: /sortable-books/
     methods: [GET]
     defaults:
-        _controller: App\Controller\BookController::indexAction
+        _controller: App\Controller\Book_Controller::indexAction
         _sylius:
             sortable: true
 

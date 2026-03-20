@@ -1,4 +1,4 @@
-App\Entity\ScienceBook:
+App\Entity\Science_Book:
     properties:
         title:
             - NotBlank:

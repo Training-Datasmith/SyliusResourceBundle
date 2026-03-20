@@ -12,47 +12,47 @@ sylius_resource:
     resources:
         app.blog_post:
             classes:
-                model: App\Entity\BlogPost
-                form: App\Form\Type\BlogPostType
+                model: App\Entity\Blog_Post
+                form: App\Form\Type\Blog_Post_Type
 
         app.book:
             classes:
                 model: App\Entity\Book
-                factory: App\Factory\BookFactory
-                controller: App\Controller\BookController
-                repository: App\Repository\BookRepository
-                form: App\Form\Type\BookType
+                factory: App\Factory\Book_Factory
+                controller: App\Controller\Book_Controller
+                repository: App\Repository\Book_Repository
+                form: App\Form\Type\Book_Type
             translation:
                 classes:
-                    model: App\Entity\BookTranslation
-                    interface: App\Entity\BookTranslationInterface
-                    form: App\Form\Type\BookTranslationType
+                    model: App\Entity\Book_Translation
+                    interface: App\Entity\Book_Translation_Interface
+                    form: App\Form\Type\Book_Translation_Type
 
         app.comic_book:
             classes:
-                model: App\Entity\ComicBook
+                model: App\Entity\Comic_Book
 
         app.legacy_book:
             classes:
-                model: App\Entity\LegacyBook
-                factory: App\Factory\LegacyBookFactory
+                model: App\Entity\Legacy_Book
+                factory: App\Factory\Legacy_Book_Factory
             translation:
                 classes:
-                    model: App\Entity\LegacyBookTranslation
+                    model: App\Entity\Legacy_Book_Translation
 
         app.science_book:
             classes:
-                model: App\Entity\ScienceBook
-                form: App\Form\Type\ScienceBookType
+                model: App\Entity\Science_Book
+                form: App\Form\Type\Science_Book_Type
 
         app.gedmo:
             classes:
-                model: App\Entity\GedmoExtendedExample
+                model: App\Entity\Gedmo_Extended_Example
 
         app.pull_request:
             classes:
-                model: App\Entity\PullRequest
-                form: App\Form\Type\PullRequestType
+                model: App\Entity\Pull_Request
+                form: App\Form\Type\Pull_Request_Type
 
         app.speaker:
             classes:
@@ -61,9 +61,9 @@ sylius_resource:
         app.zone:
             classes:
                 model: App\Entity\Zone\Zone
-                interface: App\Entity\Zone\ZoneInterface
+                interface: App\Entity\Zone\Zone_Interface
 
         app.zone_member:
             classes:
-                model: App\Entity\Zone\ZoneMember
-                interface: App\Entity\Zone\ZoneMemberInterface
+                model: App\Entity\Zone\Zone_Member
+                interface: App\Entity\Zone\Zone_Member_Interface

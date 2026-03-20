@@ -6,7 +6,7 @@ framework:
                 type: 'method'
                 property: 'currentPlace'
             supports:
-                - App\Entity\PullRequest
+                - App\Entity\Pull_Request
             initial_marking: start
             places:
                 - start
@@ -43,7 +43,7 @@ framework:
                 type: 'method'
                 property: 'currentPlace'
             supports:
-                - App\Entity\BlogPost
+                - App\Entity\Blog_Post
             initial_marking: draft
             places:
                 - draft

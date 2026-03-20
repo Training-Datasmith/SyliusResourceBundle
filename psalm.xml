@@ -35,8 +35,8 @@
     <issueHandlers>
         <ArgumentTypeCoercion>
             <errorLevel type="suppress">
-                <referencedFunction name="Doctrine\Persistence\ManagerRegistry::getManagerForClass" />
-                <referencedFunction name="Doctrine\Persistence\ObjectManager::getClassMetadata" />
+                <referencedFunction name="Doctrine\Persistence\Manager_Registry::getManagerForClass" />
+                <referencedFunction name="Doctrine\Persistence\Object_Manager::getClassMetadata" />
                 <referencedFunction name="ReflectionClass::getAttributes" />
                 <file name="src/Bundle/Form/DataTransformer/CollectionToStringTransformer.php" />
                 <file name="src/Bundle/DependencyInjection/SyliusResourceExtension.php" />
@@ -47,26 +47,26 @@
 
         <DeprecatedClass>
             <errorLevel type="info">
-                <referencedClass name="Doctrine\ORM\Event\LifecycleEventArgs" /> <!-- deprecated in doctrine/orm 2.14 -->
+                <referencedClass name="Doctrine\ORM\Event\Lifecycle_Event_Args" /> <!-- deprecated in doctrine/orm 2.14 -->
                 <referencedClass name="Gedmo\Sluggable\Util\Urlizer" /> <!-- deprecated in gedmo/doctrine-extensions 3.21 -->
             </errorLevel>
             <errorLevel type="suppress">
-                <referencedClass name="Sylius\Component\Resource\Exception\VariantWithNoOptionsValuesException" />
-                <referencedClass name="Sylius\Resource\Exception\VariantWithNoOptionsValuesException" />
-                <referencedClass name="Sylius\Resource\Symfony\Routing\Factory\AttributesOperationRouteFactory" />
+                <referencedClass name="Sylius\Component\Resource\Exception\Variant_With_No_Options_Values_Exception" />
+                <referencedClass name="Sylius\Resource\Exception\Variant_With_No_Options_Values_Exception" />
+                <referencedClass name="Sylius\Resource\Symfony\Routing\Factory\Attributes_Operation_Route_Factory" />
             </errorLevel>
         </DeprecatedClass>
 
         <DeprecatedInterface>
             <errorLevel type="suppress">
-                <referencedClass name="Sylius\Resource\Symfony\Routing\Factory\AttributesOperationRouteFactoryInterface" />
+                <referencedClass name="Sylius\Resource\Symfony\Routing\Factory\Attributes_Operation_Route_Factory_Interface" />
             </errorLevel>
         </DeprecatedInterface>
 
         <DeprecatedMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="Symfony\Component\EventDispatcher\Event::isPropagationStopped" />
-                <referencedMethod name="Symfony\Component\EventDispatcher\Event::stopPropagation" />
+                <referencedMethod name="Symfony\Component\Event_Dispatcher\Event::isPropagationStopped" />
+                <referencedMethod name="Symfony\Component\Event_Dispatcher\Event::stopPropagation" />
             </errorLevel>
         </DeprecatedMethod>
 
@@ -101,7 +101,7 @@
 
         <InvalidArgument>
             <errorLevel type="suppress">
-                <referencedFunction name="Symfony\Component\DependencyInjection\Alias::setDeprecated" />
+                <referencedFunction name="Symfony\Component\Dependency_Injection\Alias::setDeprecated" />
                 <file name="src/Bundle/Grid/Parser/OptionsParser.php" />
                 <file name="src/Component/src/Reflection/ClassReflection.php" />
             </errorLevel>
@@ -233,12 +233,12 @@
 
         <PossiblyUndefinedMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::arrayNode" />
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarNode" />
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::variableNode" />
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::end" />
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::scalarNode" />
-                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::variableNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Node_Definition::arrayNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Node_Definition::scalarNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Node_Definition::variableNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Node_Parent_Interface::end" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Variable_Node_Definition::scalarNode" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\Variable_Node_Definition::variableNode" />
             </errorLevel>
         </PossiblyUndefinedMethod>
 
@@ -265,16 +265,16 @@
 
         <TooFewArguments>
             <errorLevel type="suppress">
-                <referencedFunction name="Symfony\Component\DependencyInjection\Alias::setDeprecated" />
+                <referencedFunction name="Symfony\Component\Dependency_Injection\Alias::setDeprecated" />
             </errorLevel>
         </TooFewArguments>
 
         <TooManyArguments>
             <errorLevel type="suppress">
-                <referencedFunction name="Symfony\Component\HttpFoundation\HeaderBag::all" />
-                <referencedFunction name="Symfony\Component\Routing\RouteCollection::add" />
+                <referencedFunction name="Symfony\Component\Http_Foundation\Header_Bag::all" />
+                <referencedFunction name="Symfony\Component\Routing\Route_Collection::add" />
                 <referencedFunction name="Symfony\Component\Finder\Finder::sortByName" />
-                <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
+                <referencedFunction name="Symfony\Contracts\Event_Dispatcher\Event_Dispatcher_Interface::dispatch" />
             </errorLevel>
         </TooManyArguments>
 
@@ -297,24 +297,24 @@
 
         <UndefinedClass>
             <errorLevel type="suppress">
-                <referencedClass name="Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle" />
-                <referencedClass name="Doctrine\ODM\MongoDB\DocumentManager" />
+                <referencedClass name="Bazinga\Bundle\Hateoas_Bundle\Bazinga_Hateoas_Bundle" />
+                <referencedClass name="Doctrine\ODM\Mongo_DB\Document_Manager" />
                 <referencedClass name="Doctrine\ODM\PHPCR\Document\Resource" />
-                <referencedClass name="Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass" />
-                <referencedClass name="Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass" />
-                <referencedClass name="Doctrine\Common\Persistence\ObjectManager" />
-                <referencedClass name="Doctrine\ODM\MongoDB\Mapping\ClassMetadata" />
+                <referencedClass name="Doctrine\Bundle\Mongo_DB_Bundle\Dependency_Injection\Compiler\Doctrine_Mongo_DB_Mappings_Pass" />
+                <referencedClass name="Doctrine\Bundle\PHPCR_Bundle\Dependency_Injection\Compiler\Doctrine_Phpcr_Mappings_Pass" />
+                <referencedClass name="Doctrine\Common\Persistence\Object_Manager" />
+                <referencedClass name="Doctrine\ODM\Mongo_DB\Mapping\Class_Metadata" />
                 <referencedClass name="Hateoas\Configuration\Route" />
-                <referencedClass name="Hateoas\Representation\Factory\PagerfantaFactory" />
-                <referencedClass name="Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheAdapter" />
-                <referencedClass name="Symfony\Component\ExpressionLanguage\ParserCache\ParserCacheInterface" />
+                <referencedClass name="Hateoas\Representation\Factory\Pagerfanta_Factory" />
+                <referencedClass name="Symfony\Component\Expression_Language\Parser_Cache\Parser_Cache_Adapter" />
+                <referencedClass name="Symfony\Component\Expression_Language\Parser_Cache\Parser_Cache_Interface" />
             </errorLevel>
         </UndefinedClass>
 
         <UndefinedDocblockClass>
             <errorLevel type="suppress">
                 <referencedClass name="UnitEnum" />
-                <referencedClass name="Doctrine\ORM\Mapping\AssociationMapping" />
+                <referencedClass name="Doctrine\ORM\Mapping\Association_Mapping" />
             </errorLevel>
         </UndefinedDocblockClass>
 

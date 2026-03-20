@@ -8,10 +8,10 @@ parameters:
     secret: "Three can keep a secret, if two of them are dead."
 
 services:
-    # Gets rid of "[error] Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\NotFoundHttpException"
+    # Gets rid of "[error] Uncaught PHP Exception Symfony\Component\Http_Kernel\Exception\Not_Found_Http_Exception"
     # errors in PHPUnit output when testing 404 errors.
-    Psr\Log\NullLogger: ~
-    logger: '@Psr\Log\NullLogger'
+    Psr\Log\Null_Logger: ~
+    logger: '@Psr\Log\Null_Logger'
 
     # Default configuration for services in *this* file
     _defaults:
@@ -32,65 +32,65 @@ services:
         tags: ['controller.service_arguments']
 
     test.translation_locale_provider:
-        class: Sylius\Component\Resource\Translation\Provider\ImmutableTranslationLocaleProvider
+        class: Sylius\Component\Resource\Translation\Provider\Immutable_Translation_Locale_Provider
         arguments:
             - ["pl_PL", "en_US", "de_DE"]
             - "en_US"
 
     test.custom_book_factory:
-        class: App\Factory\CustomBookFactory
+        class: App\Factory\Custom_Book_Factory
         public: true
         arguments:
             - "%app.model.book.class%"
             - "@test.translation_locale_provider"
 
     test.custom_book_repository:
-        class: App\Repository\CustomBookRepository
+        class: App\Repository\Custom_Book_Repository
         public: true
         arguments:
             - "@app.repository.book"
 
     app.form.type.book:
-        class: App\Form\Type\BookType
+        class: App\Form\Type\Book_Type
         arguments:
             - '%app.model.book.class%'
         tags: ['form.type']
 
     app.form.type.science_book:
-        class: App\Form\Type\ScienceBookType
+        class: App\Form\Type\Science_Book_Type
         arguments:
             - '%app.model.science_book.class%'
             - ['sylius']
         tags: [ 'form.type' ]
 
     app.form.type.book_translation:
-        class: App\Form\Type\BookTranslationType
+        class: App\Form\Type\Book_Translation_Type
         arguments:
             - '%app.model.book_translation.class%'
         tags: ['form.type']
 
-    App\Repository\ComicBookRepository: null
-    App\Repository\LegacyBookRepository: null
+    App\Repository\Comic_Book_Repository: null
+    App\Repository\Legacy_Book_Repository: null
 
     App\Shared\:
         resource: '../src/Shared'
 
     app.service.legacy_autowired_repository:
-        class: App\Service\LegacyAutowiredRepositoryService
+        class: App\Service\Legacy_Autowired_Repository_Service
         autowire: true
 
     app.service.legacy_autowired_factory:
-        class: App\Service\LegacyAutowiredFactoryService
+        class: App\Service\Legacy_Autowired_Factory_Service
         autowire: true
 
     app.service.legacy_autowired_translatable_factory:
-        class: App\Service\LegacyAutowiredTranslatableFactoryService
+        class: App\Service\Legacy_Autowired_Translatable_Factory_Service
         autowire: true
 
 # Grid-dependent namespaces are loaded differently depending on environment
 when@test:
     services:
-        App\BoardGameBlog\:
+        App\Board_Game_Blog\:
             resource: '../src/BoardGameBlog'
             autowire: true
             autoconfigure: true
@@ -105,5 +105,5 @@ when@test:
             autowire: true
             autoconfigure: true
 
-        App\Subscription\Factory\SubscriptionFactory:
+        App\Subscription\Factory\Subscription_Factory:
             decorates: 'app.factory.subscription'

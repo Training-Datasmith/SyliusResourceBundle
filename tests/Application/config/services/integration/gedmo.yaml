@@ -3,10 +3,10 @@ services:
         public: false
 
     gedmo_doctrine_extensions.mapping.driver.attribute:
-        class: Gedmo\Mapping\Driver\AttributeReader
+        class: Gedmo\Mapping\Driver\Attribute_Reader
 
     gedmo.listener.sortable:
-        class: Gedmo\Sortable\SortableListener
+        class: Gedmo\Sortable\Sortable_Listener
         tags:
             - { name: doctrine.event_listener, event: 'onFlush' }
             - { name: doctrine.event_listener, event: 'loadClassMetadata' }

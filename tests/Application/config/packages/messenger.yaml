@@ -7,5 +7,5 @@ framework:
         transports:
             sync: 'sync://'
         routing:
-            'App\Shared\Application\Query\QueryInterface': 'sync'
-            'App\Shared\Application\Command\CommandInterface': 'sync'
+            'App\Shared\Application\Query\Query_Interface': 'sync'
+            'App\Shared\Application\Command\Command_Interface': 'sync'

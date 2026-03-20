@@ -1,6 +1,6 @@
 winzou_state_machine:
     pull_request:
-        class: App\Entity\PullRequest
+        class: App\Entity\Pull_Request
         property_path: currentPlace
         graph: pull_request
         states:
