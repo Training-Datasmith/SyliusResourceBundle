@@ -8,320 +8,230 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
-final class ResourceMetadata
+final class Resource_Metadata
 {
     private ?Operations $operations;
-
     /**
      * @param array<string, string>|null $routeRequirements
      */
-    public function __construct(
-        private ?string $alias = null,
-        private ?string $section = null,
-        private ?string $formType = null,
-        private ?string $templatesDir = null,
-        private ?string $routePrefix = null,
-        private ?array $routeRequirements = null,
-        private ?string $routeCondition = null,
-        private ?int $routePriority = null,
-        private ?string $name = null,
-        private ?string $pluralName = null,
-        private ?string $applicationName = null,
-        private ?string $identifier = null,
-        private ?array $normalizationContext = null,
-        private ?array $denormalizationContext = null,
-        private ?array $validationContext = null,
-        private ?string $class = null,
-        private string|false|null $driver = null,
-        private ?array $vars = null,
-        ?array $operations = null,
-    ) {
+    public function __construct(private ?string $alias = null, private ?string $section = null, private ?string $form_type = null, private ?string $templates_dir = null, private ?string $route_prefix = null, private ?array $route_requirements = null, private ?string $route_condition = null, private ?int $route_priority = null, private ?string $name = null, private ?string $plural_name = null, private ?string $application_name = null, private ?string $identifier = null, private ?array $normalization_context = null, private ?array $denormalization_context = null, private ?array $validation_context = null, private ?string $class = null, private string|false|null $driver = null, private ?array $vars = null, ?array $operations = null)
+    {
         $this->operations = null === $operations ? null : new Operations($operations);
     }
-
-    public function getClass(): ?string
+    public function get_class(): ?string
     {
         return $this->class;
     }
-
-    public function withClass(string $class): self
+    public function with_class(string $class): self
     {
         $self = clone $this;
         $self->class = $class;
-
         return $self;
     }
-
-    public function getAlias(): ?string
+    public function get_alias(): ?string
     {
         return $this->alias;
     }
-
-    public function withAlias(string $alias): self
+    public function with_alias(string $alias): self
     {
         $self = clone $this;
         $self->alias = $alias;
-
         return $self;
     }
-
-    public function getSection(): ?string
+    public function get_section(): ?string
     {
         return $this->section;
     }
-
-    public function withSection(string $section): self
+    public function with_section(string $section): self
     {
         $self = clone $this;
         $self->section = $section;
-
         return $self;
     }
-
-    public function getFormType(): ?string
+    public function get_form_type(): ?string
     {
-        return $this->formType;
+        return $this->form_type;
     }
-
-    public function withFormType(string $formType): self
+    public function with_form_type(string $form_type): self
     {
         $self = clone $this;
-        $self->formType = $formType;
-
+        $self->form_type = $form_type;
         return $self;
     }
-
-    public function getName(): ?string
+    public function get_name(): ?string
     {
         return $this->name;
     }
-
-    public function withName(string $name): self
+    public function with_name(string $name): self
     {
         $self = clone $this;
         $self->name = $name;
-
         return $self;
     }
-
-    public function getPluralName(): ?string
+    public function get_plural_name(): ?string
     {
-        return $this->pluralName;
+        return $this->plural_name;
     }
-
-    public function withPluralName(string $pluralName): self
+    public function with_plural_name(string $plural_name): self
     {
         $self = clone $this;
-        $self->pluralName = $pluralName;
-
+        $self->plural_name = $plural_name;
         return $self;
     }
-
-    public function getApplicationName(): ?string
+    public function get_application_name(): ?string
     {
-        return $this->applicationName;
+        return $this->application_name;
     }
-
-    public function withApplicationName(string $applicationName): self
+    public function with_application_name(string $application_name): self
     {
         $self = clone $this;
-        $self->applicationName = $applicationName;
-
+        $self->application_name = $application_name;
         return $self;
     }
-
-    public function getTemplatesDir(): ?string
+    public function get_templates_dir(): ?string
     {
-        return $this->templatesDir;
+        return $this->templates_dir;
     }
-
-    public function withTemplatesDir(string $templatesDir): self
+    public function with_templates_dir(string $templates_dir): self
     {
         $self = clone $this;
-        $self->templatesDir = $templatesDir;
-
+        $self->templates_dir = $templates_dir;
         return $self;
     }
-
-    public function getRoutePrefix(): ?string
+    public function get_route_prefix(): ?string
     {
-        return $this->routePrefix;
+        return $this->route_prefix;
     }
-
-    public function withRoutePrefix(string $routePrefix): self
+    public function with_route_prefix(string $route_prefix): self
     {
         $self = clone $this;
-        $self->routePrefix = $routePrefix;
-
+        $self->route_prefix = $route_prefix;
         return $self;
     }
-
     /**
      * @return array<string, string>|null
      */
-    public function getRouteRequirements(): ?array
+    public function get_route_requirements(): ?array
     {
-        return $this->routeRequirements;
+        return $this->route_requirements;
     }
-
     /**
      * @param array<string, string>|null $routeRequirements
      */
-    public function withRouteRequirements(?array $routeRequirements): self
+    public function with_route_requirements(?array $route_requirements): self
     {
         $self = clone $this;
-        $self->routeRequirements = $routeRequirements;
-
+        $self->route_requirements = $route_requirements;
         return $self;
     }
-
-    public function getRouteCondition(): ?string
+    public function get_route_condition(): ?string
     {
-        return $this->routeCondition;
+        return $this->route_condition;
     }
-
-    public function withRouteCondition(?string $routeCondition): self
+    public function with_route_condition(?string $route_condition): self
     {
         $self = clone $this;
-        $self->routeCondition = $routeCondition;
-
+        $self->route_condition = $route_condition;
         return $self;
     }
-
-    public function getRoutePriority(): ?int
+    public function get_route_priority(): ?int
     {
-        return $this->routePriority;
+        return $this->route_priority;
     }
-
-    public function withRoutePriority(?int $routePriority): self
+    public function with_route_priority(?int $route_priority): self
     {
         $self = clone $this;
-        $self->routePriority = $routePriority;
-
+        $self->route_priority = $route_priority;
         return $self;
     }
-
-    public function getIdentifier(): ?string
+    public function get_identifier(): ?string
     {
         return $this->identifier;
     }
-
-    public function withIdentifier(string $identifier): self
+    public function with_identifier(string $identifier): self
     {
         $self = clone $this;
         $self->identifier = $identifier;
-
         return $self;
     }
-
-    public function hasOperation(string $name): bool
+    public function has_operation(string $name): bool
     {
         return $this->operations?->has($name) ?? false;
     }
-
-    public function getOperation(string $name): Operation
+    public function get_operation(string $name): Operation
     {
         if (null === $operations = $this->operations) {
             throw new \RuntimeException(sprintf('No Operations were found on resource %s"', $this->alias ?? ''));
         }
-
         return $operations->get($name);
     }
-
-    public function getOperations(): ?Operations
+    public function get_operations(): ?Operations
     {
         return $this->operations;
     }
-
-    public function withOperations(Operations $operations): self
+    public function with_operations(Operations $operations): self
     {
         $self = clone $this;
         $self->operations = $operations;
-
         return $self;
     }
-
-    public function getRouteName(string $shortName): string
+    public function get_route_name(string $short_name): string
     {
-        $section = $this->getSection();
-        $sectionPrefix = $section ? $section . '_' : '';
-
-        return sprintf(
-            '%s_%s%s_%s',
-            $this->getApplicationName() ?? '',
-            $sectionPrefix,
-            $this->getName() ?? '',
-            $shortName,
-        );
+        $section = $this->get_section();
+        $section_prefix = $section ? $section . '_' : '';
+        return sprintf('%s_%s%s_%s', $this->get_application_name() ?? '', $section_prefix, $this->get_name() ?? '', $short_name);
     }
-
-    public function getNormalizationContext(): ?array
+    public function get_normalization_context(): ?array
     {
-        return $this->normalizationContext;
+        return $this->normalization_context;
     }
-
-    public function withNormalizationContext(?array $normalizationContext): self
+    public function with_normalization_context(?array $normalization_context): self
     {
         $self = clone $this;
-        $self->normalizationContext = $normalizationContext;
-
+        $self->normalization_context = $normalization_context;
         return $self;
     }
-
-    public function getDenormalizationContext(): ?array
+    public function get_denormalization_context(): ?array
     {
-        return $this->denormalizationContext;
+        return $this->denormalization_context;
     }
-
-    public function withDenormalizationContext(?array $denormalizationContext): self
+    public function with_denormalization_context(?array $denormalization_context): self
     {
         $self = clone $this;
-        $self->denormalizationContext = $denormalizationContext;
-
+        $self->denormalization_context = $denormalization_context;
         return $self;
     }
-
-    public function getValidationContext(): ?array
+    public function get_validation_context(): ?array
     {
-        return $this->validationContext;
+        return $this->validation_context;
     }
-
-    public function withValidationContext(?array $validationContext): self
+    public function with_validation_context(?array $validation_context): self
     {
         $self = clone $this;
-        $self->validationContext = $validationContext;
-
+        $self->validation_context = $validation_context;
         return $self;
     }
-
-    public function getDriver(): false|string|null
+    public function get_driver(): false|string|null
     {
         return $this->driver;
     }
-
-    public function withDriver(false|string $driver): self
+    public function with_driver(false|string $driver): self
     {
         $self = clone $this;
         $self->driver = $driver;
-
         return $self;
     }
-
-    public function getVars(): ?array
+    public function get_vars(): ?array
     {
         return $this->vars;
     }
-
-    public function withVars(array $vars): self
+    public function with_vars(array $vars): self
     {
         $self = clone $this;
         $self->vars = $vars;
-
         return $self;
     }
 }

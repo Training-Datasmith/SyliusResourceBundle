@@ -8,37 +8,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\State\Processor;
 
 use Sylius\Resource\Context\Context;
-use Sylius\Resource\Metadata\BulkOperationInterface;
+use Sylius\Resource\Metadata\Bulk_Operation_Interface;
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\State\ProcessorInterface;
-use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
-
+use Sylius\Resource\State\Processor_Interface;
+use Sylius\Resource\Symfony\Event_Dispatcher\Operation_Event_Dispatcher_Interface;
 /**
  * @experimental
  */
-final readonly class EventDispatcherBulkAwareProcessor implements ProcessorInterface
+final readonly class Event_Dispatcher_Bulk_Aware_Processor implements Processor_Interface
 {
-    public function __construct(
-        private ProcessorInterface $decorated,
-        private OperationEventDispatcherInterface $operationEventDispatcher,
-    ) {
+    public function __construct(private Processor_Interface $decorated, private Operation_Event_Dispatcher_Interface $operation_event_dispatcher)
+    {
     }
-
     /**
      * @inheritDoc
      */
     public function process(mixed $data, Operation $operation, Context $context): mixed
     {
-        if ($operation instanceof BulkOperationInterface && \is_iterable($data)) {
-            $this->operationEventDispatcher->dispatchBulkEvent($data, $operation, $context);
+        if ($operation instanceof Bulk_Operation_Interface && \is_iterable($data)) {
+            $this->operation_event_dispatcher->dispatch_bulk_event($data, $operation, $context);
         }
-
         return $this->decorated->process($data, $operation, $context);
     }
 }

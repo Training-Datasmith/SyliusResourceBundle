@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Builder;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\Builder;
-
-use Sylius\Resource\Metadata\MetadataInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-
-interface DefaultFormBuilderInterface
+use Sylius\Resource\Metadata\Metadata_Interface;
+use Symfony\Component\Form\Form_Builder_Interface;
+interface Default_Form_Builder_Interface
 {
-    public function build(MetadataInterface $metadata, FormBuilderInterface $formBuilder, array $options): void;
+    public function build(Metadata_Interface $metadata, Form_Builder_Interface $form_builder, array $options): void;
 }

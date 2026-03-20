@@ -8,30 +8,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Doctrine\Persistence;
 
-use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\Array_Adapter;
 use Pagerfanta\Pagerfanta;
-use Pagerfanta\PagerfantaInterface;
-use Sylius\Component\Resource\Exception\UnexpectedTypeException;
-use Sylius\Resource\Doctrine\Persistence\Exception\ResourceExistsException;
-use Sylius\Resource\Model\ResourceInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Pagerfanta\Pagerfanta_Interface;
+use Sylius\Component\Resource\Exception\Unexpected_Type_Exception;
+use Sylius\Resource\Doctrine\Persistence\Exception\Resource_Exists_Exception;
+use Sylius\Resource\Model\Resource_Interface;
+use Symfony\Component\Property_Access\Property_Access;
+use Symfony\Component\Property_Access\Property_Accessor;
 use Webmozart\Assert\Assert;
-
-class InMemoryRepository implements RepositoryInterface
+class In_Memory_Repository implements Repository_Interface
 {
-    protected PropertyAccessor $accessor;
-
-    protected \ArrayObject $arrayObject;
-
+    protected Property_Accessor $accessor;
+    protected \ArrayObject $array_object;
     /** @psalm-var class-string */
     protected string $interface;
-
     /**
      * @psalm-param class-string $interface
      *
@@ -41,163 +35,130 @@ class InMemoryRepository implements RepositoryInterface
     public function __construct(string $interface)
     {
         /** @var array $interfaceInterfaces */
-        $interfaceInterfaces = class_implements($interface);
-
-        if (!in_array(ResourceInterface::class, $interfaceInterfaces, true)) {
-            throw new UnexpectedTypeException($interface, ResourceInterface::class);
+        $interface_interfaces = class_implements($interface);
+        if (!in_array(Resource_Interface::class, $interface_interfaces, true)) {
+            throw new Unexpected_Type_Exception($interface, Resource_Interface::class);
         }
-
         $this->interface = $interface;
-        $this->accessor = PropertyAccess::createPropertyAccessor();
-        $this->arrayObject = new \ArrayObject();
+        $this->accessor = Property_Access::create_property_accessor();
+        $this->array_object = new \ArrayObject();
     }
-
     /**
      * @throws ResourceExistsException
      * @throws UnexpectedTypeException
      */
-    public function add(ResourceInterface $resource): void
+    public function add(Resource_Interface $resource): void
     {
         if (!$resource instanceof $this->interface) {
-            throw new UnexpectedTypeException($resource, $this->interface);
+            throw new Unexpected_Type_Exception($resource, $this->interface);
         }
-
-        if (in_array($resource, $this->findAll(), true)) {
-            throw new ResourceExistsException();
+        if (in_array($resource, $this->find_all(), true)) {
+            throw new Resource_Exists_Exception();
         }
-
-        $this->arrayObject->append($resource);
+        $this->array_object->append($resource);
     }
-
-    public function remove(ResourceInterface $resource): void
+    public function remove(Resource_Interface $resource): void
     {
-        $newResources = array_filter($this->findAll(), static fn ($object) => $object !== $resource);
-
-        $this->arrayObject->exchangeArray($newResources);
+        $new_resources = array_filter($this->find_all(), static fn($object) => $object !== $resource);
+        $this->array_object->exchange_array($new_resources);
     }
-
     public function find($id): ?object
     {
-        return $this->findOneBy(['id' => $id]);
+        return $this->find_one_by(['id' => $id]);
     }
-
-    public function findAll(): array
+    public function find_all(): array
     {
-        $arrayCopy = $this->arrayObject->getArrayCopy();
-
-        Assert::allObject($arrayCopy);
-
-        return $arrayCopy;
+        $array_copy = $this->array_object->get_array_copy();
+        Assert::all_object($array_copy);
+        return $array_copy;
     }
-
-    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
+    public function find_by(array $criteria, ?array $order_by = null, $limit = null, $offset = null): array
     {
-        $results = $this->findAll();
-
+        $results = $this->find_all();
         if (!empty($criteria)) {
-            $results = $this->applyCriteria($results, $criteria);
+            $results = $this->apply_criteria($results, $criteria);
         }
-
-        if (!empty($orderBy)) {
-            $results = $this->applyOrder($results, $orderBy);
+        if (!empty($order_by)) {
+            $results = $this->apply_order($results, $order_by);
         }
-
         return array_slice($results, $offset ?? 0, $limit);
     }
-
     /**
      * @throws \InvalidArgumentException
      */
-    public function findOneBy(array $criteria): ?ResourceInterface
+    public function find_one_by(array $criteria): ?Resource_Interface
     {
         if (empty($criteria)) {
             throw new \InvalidArgumentException('The criteria array needs to be set.');
         }
-
-        $results = $this->applyCriteria($this->findAll(), $criteria);
-
+        $results = $this->apply_criteria($this->find_all(), $criteria);
         /** @var ResourceInterface|false $result */
         $result = reset($results);
         if ($result !== false) {
             return $result;
         }
-
         return null;
     }
-
-    public function getClassName(): string
+    public function get_class_name(): string
     {
         return $this->interface;
     }
-
     /**
      * @return PagerfantaInterface
      */
-    public function createPaginator(array $criteria = [], array $sorting = []): iterable
+    public function create_paginator(array $criteria = [], array $sorting = []): iterable
     {
-        $resources = $this->findAll();
-
+        $resources = $this->find_all();
         if (!empty($sorting)) {
-            $resources = $this->applyOrder($resources, $sorting);
+            $resources = $this->apply_order($resources, $sorting);
         }
-
         if (!empty($criteria)) {
-            $resources = $this->applyCriteria($resources, $criteria);
+            $resources = $this->apply_criteria($resources, $criteria);
         }
-
-        return new Pagerfanta(new ArrayAdapter($resources));
+        return new Pagerfanta(new Array_Adapter($resources));
     }
-
     /**
      * @param object[] $resources
      *
      * @return object[]|array
      */
-    private function applyCriteria(array $resources, array $criteria): array
+    private function apply_criteria(array $resources, array $criteria): array
     {
         /** @var array|object $object */
-        foreach ($this->arrayObject as $object) {
+        foreach ($this->array_object as $object) {
             foreach ($criteria as $criterion => $value) {
-                if ($value !== $this->accessor->getValue($object, $criterion)) {
+                if ($value !== $this->accessor->get_value($object, $criterion)) {
                     $key = array_search($object, $resources);
                     unset($resources[$key]);
                 }
             }
         }
-
         return $resources;
     }
-
     /**
      * @param object[] $resources
      *
      * @return object[]
      */
-    private function applyOrder(array $resources, array $orderBy): array
+    private function apply_order(array $resources, array $order_by): array
     {
         $results = $resources;
-
         $arguments = [];
-        foreach ($orderBy as $property => $order) {
+        foreach ($order_by as $property => $order) {
             $sortable = [];
-
             foreach ($results as $key => $object) {
-                $sortable[$key] = $this->accessor->getValue($object, $property);
+                $sortable[$key] = $this->accessor->get_value($object, $property);
             }
-
             $arguments[] = $sortable;
-
-            if (RepositoryInterface::ORDER_ASCENDING === $order) {
+            if (Repository_Interface::ORDER_ASCENDING === $order) {
                 $arguments[] = \SORT_ASC;
-            } elseif (RepositoryInterface::ORDER_DESCENDING === $order) {
+            } elseif (Repository_Interface::ORDER_DESCENDING === $order) {
                 $arguments[] = \SORT_DESC;
             } else {
                 throw new \InvalidArgumentException('Unknown order.');
             }
         }
-
-        $arguments[] = &$results;
-
+        $arguments[] =& $results;
         /**
          * Doing PHP magic, it works this way
          *
@@ -205,11 +166,9 @@ class InMemoryRepository implements RepositoryInterface
          * @psalm-suppress PossiblyInvalidArgument
          */
         array_multisort(...$arguments);
-
         return $results;
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\Repository\InMemoryRepository::class, false)) {
-    class_alias(InMemoryRepository::class, \Sylius\Component\Resource\Repository\InMemoryRepository::class);
+if (!class_exists(\Sylius\Component\Resource\Repository\In_Memory_Repository::class, false)) {
+    class_alias(In_Memory_Repository::class, \Sylius\Component\Resource\Repository\In_Memory_Repository::class);
 }

@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-class_exists(\Sylius\Resource\Model\ResourceLogEntry::class);
-
+class_exists(\Sylius\Resource\Model\Resource_Log_Entry::class);
 if (false) {
-    abstract class ResourceLogEntry extends \Sylius\Resource\Model\ResourceLogEntry
+    abstract class Resource_Log_Entry extends \Sylius\Resource\Model\Resource_Log_Entry
     {
     }
 }

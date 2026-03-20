@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Translation\Provider;
 
-class_exists(\Sylius\Resource\Translation\Provider\ImmutableTranslationLocaleProvider::class);
-
+class_exists(\Sylius\Resource\Translation\Provider\Immutable_Translation_Locale_Provider::class);
 if (false) {
-    final class ImmutableTranslationLocaleProvider extends \Sylius\Resource\Translation\Provider\ImmutableTranslationLocaleProvider
+    final class Immutable_Translation_Locale_Provider extends \Sylius\Resource\Translation\Provider\Immutable_Translation_Locale_Provider
     {
     }
 }

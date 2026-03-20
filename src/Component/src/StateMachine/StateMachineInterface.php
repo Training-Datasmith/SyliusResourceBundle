@@ -8,31 +8,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\State_Machine;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\StateMachine;
-
-use SM\StateMachine\StateMachineInterface as BaseStateMachineInterface;
+use SM\State_Machine\State_Machine_Interface as BaseStateMachineInterface;
 use Sylius\Resource\Exception\RuntimeException;
-
-if (!interface_exists(BaseStateMachineInterface::class)) {
-    throw new RuntimeException(sprintf('Cannot use the "%s" interface when the "winzou/state-machine" package is not installed.', StateMachineInterface::class));
+if (!interface_exists(Base_State_Machine_Interface::class)) {
+    throw new RuntimeException(sprintf('Cannot use the "%s" interface when the "winzou/state-machine" package is not installed.', State_Machine_Interface::class));
 }
-
-interface StateMachineInterface extends BaseStateMachineInterface
+interface State_Machine_Interface extends Base_State_Machine_Interface
 {
     /**
      * Returns the possible transition from given state or null if no transition is possible
      */
-    public function getTransitionFromState(string $fromState): ?string;
-
+    public function get_transition_from_state(string $from_state): ?string;
     /**
      * Returns the possible transition to the given state or null if no transition is possible
      */
-    public function getTransitionToState(string $toState): ?string;
+    public function get_transition_to_state(string $to_state): ?string;
 }
-
-if (!class_exists(\Sylius\Component\Resource\StateMachine\StateMachineInterface::class, false)) {
-    class_alias(StateMachineInterface::class, \Sylius\Component\Resource\StateMachine\StateMachineInterface::class);
+if (!class_exists(\Sylius\Component\Resource\State_Machine\State_Machine_Interface::class, false)) {
+    class_alias(State_Machine_Interface::class, \Sylius\Component\Resource\State_Machine\State_Machine_Interface::class);
 }

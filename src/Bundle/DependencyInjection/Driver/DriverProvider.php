@@ -8,41 +8,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Driver;
-
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine\DoctrineODMDriver;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine\DoctrineORMDriver;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine\DoctrinePHPCRDriver;
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
-use Sylius\Resource\Metadata\MetadataInterface;
+use Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Doctrine\Doctrine_Odm_Driver;
+use Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Doctrine\Doctrine_Orm_Driver;
+use Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Doctrine\Doctrine_Phpcr_Driver;
+use Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Exception\Unknown_Driver_Exception;
+use Sylius\Bundle\Resource_Bundle\Sylius_Resource_Bundle;
+use Sylius\Resource\Metadata\Metadata_Interface;
 use Webmozart\Assert\Assert;
-
-final class DriverProvider
+final class Driver_Provider
 {
     /** @var DriverInterface[] */
     private static array $drivers = [];
-
     /**
      * @throws UnknownDriverException
      */
-    public static function get(MetadataInterface $metadata): DriverInterface
+    public static function get(Metadata_Interface $metadata): Driver_Interface
     {
-        $type = $metadata->getDriver();
-
+        $type = $metadata->get_driver();
         if (isset(self::$drivers[$type])) {
             return self::$drivers[$type];
         }
-
-        Assert::notFalse($type, sprintf('No driver was configured on the resource "%s".', $metadata->getAlias()));
+        Assert::not_false($type, sprintf('No driver was configured on the resource "%s".', $metadata->get_alias()));
         self::$drivers[$type] = match ($type) {
-            SyliusResourceBundle::DRIVER_DOCTRINE_ORM => new DoctrineORMDriver(),
-            SyliusResourceBundle::DRIVER_DOCTRINE_MONGODB_ODM => new DoctrineODMDriver(),
-            SyliusResourceBundle::DRIVER_DOCTRINE_PHPCR_ODM => new DoctrinePHPCRDriver(),
-            default => throw new UnknownDriverException($type),
+            Sylius_Resource_Bundle::DRIVER_DOCTRINE_ORM => new Doctrine_Orm_Driver(),
+            Sylius_Resource_Bundle::DRIVER_DOCTRINE_MONGODB_ODM => new Doctrine_Odm_Driver(),
+            Sylius_Resource_Bundle::DRIVER_DOCTRINE_PHPCR_ODM => new Doctrine_Phpcr_Driver(),
+            default => throw new Unknown_Driver_Exception($type),
         };
     }
 }

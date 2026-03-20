@@ -8,9 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 /**
@@ -18,17 +16,12 @@ namespace Sylius\Resource\Metadata;
  *
  * @experimental
  */
-interface StateMachineAwareOperationInterface
+interface State_Machine_Aware_Operation_Interface
 {
-    public function getStateMachineComponent(): ?string;
-
-    public function withStateMachineComponent(?string $stateMachineComponent): self;
-
-    public function getStateMachineTransition(): ?string;
-
-    public function withStateMachineTransition(string $stateMachineTransition): self;
-
-    public function getStateMachineGraph(): ?string;
-
-    public function withStateMachineGraph(string $stateMachineGraph): self;
+    public function get_state_machine_component(): ?string;
+    public function with_state_machine_component(?string $state_machine_component): self;
+    public function get_state_machine_transition(): ?string;
+    public function with_state_machine_transition(string $state_machine_transition): self;
+    public function get_state_machine_graph(): ?string;
+    public function with_state_machine_graph(string $state_machine_graph): self;
 }

@@ -8,29 +8,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Doctrine\Persistence\ObjectManager;
-use Sylius\Resource\Model\ResourceInterface;
-
-final readonly class ResourceUpdateHandler implements ResourceUpdateHandlerInterface
+use Doctrine\Persistence\Object_Manager;
+use Sylius\Resource\Model\Resource_Interface;
+final readonly class Resource_Update_Handler implements Resource_Update_Handler_Interface
 {
-    public function __construct(private ?StateMachineInterface $stateMachine)
+    public function __construct(private ?State_Machine_Interface $state_machine)
     {
     }
-
-    public function handle(
-        ResourceInterface $resource,
-        RequestConfiguration $requestConfiguration,
-        ObjectManager $manager,
-    ): void {
-        if (null !== $this->stateMachine && $requestConfiguration->hasStateMachine()) {
-            $this->stateMachine->apply($requestConfiguration, $resource);
+    public function handle(Resource_Interface $resource, Request_Configuration $request_configuration, Object_Manager $manager): void
+    {
+        if (null !== $this->state_machine && $request_configuration->has_state_machine()) {
+            $this->state_machine->apply($request_configuration, $resource);
         }
-
         $manager->flush();
     }
 }

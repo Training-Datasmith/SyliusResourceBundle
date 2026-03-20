@@ -8,20 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Context\Option;
 
-use Sylius\Resource\Metadata\MetadataInterface;
-
-final readonly class MetadataOption
+use Sylius\Resource\Metadata\Metadata_Interface;
+final readonly class Metadata_Option
 {
-    public function __construct(private MetadataInterface $metadata)
+    public function __construct(private Metadata_Interface $metadata)
     {
     }
-
-    public function metadata(): MetadataInterface
+    public function metadata(): Metadata_Interface
     {
         return $this->metadata;
     }

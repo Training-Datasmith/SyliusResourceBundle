@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-
-interface ResourcesResolverInterface
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
+interface Resources_Resolver_Interface
 {
     /** @psalm-suppress MissingReturnType */
-    public function getResources(RequestConfiguration $requestConfiguration, RepositoryInterface $repository);
+    public function get_resources(Request_Configuration $request_configuration, Repository_Interface $repository);
 }

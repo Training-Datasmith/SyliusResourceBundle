@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Grid\View\Factory;
 
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-use Sylius\Component\Grid\View\GridView;
+use Sylius\Component\Grid\View\Grid_View;
 use Sylius\Resource\Context\Context;
-
-interface GridViewFactoryInterface
+interface Grid_View_Factory_Interface
 {
-    public function create(Grid $grid, Context $context, Parameters $parameters, array $driverConfiguration): GridView;
+    public function create(Grid $grid, Context $context, Parameters $parameters, array $driver_configuration): Grid_View;
 }

@@ -8,9 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 /**
@@ -18,9 +16,8 @@ namespace Sylius\Resource\Metadata;
  *
  * @experimental
  */
-interface GridAwareOperationInterface
+interface Grid_Aware_Operation_Interface
 {
-    public function getGrid(): ?string;
-
-    public function withGrid(string $grid): self;
+    public function get_grid(): ?string;
+    public function with_grid(string $grid): self;
 }

@@ -8,45 +8,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\State_Machine;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\StateMachine;
-
-use SM\StateMachine\StateMachine as BaseStateMachine;
+use SM\State_Machine\State_Machine as BaseStateMachine;
 use Sylius\Resource\Exception\RuntimeException;
-
-if (!class_exists(BaseStateMachine::class)) {
-    throw new RuntimeException(sprintf('Cannot use the "%s" class when the "winzou/state-machine" package is not installed.', StateMachine::class));
+if (!class_exists(Base_State_Machine::class)) {
+    throw new RuntimeException(sprintf('Cannot use the "%s" class when the "winzou/state-machine" package is not installed.', State_Machine::class));
 }
-
-final class StateMachine extends BaseStateMachine implements StateMachineInterface
+final class State_Machine extends Base_State_Machine implements State_Machine_Interface
 {
-    public function getTransitionFromState(string $fromState): ?string
+    public function get_transition_from_state(string $from_state): ?string
     {
-        foreach ($this->getPossibleTransitions() as $transition) {
+        foreach ($this->get_possible_transitions() as $transition) {
             $config = $this->config['transitions'][$transition];
-            if (in_array($fromState, $config['from'], true)) {
+            if (in_array($from_state, $config['from'], true)) {
                 return $transition;
             }
         }
-
         return null;
     }
-
-    public function getTransitionToState(string $toState): ?string
+    public function get_transition_to_state(string $to_state): ?string
     {
-        foreach ($this->getPossibleTransitions() as $transition) {
+        foreach ($this->get_possible_transitions() as $transition) {
             $config = $this->config['transitions'][$transition];
-            if ($toState === $config['to']) {
+            if ($to_state === $config['to']) {
                 return $transition;
             }
         }
-
         return null;
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\StateMachine\StateMachine::class, false)) {
-    class_alias(StateMachine::class, \Sylius\Component\Resource\StateMachine\StateMachine::class);
+if (!class_exists(\Sylius\Component\Resource\State_Machine\State_Machine::class, false)) {
+    class_alias(State_Machine::class, \Sylius\Component\Resource\State_Machine\State_Machine::class);
 }

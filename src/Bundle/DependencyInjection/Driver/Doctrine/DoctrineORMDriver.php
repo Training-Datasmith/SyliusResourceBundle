@@ -8,139 +8,96 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Doctrine;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
-
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\ServiceRepositoryCompilerPass;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ObjectManager as DeprecatedObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Persistence\ObjectManager;
-use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
-use Sylius\Component\Resource\Repository\RepositoryInterface as LegacyRepositoryInterface;
-use Sylius\Resource\Metadata\MetadataInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-
-final class DoctrineORMDriver extends AbstractDoctrineDriver
+use Doctrine\Bundle\Doctrine_Bundle\Dependency_Injection\Compiler\Service_Repository_Compiler_Pass;
+use Doctrine\Bundle\Doctrine_Bundle\Repository\Service_Entity_Repository;
+use Doctrine\Common\Persistence\Object_Manager as DeprecatedObjectManager;
+use Doctrine\ORM\Entity_Manager_Interface;
+use Doctrine\ORM\Mapping\Class_Metadata;
+use Doctrine\Persistence\Object_Manager;
+use Sylius\Bundle\Resource_Bundle\Doctrine\ORM\Entity_Repository;
+use Sylius\Bundle\Resource_Bundle\Sylius_Resource_Bundle;
+use Sylius\Component\Resource\Repository\Repository_Interface as LegacyRepositoryInterface;
+use Sylius\Resource\Metadata\Metadata_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Definition;
+use Symfony\Component\Dependency_Injection\Reference;
+final class Doctrine_Orm_Driver extends Abstract_Doctrine_Driver
 {
     public const GENERIC_ENTITIES_PARAMETER = 'sylius.doctrine.orm.container_repository_factory.entities';
-
-    public function getType(): string
+    public function get_type(): string
     {
-        return SyliusResourceBundle::DRIVER_DOCTRINE_ORM;
+        return Sylius_Resource_Bundle::DRIVER_DOCTRINE_ORM;
     }
-
-    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void
+    protected function add_repository(Container_Builder $container, Metadata_Interface $metadata): void
     {
-        $repositoryClassParameterName = sprintf('%s.repository.%s.class', $metadata->getApplicationName(), $metadata->getName());
-        $repositoryClass = EntityRepository::class;
-
+        $repository_class_parameter_name = sprintf('%s.repository.%s.class', $metadata->get_application_name(), $metadata->get_name());
+        $repository_class = Entity_Repository::class;
         /** @var string[] $genericEntities */
-        $genericEntities = $container->hasParameter(self::GENERIC_ENTITIES_PARAMETER) ? $container->getParameter(self::GENERIC_ENTITIES_PARAMETER) : [];
-
-        if ($container->hasParameter($repositoryClassParameterName)) {
+        $generic_entities = $container->has_parameter(self::GENERIC_ENTITIES_PARAMETER) ? $container->get_parameter(self::GENERIC_ENTITIES_PARAMETER) : [];
+        if ($container->has_parameter($repository_class_parameter_name)) {
             /** @var string $repositoryClass */
-            $repositoryClass = $container->getParameter($repositoryClassParameterName);
+            $repository_class = $container->get_parameter($repository_class_parameter_name);
         }
-
-        if ($metadata->hasClass('repository')) {
+        if ($metadata->has_class('repository')) {
             /** @var string $repositoryClass */
-            $repositoryClass = $metadata->getClass('repository');
+            $repository_class = $metadata->get_class('repository');
         }
-
-        $serviceId = $metadata->getServiceId('repository');
-        $managerReference = new Reference($metadata->getServiceId('manager'));
-        $definition = new Definition($repositoryClass);
-        $definition->setPublic(true);
-        $definition->addTag('sylius.repository');
-
-        if ($repositoryClass === EntityRepository::class) {
+        $service_id = $metadata->get_service_id('repository');
+        $manager_reference = new Reference($metadata->get_service_id('manager'));
+        $definition = new Definition($repository_class);
+        $definition->set_public(true);
+        $definition->add_tag('sylius.repository');
+        if ($repository_class === Entity_Repository::class) {
             /** @var string $entityClass */
-            $entityClass = $metadata->getClass('model');
-
-            $definition->setFactory([$managerReference, 'getRepository']);
-            $definition->setArguments([$entityClass]);
-
-            $container->setDefinition($serviceId, $definition);
-
-            $genericEntities[] = $entityClass;
+            $entity_class = $metadata->get_class('model');
+            $definition->set_factory([$manager_reference, 'getRepository']);
+            $definition->set_arguments([$entity_class]);
+            $container->set_definition($service_id, $definition);
+            $generic_entities[] = $entity_class;
         } else {
-            if (is_a($repositoryClass, ServiceEntityRepository::class, true)) {
-                $definition->setArguments([new Reference('doctrine')]);
-                $container->setDefinition($serviceId, $definition);
+            if (is_a($repository_class, Service_Entity_Repository::class, true)) {
+                $definition->set_arguments([new Reference('doctrine')]);
+                $container->set_definition($service_id, $definition);
             } else {
-                $definition->setArguments([$managerReference, $this->getClassMetadataDefinition($metadata)]);
+                $definition->set_arguments([$manager_reference, $this->get_class_metadata_definition($metadata)]);
             }
-
-            $container->setDefinition($serviceId, $definition);
-
-            $doctrineDefinition = new Definition($repositoryClass);
-            $doctrineDefinition->addTag(ServiceRepositoryCompilerPass::REPOSITORY_SERVICE_TAG);
-            $doctrineDefinition->setFactory([new Reference('service_container'), 'get']);
-            $doctrineDefinition->setArguments([$serviceId]);
-
-            $container->setDefinition($repositoryClass, $doctrineDefinition);
+            $container->set_definition($service_id, $definition);
+            $doctrine_definition = new Definition($repository_class);
+            $doctrine_definition->add_tag(Service_Repository_Compiler_Pass::REPOSITORY_SERVICE_TAG);
+            $doctrine_definition->set_factory([new Reference('service_container'), 'get']);
+            $doctrine_definition->set_arguments([$service_id]);
+            $container->set_definition($repository_class, $doctrine_definition);
         }
-
         /** @var array $repositoryInterfaces */
-        $repositoryInterfaces = class_implements($repositoryClass);
-
+        $repository_interfaces = class_implements($repository_class);
         /** @var array $repositoryParents */
-        $repositoryParents = class_parents($repositoryClass);
-
-        $typehintClasses = array_merge(
-            $repositoryInterfaces,
-            [$repositoryClass, LegacyRepositoryInterface::class],
-            $repositoryParents,
-        );
-
-        foreach ($typehintClasses as $typehintClass) {
-            $container->registerAliasForArgument(
-                $metadata->getServiceId('repository'),
-                $typehintClass,
-                $metadata->getHumanizedName() . ' repository',
-            );
+        $repository_parents = class_parents($repository_class);
+        $typehint_classes = array_merge($repository_interfaces, [$repository_class, Legacy_Repository_Interface::class], $repository_parents);
+        foreach ($typehint_classes as $typehint_class) {
+            $container->register_alias_for_argument($metadata->get_service_id('repository'), $typehint_class, $metadata->get_humanized_name() . ' repository');
         }
-
-        $container->setParameter(self::GENERIC_ENTITIES_PARAMETER, $genericEntities);
+        $container->set_parameter(self::GENERIC_ENTITIES_PARAMETER, $generic_entities);
     }
-
-    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void
+    protected function add_manager(Container_Builder $container, Metadata_Interface $metadata): void
     {
-        parent::addManager($container, $metadata);
-
-        $typehintClasses = [
-            DeprecatedObjectManager::class,
-            ObjectManager::class,
-            EntityManagerInterface::class,
-        ];
-
-        foreach ($typehintClasses as $typehintClass) {
-            $container->registerAliasForArgument(
-                $metadata->getServiceId('manager'),
-                $typehintClass,
-                $metadata->getHumanizedName() . ' manager',
-            );
+        parent::add_manager($container, $metadata);
+        $typehint_classes = [Deprecated_Object_Manager::class, Object_Manager::class, Entity_Manager_Interface::class];
+        foreach ($typehint_classes as $typehint_class) {
+            $container->register_alias_for_argument($metadata->get_service_id('manager'), $typehint_class, $metadata->get_humanized_name() . ' manager');
         }
     }
-
-    protected function getManagerServiceId(MetadataInterface $metadata): string
+    protected function get_manager_service_id(Metadata_Interface $metadata): string
     {
-        if ($objectManagerName = $this->getObjectManagerName($metadata)) {
-            return sprintf('doctrine.orm.%s_entity_manager', $objectManagerName);
+        if ($object_manager_name = $this->get_object_manager_name($metadata)) {
+            return sprintf('doctrine.orm.%s_entity_manager', $object_manager_name);
         }
-
         return 'doctrine.orm.entity_manager';
     }
-
-    protected function getClassMetadataClassname(): string
+    protected function get_class_metadata_classname(): string
     {
-        return ClassMetadata::class;
+        return Class_Metadata::class;
     }
 }

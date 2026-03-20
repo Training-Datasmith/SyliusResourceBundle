@@ -8,40 +8,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Routing\Factory\Route_Path;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\Routing\Factory\RoutePath;
-
-use Sylius\Resource\Metadata\HttpOperation;
-use Sylius\Resource\Metadata\Operation\PathSegmentNameGeneratorInterface;
-use Sylius\Resource\Metadata\ShowOperationInterface;
-
+use Sylius\Resource\Metadata\Http_Operation;
+use Sylius\Resource\Metadata\Operation\Path_Segment_Name_Generator_Interface;
+use Sylius\Resource\Metadata\Show_Operation_Interface;
 /**
  * @experimental
  */
-final readonly class ShowOperationRoutePathFactory implements OperationRoutePathFactoryInterface
+final readonly class Show_Operation_Route_Path_Factory implements Operation_Route_Path_Factory_Interface
 {
-    public function __construct(
-        private OperationRoutePathFactoryInterface $decorated,
-        private PathSegmentNameGeneratorInterface $pathSegmentNameGenerator,
-    ) {
-    }
-
-    public function createRoutePath(HttpOperation $operation, string $rootPath): string
+    public function __construct(private Operation_Route_Path_Factory_Interface $decorated, private Path_Segment_Name_Generator_Interface $path_segment_name_generator)
     {
-        $shortName = $operation->getShortName();
-        $identifier = $operation->getResource()?->getIdentifier() ?? 'id';
-
-        if ($operation instanceof ShowOperationInterface) {
-            $path = match ($shortName) {
+    }
+    public function create_route_path(Http_Operation $operation, string $root_path): string
+    {
+        $short_name = $operation->get_short_name();
+        $identifier = $operation->get_resource()?->get_identifier() ?? 'id';
+        if ($operation instanceof Show_Operation_Interface) {
+            $path = match ($short_name) {
                 'show', 'get' => '',
-                default => '/' . $this->pathSegmentNameGenerator->getSegmentName($shortName ?? '', false),
+                default => '/' . $this->path_segment_name_generator->get_segment_name($short_name ?? '', false),
             };
-
-            return sprintf('%s/{%s}%s', $rootPath, $identifier, $path);
+            return sprintf('%s/{%s}%s', $root_path, $identifier, $path);
         }
-
-        return $this->decorated->createRoutePath($operation, $rootPath);
+        return $this->decorated->create_route_path($operation, $root_path);
     }
 }

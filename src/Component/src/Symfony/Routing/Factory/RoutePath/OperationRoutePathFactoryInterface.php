@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Routing\Factory\Route_Path;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\Routing\Factory\RoutePath;
-
-use Sylius\Resource\Metadata\HttpOperation;
-
+use Sylius\Resource\Metadata\Http_Operation;
 /**
  * @experimental
  */
-interface OperationRoutePathFactoryInterface
+interface Operation_Route_Path_Factory_Interface
 {
-    public function createRoutePath(HttpOperation $operation, string $rootPath): string;
+    public function create_route_path(Http_Operation $operation, string $root_path): string;
 }

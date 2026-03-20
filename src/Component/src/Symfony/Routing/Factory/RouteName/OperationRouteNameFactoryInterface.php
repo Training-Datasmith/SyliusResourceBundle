@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\Routing\Factory\RouteName;
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Routing\Factory\Route_Name;
 
 use Sylius\Resource\Metadata\Operation;
-
 /**
  * @experimental
  */
-interface OperationRouteNameFactoryInterface
+interface Operation_Route_Name_Factory_Interface
 {
-    public function createRouteName(Operation $operation, ?string $shortName = null): string;
+    public function create_route_name(Operation $operation, ?string $short_name = null): string;
 }

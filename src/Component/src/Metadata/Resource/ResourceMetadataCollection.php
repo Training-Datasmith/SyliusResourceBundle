@@ -8,32 +8,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource;
 
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\Metadata\ResourceMetadata;
-
-final class ResourceMetadataCollection extends \ArrayObject
+use Sylius\Resource\Metadata\Resource_Metadata;
+final class Resource_Metadata_Collection extends \ArrayObject
 {
-    public function getOperation(string $resourceAlias, string $name): Operation
+    public function get_operation(string $resource_alias, string $name): Operation
     {
         /** @var ResourceMetadata $current */
         foreach ($this->getIterator() as $current) {
-            if (
-                $current->getAlias() === $resourceAlias &&
-                $current->hasOperation($name)
-            ) {
-                return $current->getOperation($name);
+            if ($current->get_alias() === $resource_alias && $current->has_operation($name)) {
+                return $current->get_operation($name);
             }
         }
-
-        throw new \RuntimeException(sprintf(
-            'Operation "%s" for "%s" resource was not found.',
-            $name,
-            $resourceAlias,
-        ));
+        throw new \RuntimeException(sprintf('Operation "%s" for "%s" resource was not found.', $name, $resource_alias));
     }
 }

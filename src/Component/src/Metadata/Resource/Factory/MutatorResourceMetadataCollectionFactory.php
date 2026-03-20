@@ -8,57 +8,43 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource\Factory;
 
-use Sylius\Resource\Metadata\Mutator\OperationMutatorCollectionInterface;
-use Sylius\Resource\Metadata\Mutator\ResourceMutatorCollectionInterface;
+use Sylius\Resource\Metadata\Mutator\Operation_Mutator_Collection_Interface;
+use Sylius\Resource\Metadata\Mutator\Resource_Mutator_Collection_Interface;
 use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\Metadata\Operations;
-use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
-use Sylius\Resource\Metadata\ResourceMetadata;
-
-final readonly class MutatorResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+use Sylius\Resource\Metadata\Resource\Resource_Metadata_Collection;
+use Sylius\Resource\Metadata\Resource_Metadata;
+final readonly class Mutator_Resource_Metadata_Collection_Factory implements Resource_Metadata_Collection_Factory_Interface
 {
-    public function __construct(
-        private ResourceMutatorCollectionInterface $resourceMutators,
-        private OperationMutatorCollectionInterface $operationMutators,
-        private ?ResourceMetadataCollectionFactoryInterface $decorated = null,
-    ) {
-    }
-
-    public function create(string $resourceClass): ResourceMetadataCollection
+    public function __construct(private Resource_Mutator_Collection_Interface $resource_mutators, private Operation_Mutator_Collection_Interface $operation_mutators, private ?Resource_Metadata_Collection_Factory_Interface $decorated = null)
     {
-        $resourceMetadataCollection = new ResourceMetadataCollection();
+    }
+    public function create(string $resource_class): Resource_Metadata_Collection
+    {
+        $resource_metadata_collection = new Resource_Metadata_Collection();
         if ($this->decorated) {
-            $resourceMetadataCollection = $this->decorated->create($resourceClass);
+            $resource_metadata_collection = $this->decorated->create($resource_class);
         }
-
-        $newMetadataCollection = new ResourceMetadataCollection();
-
+        $new_metadata_collection = new Resource_Metadata_Collection();
         /** @var ResourceMetadata $resource */
-        foreach ($resourceMetadataCollection as $resource) {
-            $resource = $this->mutateResource($resource, $resourceClass);
-            $operations = $this->mutateOperations($resource->getOperations() ?? new Operations());
-            $resource = $resource->withOperations($operations);
-
-            $newMetadataCollection[] = $resource;
+        foreach ($resource_metadata_collection as $resource) {
+            $resource = $this->mutate_resource($resource, $resource_class);
+            $operations = $this->mutate_operations($resource->get_operations() ?? new Operations());
+            $resource = $resource->with_operations($operations);
+            $new_metadata_collection[] = $resource;
         }
-
-        return $newMetadataCollection;
+        return $new_metadata_collection;
     }
-
-    private function mutateResource(ResourceMetadata $resource, string $resourceClass): ResourceMetadata
+    private function mutate_resource(Resource_Metadata $resource, string $resource_class): Resource_Metadata
     {
-        foreach ($this->resourceMutators->get($resourceClass) as $mutator) {
+        foreach ($this->resource_mutators->get($resource_class) as $mutator) {
             $resource = $mutator($resource);
         }
-
         return $resource;
     }
-
     /**
      * @template T of Operation
      *
@@ -66,18 +52,15 @@ final readonly class MutatorResourceMetadataCollectionFactory implements Resourc
      *
      * @return Operations<T>
      */
-    private function mutateOperations(Operations $operations): Operations
+    private function mutate_operations(Operations $operations): Operations
     {
-        $newOperations = new Operations();
-
+        $new_operations = new Operations();
         foreach ($operations as $key => $operation) {
-            foreach ($this->operationMutators->get($key) as $mutator) {
+            foreach ($this->operation_mutators->get($key) as $mutator) {
                 $operation = $mutator($operation);
             }
-
-            $newOperations->add($key, $operation);
+            $new_operations->add($key, $operation);
         }
-
-        return $newOperations;
+        return $new_operations;
     }
 }

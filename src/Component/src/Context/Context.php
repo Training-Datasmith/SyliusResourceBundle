@@ -8,9 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Context;
 
 /**
@@ -19,41 +17,31 @@ namespace Sylius\Resource\Context;
 final class Context implements \IteratorAggregate
 {
     /** @var array<class-string, object> */
-    private array $optionMap;
-
+    private array $option_map;
     public function __construct(object ...$options)
     {
         $map = [];
         foreach ($options as $option) {
             $map[$option::class] = $option;
         }
-
-        $this->optionMap = $map;
+        $this->option_map = $map;
     }
-
     public function with(object ...$options): self
     {
         /** @psalm-suppress DuplicateArrayKey */
-        return new self(...[
-            ...array_values($this->optionMap),
-            ...$options,
-        ]);
+        return new self(...[...array_values($this->option_map), ...$options]);
     }
-
     /**
      * @param class-string $optionClasses
      */
-    public function without(string ...$optionClasses): self
+    public function without(string ...$option_classes): self
     {
-        $optionMap = $this->optionMap;
-
-        foreach ($optionClasses as $optionClass) {
-            unset($optionMap[$optionClass]);
+        $option_map = $this->option_map;
+        foreach ($option_classes as $option_class) {
+            unset($option_map[$option_class]);
         }
-
-        return new self(...array_values($optionMap));
+        return new self(...array_values($option_map));
     }
-
     /**
      * @template T of object
      *
@@ -61,19 +49,17 @@ final class Context implements \IteratorAggregate
      *
      * @return T|null
      */
-    public function get(string $optionClass): ?object
+    public function get(string $option_class): ?object
     {
         /** @var T $option */
-        $option = $this->optionMap[$optionClass] ?? null;
-
+        $option = $this->option_map[$option_class] ?? null;
         return $option;
     }
-
     /**
      * @return \Traversable<object>
      */
     public function getIterator(): \Traversable
     {
-        yield from array_values($this->optionMap);
+        yield from array_values($this->option_map);
     }
 }

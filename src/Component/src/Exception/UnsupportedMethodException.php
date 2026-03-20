@@ -8,22 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Exception;
 
-class UnsupportedMethodException extends Exception
+class Unsupported_Method_Exception extends Exception
 {
-    public function __construct(string $methodName)
+    public function __construct(string $method_name)
     {
-        parent::__construct(sprintf(
-            'The method "%s" is not supported.',
-            $methodName,
-        ));
+        parent::__construct(sprintf('The method "%s" is not supported.', $method_name));
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\Exception\UnsupportedMethodException::class, false)) {
-    class_alias(UnsupportedMethodException::class, \Sylius\Component\Resource\Exception\UnsupportedMethodException::class);
+if (!class_exists(\Sylius\Component\Resource\Exception\Unsupported_Method_Exception::class, false)) {
+    class_alias(Unsupported_Method_Exception::class, \Sylius\Component\Resource\Exception\Unsupported_Method_Exception::class);
 }

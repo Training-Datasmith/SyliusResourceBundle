@@ -8,24 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Exception;
 
-class WriteResourceException extends RuntimeException
+class Write_Resource_Exception extends RuntimeException
 {
-    public function __construct(
-        private readonly ?string $resourceName = null,
-        string $message = '',
-        int $code = 0,
-        ?\Throwable $previous = null,
-    ) {
+    public function __construct(private readonly ?string $resource_name = null, string $message = '', int $code = 0, ?\Throwable $previous = null)
+    {
         parent::__construct($message, $code, $previous);
     }
-
-    public function getResourceName(): ?string
+    public function get_resource_name(): ?string
     {
-        return $this->resourceName;
+        return $this->resource_name;
     }
 }

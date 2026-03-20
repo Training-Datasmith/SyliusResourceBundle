@@ -8,23 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Validator\Constraints;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Validator\Constraints;
-
-use Sylius\Bundle\ResourceBundle\Validator\UniqueWithinCollectionConstraintValidator;
+use Sylius\Bundle\Resource_Bundle\Validator\Unique_Within_Collection_Constraint_Validator;
 use Symfony\Component\Validator\Constraint;
-
 #[\Attribute]
-final class UniqueWithinCollectionConstraint extends Constraint
+final class Unique_Within_Collection_Constraint extends Constraint
 {
     public string $message = 'This code must be unique within this collection.';
-
-    public string $attributePath = 'code';
-
-    public function validatedBy(): string
+    public string $attribute_path = 'code';
+    public function validated_by(): string
     {
-        return UniqueWithinCollectionConstraintValidator::class;
+        return Unique_Within_Collection_Constraint_Validator::class;
     }
 }

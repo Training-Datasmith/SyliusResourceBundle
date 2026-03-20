@@ -8,104 +8,78 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Doctrine\ODM\PHPCR;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Doctrine\ODM\PHPCR;
-
-use Doctrine\ODM\PHPCR\DocumentRepository as BaseDocumentRepository;
-use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Pagerfanta\Doctrine\PHPCRODM\QueryAdapter;
+use Doctrine\ODM\PHPCR\Document_Repository as BaseDocumentRepository;
+use Doctrine\ODM\PHPCR\Query\Builder\Query_Builder;
+use Pagerfanta\Doctrine\PHPCRODM\Query_Adapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-use Sylius\Resource\Model\ResourceInterface;
-
-trigger_deprecation('sylius/resource-bundle', '1.3', 'The "%s" class is deprecated. Doctrine MongoDB and PHPCR support will no longer be supported in 2.0.', DocumentRepository::class);
-
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
+use Sylius\Resource\Model\Resource_Interface;
+trigger_deprecation('sylius/resource-bundle', '1.3', 'The "%s" class is deprecated. Doctrine MongoDB and PHPCR support will no longer be supported in 2.0.', Document_Repository::class);
 /**
  * Doctrine PHPCR-ODM driver document repository.
  */
-class DocumentRepository extends BaseDocumentRepository implements RepositoryInterface
+class Document_Repository extends Base_Document_Repository implements Repository_Interface
 {
-    public function createPaginator(array $criteria = [], array $sorting = []): iterable
+    public function create_paginator(array $criteria = [], array $sorting = []): iterable
     {
-        $queryBuilder = $this->getCollectionQueryBuilder();
-
-        $this->applyCriteria($queryBuilder, $criteria);
-        $this->applySorting($queryBuilder, $sorting);
-
-        return $this->getPaginator($queryBuilder);
+        $query_builder = $this->get_collection_query_builder();
+        $this->apply_criteria($query_builder, $criteria);
+        $this->apply_sorting($query_builder, $sorting);
+        return $this->get_paginator($query_builder);
     }
-
-    public function add(ResourceInterface $resource): void
+    public function add(Resource_Interface $resource): void
     {
         $this->dm->persist($resource);
         $this->dm->flush();
     }
-
-    public function remove(ResourceInterface $resource): void
+    public function remove(Resource_Interface $resource): void
     {
-        if (null !== $this->find($resource->getId())) {
+        if (null !== $this->find($resource->get_id())) {
             $this->dm->remove($resource);
             $this->dm->flush();
         }
     }
-
-    public function getPaginator(QueryBuilder $queryBuilder): Pagerfanta
+    public function get_paginator(Query_Builder $query_builder): Pagerfanta
     {
-        return new Pagerfanta(new QueryAdapter($queryBuilder));
+        return new Pagerfanta(new Query_Adapter($query_builder));
     }
-
-    protected function getCollectionQueryBuilder(): QueryBuilder
+    protected function get_collection_query_builder(): Query_Builder
     {
-        return $this->createQueryBuilder('o');
+        return $this->create_query_builder('o');
     }
-
-    protected function applyCriteria(QueryBuilder $queryBuilder, array $criteria = []): void
+    protected function apply_criteria(Query_Builder $query_builder, array $criteria = []): void
     {
-        $metadata = $this->getClassMetadata();
+        $metadata = $this->get_class_metadata();
         foreach ($criteria as $property => $value) {
             if (!empty($value)) {
                 if ($property === $metadata->nodename) {
-                    $queryBuilder
-                        ->andWhere()
-                            ->eq()
-                                ->localName($this->getAlias())
-                                ->literal($value)
-                    ;
+                    $query_builder->and_where()->eq()->local_name($this->get_alias())->literal($value);
                 } else {
-                    $queryBuilder
-                        ->andWhere()
-                            ->eq()
-                                ->field($this->getPropertyName($property))
-                                ->literal($value)
-                    ;
+                    $query_builder->and_where()->eq()->field($this->get_property_name($property))->literal($value);
                 }
             }
         }
     }
-
-    protected function applySorting(QueryBuilder $queryBuilder, array $sorting = []): void
+    protected function apply_sorting(Query_Builder $query_builder, array $sorting = []): void
     {
         foreach ($sorting as $property => $order) {
             if (!empty($order)) {
-                $queryBuilder->orderBy()->{$order}()->field('o.' . $property);
+                $query_builder->order_by()->{$order}()->field('o.' . $property);
             }
         }
-
-        $queryBuilder->end();
+        $query_builder->end();
     }
-
-    protected function getPropertyName(string $name): string
+    protected function get_property_name(string $name): string
     {
         if (!str_contains($name, '.')) {
-            return $this->getAlias() . '.' . $name;
+            return $this->get_alias() . '.' . $name;
         }
-
         return $name;
     }
-
-    protected function getAlias(): string
+    protected function get_alias(): string
     {
         return 'o';
     }

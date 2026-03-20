@@ -8,106 +8,62 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Type;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\Type;
-
-use Sylius\Bundle\ResourceBundle\Form\DataTransformer\CollectionToStringTransformer;
-use Sylius\Bundle\ResourceBundle\Form\DataTransformer\RecursiveTransformer;
-use Sylius\Bundle\ResourceBundle\Form\DataTransformer\ResourceToIdentifierTransformer;
-use Sylius\Component\Registry\ServiceRegistryInterface;
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sylius\Bundle\Resource_Bundle\Form\Data_Transformer\Collection_To_String_Transformer;
+use Sylius\Bundle\Resource_Bundle\Form\Data_Transformer\Recursive_Transformer;
+use Sylius\Bundle\Resource_Bundle\Form\Data_Transformer\Resource_To_Identifier_Transformer;
+use Sylius\Component\Registry\Service_Registry_Interface;
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
+use Symfony\Component\Form\Abstract_Type;
+use Symfony\Component\Form\Extension\Core\Type\Hidden_Type;
+use Symfony\Component\Form\Form_Builder_Interface;
+use Symfony\Component\Form\Form_Interface;
+use Symfony\Component\Form\Form_View;
+use Symfony\Component\Options_Resolver\Options;
+use Symfony\Component\Options_Resolver\Options_Resolver;
 use Webmozart\Assert\Assert;
-
-class ResourceAutocompleteChoiceType extends AbstractType
+class Resource_Autocomplete_Choice_Type extends Abstract_Type
 {
-    protected ServiceRegistryInterface $resourceRepositoryRegistry;
-
-    public function __construct(ServiceRegistryInterface $resourceRepositoryRegistry)
+    protected Service_Registry_Interface $resource_repository_registry;
+    public function __construct(Service_Registry_Interface $resource_repository_registry)
     {
-        $this->resourceRepositoryRegistry = $resourceRepositoryRegistry;
+        $this->resource_repository_registry = $resource_repository_registry;
     }
-
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function build_form(Form_Builder_Interface $builder, array $options): void
     {
-        Assert::isInstanceOf($options['repository'], RepositoryInterface::class);
-        Assert::nullOrString($options['choice_value']);
-
+        Assert::is_instance_of($options['repository'], Repository_Interface::class);
+        Assert::null_or_string($options['choice_value']);
         if (!$options['multiple']) {
-            $builder->addModelTransformer(
-                new ResourceToIdentifierTransformer(
-                    $options['repository'],
-                    $options['choice_value'],
-                ),
-            );
+            $builder->add_model_transformer(new Resource_To_Identifier_Transformer($options['repository'], $options['choice_value']));
         }
-
         if ($options['multiple']) {
-            $builder
-                ->addModelTransformer(
-                    new RecursiveTransformer(
-                        new ResourceToIdentifierTransformer(
-                            $options['repository'],
-                            $options['choice_value'],
-                        ),
-                    ),
-                )
-                ->addViewTransformer(new CollectionToStringTransformer(','))
-            ;
+            $builder->add_model_transformer(new Recursive_Transformer(new Resource_To_Identifier_Transformer($options['repository'], $options['choice_value'])))->add_view_transformer(new Collection_To_String_Transformer(','));
         }
     }
-
     /**
      * @psalm-suppress MissingPropertyType
      */
-    public function buildView(FormView $view, FormInterface $form, array $options): void
+    public function build_view(Form_View $view, Form_Interface $form, array $options): void
     {
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['choice_name'] = $options['choice_name'];
         $view->vars['choice_value'] = $options['choice_value'];
         $view->vars['placeholder'] = $options['placeholder'];
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configure_options(Options_Resolver $resolver): void
     {
-        $resolver
-            ->setRequired([
-                'resource',
-                'choice_name',
-                'choice_value',
-            ])
-            ->setDefaults([
-                'multiple' => false,
-                'error_bubbling' => false,
-                'placeholder' => '',
-                'repository' => function (Options $options) {
-                    Assert::string($options['resource']);
-
-                    return $this->resourceRepositoryRegistry->get($options['resource']);
-                },
-            ])
-            ->setAllowedTypes('resource', ['string'])
-            ->setAllowedTypes('multiple', ['bool'])
-            ->setAllowedTypes('choice_name', ['string'])
-            ->setAllowedTypes('choice_value', ['string'])
-            ->setAllowedTypes('placeholder', ['string'])
-        ;
+        $resolver->set_required(['resource', 'choice_name', 'choice_value'])->set_defaults(['multiple' => false, 'error_bubbling' => false, 'placeholder' => '', 'repository' => function (Options $options) {
+            Assert::string($options['resource']);
+            return $this->resource_repository_registry->get($options['resource']);
+        }])->set_allowed_types('resource', ['string'])->set_allowed_types('multiple', ['bool'])->set_allowed_types('choice_name', ['string'])->set_allowed_types('choice_value', ['string'])->set_allowed_types('placeholder', ['string']);
     }
-
-    public function getParent(): string
+    public function get_parent(): string
     {
-        return HiddenType::class;
+        return Hidden_Type::class;
     }
-
-    public function getBlockPrefix(): string
+    public function get_block_prefix(): string
     {
         return 'sylius_resource_autocomplete_choice';
     }

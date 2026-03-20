@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Humanizer;
 
-final class StringHumanizer
+final class String_Humanizer
 {
     public static function humanize(string $subject): string
     {

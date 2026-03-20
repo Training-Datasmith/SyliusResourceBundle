@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-interface_exists(\Sylius\Resource\Model\TranslationInterface::class);
-
+interface_exists(\Sylius\Resource\Model\Translation_Interface::class);
 if (false) {
-    interface TranslationInterface extends \Sylius\Resource\Model\TranslationInterface
+    interface Translation_Interface extends \Sylius\Resource\Model\Translation_Interface
     {
     }
 }

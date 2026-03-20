@@ -8,13 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Doctrine\Persistence\Exception;
 
-use Sylius\Resource\Exception\ExceptionInterface as BaseExceptionInterface;
-
-interface ExceptionInterface extends BaseExceptionInterface
+use Sylius\Resource\Exception\Exception_Interface as BaseExceptionInterface;
+interface Exception_Interface extends Base_Exception_Interface
 {
 }

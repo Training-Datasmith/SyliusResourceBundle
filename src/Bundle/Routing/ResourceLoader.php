@@ -8,163 +8,122 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Routing;
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Routing;
 
 use Behat\Transliterator\Transliterator;
 use Gedmo\Sluggable\Util\Urlizer;
 use Sylius\Resource\Exception\RuntimeException;
 use Sylius\Resource\Metadata\Inflector\Inflector;
-use Sylius\Resource\Metadata\Inflector\InflectorInterface;
-use Sylius\Resource\Metadata\MetadataInterface;
-use Sylius\Resource\Metadata\RegistryInterface;
+use Sylius\Resource\Metadata\Inflector\Inflector_Interface;
+use Sylius\Resource\Metadata\Metadata_Interface;
+use Sylius\Resource\Metadata\Registry_Interface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Route_Collection;
 use Symfony\Component\Yaml\Yaml;
-
 /**
  * @deprecated use Sylius\Resource\Symfony\Routing\Loader\ResourceLoader instead
  */
-final class ResourceLoader extends Loader
+final class Resource_Loader extends Loader
 {
-    public function __construct(
-        private readonly RegistryInterface $resourceRegistry,
-        private readonly RouteFactoryInterface $routeFactory,
-        ?string $env = null,
-        private readonly ?bool $routingPathBcLayer = null,
-        private readonly ?InflectorInterface $inflector = new Inflector(),
-    ) {
+    public function __construct(private readonly Registry_Interface $resource_registry, private readonly Route_Factory_Interface $route_factory, ?string $env = null, private readonly ?bool $routing_path_bc_layer = null, private readonly ?Inflector_Interface $inflector = new Inflector())
+    {
         parent::__construct($env);
     }
-
-    public function load($resource, $type = null): RouteCollection
+    public function load($resource, $type = null): Route_Collection
     {
         $processor = new Processor();
-        $configurationDefinition = new Configuration();
-
+        $configuration_definition = new Configuration();
         $configuration = Yaml::parse($resource);
-        $configuration = $processor->processConfiguration($configurationDefinition, ['routing' => $configuration]);
-
+        $configuration = $processor->process_configuration($configuration_definition, ['routing' => $configuration]);
         if (!empty($configuration['only']) && !empty($configuration['except'])) {
             throw new \InvalidArgumentException('You can configure only one of "except" & "only" options.');
         }
-
-        $routesToGenerate = ['show', 'index', 'create', 'update', 'delete', 'bulkDelete'];
-
+        $routes_to_generate = ['show', 'index', 'create', 'update', 'delete', 'bulkDelete'];
         if (!empty($configuration['only'])) {
-            $routesToGenerate = $configuration['only'];
+            $routes_to_generate = $configuration['only'];
         }
         if (!empty($configuration['except'])) {
-            $routesToGenerate = array_diff($routesToGenerate, $configuration['except']);
+            $routes_to_generate = array_diff($routes_to_generate, $configuration['except']);
         }
-
-        $isApi = $type === 'sylius.resource_api';
-
+        $is_api = $type === 'sylius.resource_api';
         /** @var MetadataInterface $metadata */
-        $metadata = $this->resourceRegistry->get($configuration['alias']);
-        $routes = $this->routeFactory->createRouteCollection();
-
-        $rootPath = $configuration['path'] ?? $this->getRootPath($metadata->getPluralName());
+        $metadata = $this->resource_registry->get($configuration['alias']);
+        $routes = $this->route_factory->create_route_collection();
+        $root_path = $configuration['path'] ?? $this->get_root_path($metadata->get_plural_name());
         $identifier = sprintf('{%s}', $configuration['identifier']);
-
-        $bcLayerEnabled = $this->routingPathBcLayer ?? true;
-        $trailingSlash = $bcLayerEnabled ? '/' : '';
-
-        if (in_array('index', $routesToGenerate, true)) {
-            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $trailingSlash, 'index', ['GET'], $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'index'), $indexRoute);
+        $bc_layer_enabled = $this->routing_path_bc_layer ?? true;
+        $trailing_slash = $bc_layer_enabled ? '/' : '';
+        if (in_array('index', $routes_to_generate, true)) {
+            $index_route = $this->create_route($metadata, $configuration, $root_path . $trailing_slash, 'index', ['GET'], $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'index'), $index_route);
         }
-
-        if (in_array('create', $routesToGenerate, true)) {
-            $createRoute = $this->createRoute($metadata, $configuration, $isApi ? $rootPath . $trailingSlash : $rootPath . '/new', 'create', $isApi ? ['POST'] : ['GET', 'POST'], $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'create'), $createRoute);
+        if (in_array('create', $routes_to_generate, true)) {
+            $create_route = $this->create_route($metadata, $configuration, $is_api ? $root_path . $trailing_slash : $root_path . '/new', 'create', $is_api ? ['POST'] : ['GET', 'POST'], $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'create'), $create_route);
         }
-
-        if (in_array('update', $routesToGenerate, true)) {
-            $httpMethods = ['GET', 'PUT', 'PATCH'];
-            if (!$bcLayerEnabled) {
-                $httpMethods[] = 'POST';
+        if (in_array('update', $routes_to_generate, true)) {
+            $http_methods = ['GET', 'PUT', 'PATCH'];
+            if (!$bc_layer_enabled) {
+                $http_methods[] = 'POST';
             }
-
-            $updateRoute = $this->createRoute($metadata, $configuration, $isApi ? $rootPath . '/' . $identifier : $rootPath . '/' . $identifier . '/edit', 'update', $isApi ? ['PUT', 'PATCH'] : $httpMethods, $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'update'), $updateRoute);
+            $update_route = $this->create_route($metadata, $configuration, $is_api ? $root_path . '/' . $identifier : $root_path . '/' . $identifier . '/edit', 'update', $is_api ? ['PUT', 'PATCH'] : $http_methods, $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'update'), $update_route);
         }
-
-        if (in_array('show', $routesToGenerate, true)) {
-            $showRoute = $this->createRoute($metadata, $configuration, $rootPath . '/' . $identifier, 'show', ['GET'], $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'show'), $showRoute);
+        if (in_array('show', $routes_to_generate, true)) {
+            $show_route = $this->create_route($metadata, $configuration, $root_path . '/' . $identifier, 'show', ['GET'], $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'show'), $show_route);
         }
-
-        if (!$isApi && in_array('bulkDelete', $routesToGenerate, true)) {
-            $httpMethods = ['DELETE'];
-            if (!$bcLayerEnabled) {
-                $httpMethods[] = 'POST';
+        if (!$is_api && in_array('bulkDelete', $routes_to_generate, true)) {
+            $http_methods = ['DELETE'];
+            if (!$bc_layer_enabled) {
+                $http_methods[] = 'POST';
             }
-
-            $bulkDeleteRoute = $this->createRoute($metadata, $configuration, $rootPath . '/' . 'bulk-delete', 'bulkDelete', $httpMethods, $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'bulk_delete'), $bulkDeleteRoute);
+            $bulk_delete_route = $this->create_route($metadata, $configuration, $root_path . '/' . 'bulk-delete', 'bulkDelete', $http_methods, $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'bulk_delete'), $bulk_delete_route);
         }
-
-        if (in_array('delete', $routesToGenerate, true)) {
-            $httpMethods = ['DELETE'];
-            if (!$bcLayerEnabled) {
-                $httpMethods[] = 'POST';
+        if (in_array('delete', $routes_to_generate, true)) {
+            $http_methods = ['DELETE'];
+            if (!$bc_layer_enabled) {
+                $http_methods[] = 'POST';
             }
-
-            $deleteRoute = $this->createRoute($metadata, $configuration, $isApi ? $rootPath . '/' . $identifier : $rootPath . '/' . $identifier . ($bcLayerEnabled ? '' : '/delete'), 'delete', $isApi ? ['DELETE'] : $httpMethods, $isApi);
-            $routes->add($this->getRouteName($metadata, $configuration, 'delete'), $deleteRoute);
+            $delete_route = $this->create_route($metadata, $configuration, $is_api ? $root_path . '/' . $identifier : $root_path . '/' . $identifier . ($bc_layer_enabled ? '' : '/delete'), 'delete', $is_api ? ['DELETE'] : $http_methods, $is_api);
+            $routes->add($this->get_route_name($metadata, $configuration, 'delete'), $delete_route);
         }
-
         return $routes;
     }
-
     public function supports($resource, $type = null): bool
     {
         return 'sylius.resource' === $type || 'sylius.resource_api' === $type;
     }
-
-    private function getRootPath(string $pluralName): string
+    private function get_root_path(string $plural_name): string
     {
-        if ($this->routingPathBcLayer) {
+        if ($this->routing_path_bc_layer) {
             if (!class_exists(Urlizer::class) || !class_exists(Transliterator::class)) {
                 throw new RuntimeException('Cannot use the routing bc-layer when the "behat/transliterator" package is not installed. Try to disable the routing path bc-layer in the Sylius Resource Bundle configuration using "sylius_resource.routing_path_bc_layer: false"');
             }
-
-            return sprintf('/%s', Urlizer::urlize($pluralName));
+            return sprintf('/%s', Urlizer::urlize($plural_name));
         }
-
-        return $this->inflector->dashize($pluralName);
+        return $this->inflector->dashize($plural_name);
     }
-
-    private function createRoute(
-        MetadataInterface $metadata,
-        array $configuration,
-        string $path,
-        string $actionName,
-        array $methods,
-        bool $isApi = false,
-    ): Route {
-        $defaults = [
-            '_controller' => $metadata->getServiceId('controller') . sprintf('::%sAction', $actionName),
-        ];
-
-        if ($isApi && 'index' === $actionName) {
+    private function create_route(Metadata_Interface $metadata, array $configuration, string $path, string $action_name, array $methods, bool $is_api = false): Route
+    {
+        $defaults = ['_controller' => $metadata->get_service_id('controller') . sprintf('::%sAction', $action_name)];
+        if ($is_api && 'index' === $action_name) {
             $defaults['_sylius']['serialization_groups'] = ['Default'];
         }
-        if ($isApi && in_array($actionName, ['show', 'create', 'update'], true)) {
+        if ($is_api && in_array($action_name, ['show', 'create', 'update'], true)) {
             $defaults['_sylius']['serialization_groups'] = ['Default', 'Detailed'];
         }
-        if ($isApi && 'delete' === $actionName) {
+        if ($is_api && 'delete' === $action_name) {
             $defaults['_sylius']['csrf_protection'] = false;
         }
-        if (isset($configuration['grid']) && 'index' === $actionName) {
+        if (isset($configuration['grid']) && 'index' === $action_name) {
             $defaults['_sylius']['grid'] = $configuration['grid'];
         }
-        if (isset($configuration['form']) && in_array($actionName, ['create', 'update'], true)) {
+        if (isset($configuration['form']) && in_array($action_name, ['create', 'update'], true)) {
             $defaults['_sylius']['form'] = $configuration['form'];
         }
         if (isset($configuration['serialization_version'])) {
@@ -179,15 +138,11 @@ final class ResourceLoader extends Loader
         if (array_key_exists('filterable', $configuration)) {
             $defaults['_sylius']['filterable'] = $configuration['filterable'];
         }
-        if (isset($configuration['templates']) && in_array($actionName, ['show', 'index', 'create', 'update'], true)) {
-            $defaults['_sylius']['template'] = sprintf(
-                !str_contains($configuration['templates'], ':') ? '%s/%s.html.twig' : '%s:%s.html.twig',
-                $configuration['templates'],
-                $actionName,
-            );
+        if (isset($configuration['templates']) && in_array($action_name, ['show', 'index', 'create', 'update'], true)) {
+            $defaults['_sylius']['template'] = sprintf(!str_contains($configuration['templates'], ':') ? '%s/%s.html.twig' : '%s:%s.html.twig', $configuration['templates'], $action_name);
         }
-        if (isset($configuration['redirect']) && in_array($actionName, ['create', 'update'], true)) {
-            $defaults['_sylius']['redirect'] = $this->getRouteName($metadata, $configuration, $configuration['redirect']);
+        if (isset($configuration['redirect']) && in_array($action_name, ['create', 'update'], true)) {
+            $defaults['_sylius']['redirect'] = $this->get_route_name($metadata, $configuration, $configuration['redirect']);
         }
         if (isset($configuration['permission'])) {
             $defaults['_sylius']['permission'] = $configuration['permission'];
@@ -195,29 +150,20 @@ final class ResourceLoader extends Loader
         if (isset($configuration['vars']['all'])) {
             $defaults['_sylius']['vars'] = $configuration['vars']['all'];
         }
-
-        if (isset($configuration['vars'][$actionName])) {
+        if (isset($configuration['vars'][$action_name])) {
             $vars = $configuration['vars']['all'] ?? [];
-            $defaults['_sylius']['vars'] = array_merge($vars, $configuration['vars'][$actionName]);
+            $defaults['_sylius']['vars'] = array_merge($vars, $configuration['vars'][$action_name]);
         }
-
-        if ($actionName === 'bulkDelete') {
+        if ($action_name === 'bulkDelete') {
             $defaults['_sylius']['paginate'] = false;
-            $defaults['_sylius']['repository'] = [
-                'method' => 'findById',
-                'arguments' => ['$ids'],
-            ];
+            $defaults['_sylius']['repository'] = ['method' => 'findById', 'arguments' => ['$ids']];
         }
-
         $condition = $configuration['condition'] ?? '';
-
-        return $this->routeFactory->createRoute($path, $defaults, [], [], '', [], $methods, $condition);
+        return $this->route_factory->create_route($path, $defaults, [], [], '', [], $methods, $condition);
     }
-
-    private function getRouteName(MetadataInterface $metadata, array $configuration, string $actionName): string
+    private function get_route_name(Metadata_Interface $metadata, array $configuration, string $action_name): string
     {
-        $sectionPrefix = isset($configuration['section']) ? $configuration['section'] . '_' : '';
-
-        return sprintf('%s_%s%s_%s', $metadata->getApplicationName(), $sectionPrefix, $metadata->getName(), $actionName);
+        $section_prefix = isset($configuration['section']) ? $configuration['section'] . '_' : '';
+        return sprintf('%s_%s%s_%s', $metadata->get_application_name(), $section_prefix, $metadata->get_name(), $action_name);
     }
 }

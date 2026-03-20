@@ -8,58 +8,48 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Doctrine;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Doctrine;
-
-use Doctrine\Persistence\Mapping\ClassMetadata;
-use Doctrine\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
-use Sylius\Resource\Metadata\RegistryInterface;
-
+use Doctrine\Persistence\Mapping\Class_Metadata;
+use Doctrine\Persistence\Mapping\Driver\Mapping_Driver;
+use Doctrine\Persistence\Mapping\Driver\Mapping_Driver_Chain;
+use Sylius\Resource\Metadata\Registry_Interface;
 /**
  * It needs to extend MappingDriverChain in order to be compatible with Gedmo/DoctrineExtensions.
  *
  * @see \Gedmo\Mapping\ExtensionMetadataFactory::getDriver()
  */
-final class ResourceMappingDriverChain extends MappingDriverChain
+final class Resource_Mapping_Driver_Chain extends Mapping_Driver_Chain
 {
-    public function __construct(MappingDriver $mappingDriver, private readonly RegistryInterface $resourceRegistry)
+    public function __construct(Mapping_Driver $mapping_driver, private readonly Registry_Interface $resource_registry)
     {
-        $this->setDefaultDriver($mappingDriver);
+        $this->set_default_driver($mapping_driver);
     }
-
-    public function loadMetadataForClass($className, ClassMetadata $metadata): void
+    public function load_metadata_for_class($class_name, Class_Metadata $metadata): void
     {
-        parent::loadMetadataForClass($className, $metadata);
-
-        $this->convertResourceMappedSuperclass($metadata);
+        parent::load_metadata_for_class($class_name, $metadata);
+        $this->convert_resource_mapped_superclass($metadata);
     }
-
     /**
      * @psalm-suppress NoInterfaceProperties https://github.com/vimeo/psalm/issues/2206
      */
-    private function convertResourceMappedSuperclass(ClassMetadata $metadata): void
+    private function convert_resource_mapped_superclass(Class_Metadata $metadata): void
     {
-        if (!isset($metadata->isMappedSuperclass)) {
+        if (!isset($metadata->is_mapped_superclass)) {
             return;
         }
-
-        if (false === $metadata->isMappedSuperclass) {
+        if (false === $metadata->is_mapped_superclass) {
             return;
         }
-
         try {
-            $resourceMetadata = $this->resourceRegistry->getByClass($metadata->getName());
+            $resource_metadata = $this->resource_registry->get_by_class($metadata->get_name());
         } catch (\InvalidArgumentException) {
             return;
         }
-
-        if ($metadata->getName() !== $resourceMetadata->getClass('model')) {
+        if ($metadata->get_name() !== $resource_metadata->get_class('model')) {
             return;
         }
-
-        $metadata->isMappedSuperclass = false;
+        $metadata->is_mapped_superclass = false;
     }
 }

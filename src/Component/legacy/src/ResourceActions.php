@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource;
 
-class_exists(\Sylius\Resource\ResourceActions::class);
-
+class_exists(\Sylius\Resource\Resource_Actions::class);
 if (false) {
-    final class ResourceActions extends \Sylius\Resource\ResourceActions
+    final class Resource_Actions extends \Sylius\Resource\Resource_Actions
     {
     }
 }

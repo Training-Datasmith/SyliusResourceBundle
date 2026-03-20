@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
-interface ResourceMutatorInterface
+interface Resource_Mutator_Interface
 {
-    public function __invoke(ResourceMetadata $resource): ResourceMetadata;
+    public function __invoke(Resource_Metadata $resource): Resource_Metadata;
 }

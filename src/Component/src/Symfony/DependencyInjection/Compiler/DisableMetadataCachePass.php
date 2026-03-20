@@ -8,26 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\DependencyInjection\Compiler;
-
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-final class DisableMetadataCachePass implements CompilerPassInterface
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+final class Disable_Metadata_Cache_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        if (
-            !$container->hasParameter('kernel.debug') ||
-            !$container->getParameter('kernel.debug')
-        ) {
+        if (!$container->has_parameter('kernel.debug') || !$container->get_parameter('kernel.debug')) {
             return;
         }
-
-        $container->removeDefinition('sylius.resource_metadata_collection.factory.cached');
-        $container->removeDefinition('sylius.metadata.resource_class_list.cached');
+        $container->remove_definition('sylius.resource_metadata_collection.factory.cached');
+        $container->remove_definition('sylius.metadata.resource_class_list.cached');
     }
 }

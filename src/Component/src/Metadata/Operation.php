@@ -8,9 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 /**
@@ -18,360 +16,260 @@ namespace Sylius\Resource\Metadata;
  */
 abstract class Operation
 {
-    private ?ResourceMetadata $resource = null;
-
+    private ?Resource_Metadata $resource = null;
     /** @var string|callable|null */
     protected $provider;
-
     /** @var string|callable|null */
     protected $processor;
-
     /** @var string|callable|null */
     protected $responder;
-
     /** @var string|callable|null */
     protected $repository;
-
-    public function __construct(
-        protected ?string $template = null,
-        protected ?string $shortName = null,
-        protected ?string $name = null,
-        string|callable|null $provider = null,
-        string|callable|null $processor = null,
-        string|callable|null $responder = null,
-        string|callable|null $repository = null,
-        protected ?string $repositoryMethod = null,
-        protected ?array $repositoryArguments = null,
-        protected ?bool $read = null,
-        protected ?bool $write = null,
-        protected ?bool $validate = null,
-        protected ?bool $deserialize = null,
-        protected ?bool $serialize = null,
-        protected ?string $formType = null,
-        protected ?array $formOptions = null,
-        protected ?array $normalizationContext = null,
-        protected ?array $denormalizationContext = null,
-        protected ?array $validationContext = null,
-        protected ?string $eventShortName = null,
-        protected ?string $notificationMessage = null,
-        protected string|\Stringable|null $security = null,
-        protected ?string $securityMessage = null,
-    ) {
+    public function __construct(protected ?string $template = null, protected ?string $short_name = null, protected ?string $name = null, string|callable|null $provider = null, string|callable|null $processor = null, string|callable|null $responder = null, string|callable|null $repository = null, protected ?string $repository_method = null, protected ?array $repository_arguments = null, protected ?bool $read = null, protected ?bool $write = null, protected ?bool $validate = null, protected ?bool $deserialize = null, protected ?bool $serialize = null, protected ?string $form_type = null, protected ?array $form_options = null, protected ?array $normalization_context = null, protected ?array $denormalization_context = null, protected ?array $validation_context = null, protected ?string $event_short_name = null, protected ?string $notification_message = null, protected string|\Stringable|null $security = null, protected ?string $security_message = null)
+    {
         $this->provider = $provider;
         $this->processor = $processor;
         $this->responder = $responder;
         $this->repository = $repository;
     }
-
-    public function getResource(): ?ResourceMetadata
+    public function get_resource(): ?Resource_Metadata
     {
         return $this->resource;
     }
-
-    public function withResource(ResourceMetadata $resource): self
+    public function with_resource(Resource_Metadata $resource): self
     {
         $self = clone $this;
         $self->resource = $resource;
-
         return $self;
     }
-
-    public function getTemplate(): ?string
+    public function get_template(): ?string
     {
         return $this->template;
     }
-
-    public function withTemplate(string $template): self
+    public function with_template(string $template): self
     {
         $self = clone $this;
         $self->template = $template;
-
         return $self;
     }
-
-    public function getName(): ?string
+    public function get_name(): ?string
     {
         return $this->name;
     }
-
-    public function withName(string $name): self
+    public function with_name(string $name): self
     {
         $self = clone $this;
         $self->name = $name;
-
         return $self;
     }
-
-    public function getShortName(): ?string
+    public function get_short_name(): ?string
     {
-        return $this->shortName;
+        return $this->short_name;
     }
-
-    public function withShortName(string $shortName): self
+    public function with_short_name(string $short_name): self
     {
         $self = clone $this;
-        $self->shortName = $shortName;
-
+        $self->short_name = $short_name;
         return $self;
     }
-
-    public function getProvider(): callable|string|null
+    public function get_provider(): callable|string|null
     {
         return $this->provider;
     }
-
-    public function withProvider(string|callable|null $provider): self
+    public function with_provider(string|callable|null $provider): self
     {
         $self = clone $this;
         $self->provider = $provider;
-
         return $self;
     }
-
-    public function getProcessor(): callable|string|null
+    public function get_processor(): callable|string|null
     {
         return $this->processor;
     }
-
-    public function withProcessor(string|callable|null $processor): self
+    public function with_processor(string|callable|null $processor): self
     {
         $self = clone $this;
         $self->processor = $processor;
-
         return $self;
     }
-
-    public function getResponder(): callable|string|null
+    public function get_responder(): callable|string|null
     {
         return $this->responder;
     }
-
-    public function withResponder(string|callable|null $responder): self
+    public function with_responder(string|callable|null $responder): self
     {
         $self = clone $this;
         $self->responder = $responder;
-
         return $self;
     }
-
-    public function getRepository(): callable|string|null
+    public function get_repository(): callable|string|null
     {
         return $this->repository;
     }
-
-    public function withRepository(string|callable|null $repository): self
+    public function with_repository(string|callable|null $repository): self
     {
         $self = clone $this;
         $self->repository = $repository;
-
         return $self;
     }
-
-    public function getRepositoryMethod(): ?string
+    public function get_repository_method(): ?string
     {
-        return $this->repositoryMethod;
+        return $this->repository_method;
     }
-
-    public function withRepositoryMethod(string $repositoryMethod): self
+    public function with_repository_method(string $repository_method): self
     {
         $self = clone $this;
-        $self->repositoryMethod = $repositoryMethod;
-
+        $self->repository_method = $repository_method;
         return $self;
     }
-
-    public function getRepositoryArguments(): ?array
+    public function get_repository_arguments(): ?array
     {
-        return $this->repositoryArguments;
+        return $this->repository_arguments;
     }
-
-    public function withRepositoryArguments(array $repositoryArguments): self
+    public function with_repository_arguments(array $repository_arguments): self
     {
         $self = clone $this;
-        $self->repositoryArguments = $repositoryArguments;
-
+        $self->repository_arguments = $repository_arguments;
         return $self;
     }
-
-    public function canRead(): ?bool
+    public function can_read(): ?bool
     {
         return $this->read;
     }
-
-    public function withRead(bool $read): self
+    public function with_read(bool $read): self
     {
         $self = clone $this;
         $self->read = $read;
-
         return $self;
     }
-
-    public function canWrite(): ?bool
+    public function can_write(): ?bool
     {
         return $this->write;
     }
-
-    public function withWrite(bool $write): self
+    public function with_write(bool $write): self
     {
         $self = clone $this;
         $self->write = $write;
-
         return $self;
     }
-
-    public function canValidate(): ?bool
+    public function can_validate(): ?bool
     {
         return $this->validate;
     }
-
-    public function withValidate(bool $validate): self
+    public function with_validate(bool $validate): self
     {
         $self = clone $this;
         $self->validate = $validate;
-
         return $self;
     }
-
-    public function canDeserialize(): ?bool
+    public function can_deserialize(): ?bool
     {
         return $this->deserialize;
     }
-
-    public function withDeserialize(bool $deserialize): self
+    public function with_deserialize(bool $deserialize): self
     {
         $self = clone $this;
         $self->deserialize = $deserialize;
-
         return $self;
     }
-
-    public function canSerialize(): ?bool
+    public function can_serialize(): ?bool
     {
         return $this->serialize;
     }
-
-    public function withSerialize(bool $serialize): self
+    public function with_serialize(bool $serialize): self
     {
         $self = clone $this;
         $self->serialize = $serialize;
-
         return $self;
     }
-
-    public function getFormType(): ?string
+    public function get_form_type(): ?string
     {
-        return $this->formType;
+        return $this->form_type;
     }
-
-    public function withFormType(string $formType): self
+    public function with_form_type(string $form_type): self
     {
         $self = clone $this;
-        $self->formType = $formType;
-
+        $self->form_type = $form_type;
         return $self;
     }
-
-    public function getFormOptions(): ?array
+    public function get_form_options(): ?array
     {
-        return $this->formOptions;
+        return $this->form_options;
     }
-
-    public function withFormOptions(array $formOptions): self
+    public function with_form_options(array $form_options): self
     {
         $self = clone $this;
-        $self->formOptions = $formOptions;
-
+        $self->form_options = $form_options;
         return $self;
     }
-
-    public function getNormalizationContext(): ?array
+    public function get_normalization_context(): ?array
     {
-        return $this->normalizationContext;
+        return $this->normalization_context;
     }
-
-    public function withNormalizationContext(?array $normalizationContext): self
+    public function with_normalization_context(?array $normalization_context): self
     {
         $self = clone $this;
-        $self->normalizationContext = $normalizationContext;
-
+        $self->normalization_context = $normalization_context;
         return $self;
     }
-
-    public function getDenormalizationContext(): ?array
+    public function get_denormalization_context(): ?array
     {
-        return $this->denormalizationContext;
+        return $this->denormalization_context;
     }
-
-    public function withDenormalizationContext(?array $denormalizationContext): self
+    public function with_denormalization_context(?array $denormalization_context): self
     {
         $self = clone $this;
-        $self->denormalizationContext = $denormalizationContext;
-
+        $self->denormalization_context = $denormalization_context;
         return $self;
     }
-
-    public function getValidationContext(): ?array
+    public function get_validation_context(): ?array
     {
-        return $this->validationContext;
+        return $this->validation_context;
     }
-
-    public function withValidationContext(?array $validationContext): self
+    public function with_validation_context(?array $validation_context): self
     {
         $self = clone $this;
-        $self->validationContext = $validationContext;
-
+        $self->validation_context = $validation_context;
         return $self;
     }
-
-    public function getEventShortName(): ?string
+    public function get_event_short_name(): ?string
     {
-        return $this->eventShortName;
+        return $this->event_short_name;
     }
-
-    public function withEventShortName(string $eventShortName): self
+    public function with_event_short_name(string $event_short_name): self
     {
         $self = clone $this;
-        $self->eventShortName = $eventShortName;
-
+        $self->event_short_name = $event_short_name;
         return $self;
     }
-
-    public function getNotificationMessage(): ?string
+    public function get_notification_message(): ?string
     {
-        return $this->notificationMessage;
+        return $this->notification_message;
     }
-
-    public function withNotificationMessage(string $notificationMessage): self
+    public function with_notification_message(string $notification_message): self
     {
         $self = clone $this;
-        $self->notificationMessage = $notificationMessage;
-
+        $self->notification_message = $notification_message;
         return $self;
     }
-
-    public function getSecurity(): ?string
+    public function get_security(): ?string
     {
         return $this->security instanceof \Stringable ? (string) $this->security : $this->security;
     }
-
-    public function withSecurity(string|\Stringable|null $security): static
+    public function with_security(string|\Stringable|null $security): static
     {
         $self = clone $this;
         $self->security = $security;
-
         return $self;
     }
-
-    public function getSecurityMessage(): ?string
+    public function get_security_message(): ?string
     {
-        return $this->securityMessage;
+        return $this->security_message;
     }
-
-    public function withSecurityMessage(?string $securityMessage): static
+    public function with_security_message(?string $security_message): static
     {
         $self = clone $this;
-        $self->securityMessage = $securityMessage;
-
+        $self->security_message = $security_message;
         return $self;
     }
 }

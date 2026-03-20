@@ -8,12 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-interface AuthorizationCheckerInterface
+interface Authorization_Checker_Interface
 {
     /**
      * Checks if user is authorized based on the current request configuration and specific permission.
@@ -25,5 +23,5 @@ interface AuthorizationCheckerInterface
      * - delete
      * - custom_action
      */
-    public function isGranted(RequestConfiguration $configuration, string $permission): bool;
+    public function is_granted(Request_Configuration $configuration, string $permission): bool;
 }

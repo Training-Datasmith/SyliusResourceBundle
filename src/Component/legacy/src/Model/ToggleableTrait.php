@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-trait_exists(\Sylius\Resource\Model\ToggleableTrait::class);
-
+trait_exists(\Sylius\Resource\Model\Toggleable_Trait::class);
 if (false) {
-    trait ToggleableTrait
+    trait Toggleable_Trait
     {
-        use \Sylius\Resource\Model\ToggleableTrait;
+        use \Sylius\Resource\Model\Toggleable_Trait;
     }
 }

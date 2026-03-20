@@ -8,19 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Translation\Provider;
 
-interface TranslationLocaleProviderInterface
+interface Translation_Locale_Provider_Interface
 {
     /** @return string[] */
-    public function getDefinedLocalesCodes(): array;
-
-    public function getDefaultLocaleCode(): string;
+    public function get_defined_locales_codes(): array;
+    public function get_default_locale_code(): string;
 }
-
-if (!class_exists(\Sylius\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface::class, false)) {
-    class_alias(TranslationLocaleProviderInterface::class, \Sylius\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface::class);
+if (!class_exists(\Sylius\Component\Resource\Translation\Provider\Translation_Locale_Provider_Interface::class, false)) {
+    class_alias(Translation_Locale_Provider_Interface::class, \Sylius\Component\Resource\Translation\Provider\Translation_Locale_Provider_Interface::class);
 }

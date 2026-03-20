@@ -8,51 +8,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Extension;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Extension;
-
-use Sylius\Bundle\ResourceBundle\DependencyInjection\Driver\DriverProvider;
+use Sylius\Bundle\Resource_Bundle\Dependency_Injection\Driver\Driver_Provider;
 use Sylius\Resource\Metadata\Metadata;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-
-abstract class AbstractResourceExtension extends Extension
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Extension\Extension;
+abstract class Abstract_Resource_Extension extends Extension
 {
-    protected function registerResources(
-        string $applicationName,
-        string $driver,
-        array $registeredResources,
-        ContainerBuilder $container,
-    ): void {
-        $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), $driver), true);
-        $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
-
+    protected function register_resources(string $application_name, string $driver, array $registered_resources, Container_Builder $container): void
+    {
+        $container->set_parameter(sprintf('%s.driver.%s', $this->get_alias(), $driver), true);
+        $container->set_parameter(sprintf('%s.driver', $this->get_alias()), $driver);
         /** @var array<string, array> $resources */
-        $resources = $container->hasParameter('sylius.resources') ? $container->getParameter('sylius.resources') : [];
-
-        foreach ($registeredResources as $resourceName => $resourceConfig) {
-            $alias = $applicationName . '.' . $resourceName;
-            $resourceConfig = array_merge(['driver' => $driver], $resourceConfig);
-
-            $resources[$alias] = $resourceConfig;
-            $container->setParameter('sylius.resources', $resources);
-
-            $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
-
-            DriverProvider::get($metadata)->load($container, $metadata);
-
-            if ($metadata->hasParameter('translation')) {
+        $resources = $container->has_parameter('sylius.resources') ? $container->get_parameter('sylius.resources') : [];
+        foreach ($registered_resources as $resource_name => $resource_config) {
+            $alias = $application_name . '.' . $resource_name;
+            $resource_config = array_merge(['driver' => $driver], $resource_config);
+            $resources[$alias] = $resource_config;
+            $container->set_parameter('sylius.resources', $resources);
+            $metadata = Metadata::from_alias_and_configuration($alias, $resource_config);
+            Driver_Provider::get($metadata)->load($container, $metadata);
+            if ($metadata->has_parameter('translation')) {
                 $alias .= '_translation';
-                $resourceConfig = array_merge(['driver' => $driver], $resourceConfig['translation']);
-
-                $resources[$alias] = $resourceConfig;
-                $container->setParameter('sylius.resources', $resources);
-
-                $metadata = Metadata::fromAliasAndConfiguration($alias, $resourceConfig);
-
-                DriverProvider::get($metadata)->load($container, $metadata);
+                $resource_config = array_merge(['driver' => $driver], $resource_config['translation']);
+                $resources[$alias] = $resource_config;
+                $container->set_parameter('sylius.resources', $resources);
+                $metadata = Metadata::from_alias_and_configuration($alias, $resource_config);
+                Driver_Provider::get($metadata)->load($container, $metadata);
             }
         }
     }

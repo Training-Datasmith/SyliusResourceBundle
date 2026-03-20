@@ -8,32 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Doctrine\ORM;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Doctrine\ORM;
-
-use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
-use Sylius\Resource\Model\ResourceInterface;
-
+use Doctrine\ORM\Entity_Repository as DoctrineEntityRepository;
+use Sylius\Resource\Model\Resource_Interface;
 /**
  * @mixin DoctrineEntityRepository
  */
-trait ResourceRepositoryTrait
+trait Resource_Repository_Trait
 {
-    use CreatePaginatorTrait;
-
-    public function add(ResourceInterface $resource): void
+    use Create_Paginator_Trait;
+    public function add(Resource_Interface $resource): void
     {
-        $this->getEntityManager()->persist($resource);
-        $this->getEntityManager()->flush();
+        $this->get_entity_manager()->persist($resource);
+        $this->get_entity_manager()->flush();
     }
-
-    public function remove(ResourceInterface $resource): void
+    public function remove(Resource_Interface $resource): void
     {
-        if (null !== $this->find($resource->getId())) {
-            $this->getEntityManager()->remove($resource);
-            $this->getEntityManager()->flush();
+        if (null !== $this->find($resource->get_id())) {
+            $this->get_entity_manager()->remove($resource);
+            $this->get_entity_manager()->flush();
         }
     }
 }

@@ -8,22 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Factory;
 
 /**
  * @template T of object
  */
-interface FactoryInterface
+interface Factory_Interface
 {
     /**
      * @return T
      */
-    public function createNew();
+    public function create_new();
 }
-
-if (!class_exists(\Sylius\Component\Resource\Factory\FactoryInterface::class, false)) {
-    class_alias(FactoryInterface::class, \Sylius\Component\Resource\Factory\FactoryInterface::class);
+if (!class_exists(\Sylius\Component\Resource\Factory\Factory_Interface::class, false)) {
+    class_alias(Factory_Interface::class, \Sylius\Component\Resource\Factory\Factory_Interface::class);
 }

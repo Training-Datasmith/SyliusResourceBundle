@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-interface_exists(\Sylius\Resource\Model\ToggleableInterface::class);
-
+interface_exists(\Sylius\Resource\Model\Toggleable_Interface::class);
 if (false) {
-    interface ToggleableInterface extends \Sylius\Resource\Model\ToggleableInterface
+    interface Toggleable_Interface extends \Sylius\Resource\Model\Toggleable_Interface
     {
     }
 }

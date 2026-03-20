@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class AsOperationMutator
+class As_Operation_Mutator
 {
-    public function __construct(
-        public readonly string $operationName,
-    ) {
+    public function __construct(public readonly string $operation_name)
+    {
     }
 }

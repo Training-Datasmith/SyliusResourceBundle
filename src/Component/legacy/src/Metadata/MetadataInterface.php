@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Metadata;
 
-interface_exists(\Sylius\Resource\Metadata\MetadataInterface::class);
-
+interface_exists(\Sylius\Resource\Metadata\Metadata_Interface::class);
 if (false) {
-    interface MetadataInterface extends \Sylius\Resource\Metadata\MetadataInterface
+    interface Metadata_Interface extends \Sylius\Resource\Metadata\Metadata_Interface
     {
     }
 }

@@ -8,69 +8,52 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource\Factory;
 
-use Sylius\Resource\Metadata\FactoryAwareOperationInterface;
-use Sylius\Resource\Metadata\MetadataInterface;
+use Sylius\Resource\Metadata\Factory_Aware_Operation_Interface;
+use Sylius\Resource\Metadata\Metadata_Interface;
 use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\Metadata\Operations;
-use Sylius\Resource\Metadata\RegistryInterface;
-use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
-use Sylius\Resource\Metadata\ResourceMetadata;
-
-final readonly class FactoryResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+use Sylius\Resource\Metadata\Registry_Interface;
+use Sylius\Resource\Metadata\Resource\Resource_Metadata_Collection;
+use Sylius\Resource\Metadata\Resource_Metadata;
+final readonly class Factory_Resource_Metadata_Collection_Factory implements Resource_Metadata_Collection_Factory_Interface
 {
-    public function __construct(
-        private RegistryInterface $resourceRegistry,
-        private ResourceMetadataCollectionFactoryInterface $decorated,
-    ) {
-    }
-
-    public function create(string $resourceClass): ResourceMetadataCollection
+    public function __construct(private Registry_Interface $resource_registry, private Resource_Metadata_Collection_Factory_Interface $decorated)
     {
-        $resourceCollectionMetadata = $this->decorated->create($resourceClass);
-
+    }
+    public function create(string $resource_class): Resource_Metadata_Collection
+    {
+        $resource_collection_metadata = $this->decorated->create($resource_class);
         /** @var ResourceMetadata $resource */
-        foreach ($resourceCollectionMetadata->getIterator() as $i => $resource) {
-            $resourceConfiguration = $this->resourceRegistry->get($resource->getAlias() ?? '');
-            $operations = $resource->getOperations() ?? new Operations();
-
+        foreach ($resource_collection_metadata->getIterator() as $i => $resource) {
+            $resource_configuration = $this->resource_registry->get($resource->get_alias() ?? '');
+            $operations = $resource->get_operations() ?? new Operations();
             /** @var Operation|(Operation&FactoryAwareOperationInterface) $operation */
             foreach ($operations as $operation) {
-                if (!$operation instanceof FactoryAwareOperationInterface) {
+                if (!$operation instanceof Factory_Aware_Operation_Interface) {
                     continue;
                 }
-
                 /** @var string $key */
-                $key = $operation->getName();
-
+                $key = $operation->get_name();
                 /** @var Operation&FactoryAwareOperationInterface $operation */
-                $operation = $this->addDefaults($resourceConfiguration, $operation);
-
+                $operation = $this->add_defaults($resource_configuration, $operation);
                 $operations->add($key, $operation);
             }
-
-            $resource = $resource->withOperations($operations);
-
-            $resourceCollectionMetadata[$i] = $resource;
+            $resource = $resource->with_operations($operations);
+            $resource_collection_metadata[$i] = $resource;
         }
-
-        return $resourceCollectionMetadata;
+        return $resource_collection_metadata;
     }
-
-    private function addDefaults(MetadataInterface $resourceConfiguration, FactoryAwareOperationInterface $operation): FactoryAwareOperationInterface
+    private function add_defaults(Metadata_Interface $resource_configuration, Factory_Aware_Operation_Interface $operation): Factory_Aware_Operation_Interface
     {
-        if (null === $operation->getFactory() && str_starts_with($resourceConfiguration->getDriver() ?: '', 'doctrine')) {
-            $operation = $operation->withFactory($resourceConfiguration->getServiceId('factory'));
+        if (null === $operation->get_factory() && str_starts_with($resource_configuration->get_driver() ?: '', 'doctrine')) {
+            $operation = $operation->with_factory($resource_configuration->get_service_id('factory'));
         }
-
-        if (null === $operation->getFactoryMethod()) {
-            return $operation->withFactoryMethod('createNew');
+        if (null === $operation->get_factory_method()) {
+            return $operation->with_factory_method('createNew');
         }
-
         return $operation;
     }
 }

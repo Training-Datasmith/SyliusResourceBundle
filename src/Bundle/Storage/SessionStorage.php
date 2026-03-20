@@ -8,84 +8,67 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Storage;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Storage;
-
-use Sylius\Resource\Exception\StorageUnavailableException;
-use Sylius\Resource\Storage\StorageInterface;
-use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-final class SessionStorage implements StorageInterface
+use Sylius\Resource\Exception\Storage_Unavailable_Exception;
+use Sylius\Resource\Storage\Storage_Interface;
+use Symfony\Component\Http_Foundation\Exception\Session_Not_Found_Exception;
+use Symfony\Component\Http_Foundation\Request_Stack;
+use Symfony\Component\Http_Foundation\Session\Session_Interface;
+final class Session_Storage implements Storage_Interface
 {
-    private readonly \Symfony\Component\HttpFoundation\RequestStack|\Symfony\Component\HttpFoundation\Session\SessionInterface $requestStack;
-
+    private readonly \Symfony\Component\Http_Foundation\Request_Stack|\Symfony\Component\Http_Foundation\Session\Session_Interface $request_stack;
     /**
      * @param RequestStack|SessionInterface $requestStack
      */
-    public function __construct(/* RequestStack */ $requestStack)
+    public function __construct(
+        /* RequestStack */
+        $request_stack
+    )
     {
         /** @phpstan-ignore-next-line */
-        if (!$requestStack instanceof SessionInterface && !$requestStack instanceof RequestStack) {
-            throw new \InvalidArgumentException(sprintf('The first argument of "%s" should be instance of "%s" or "%s"', __METHOD__, SessionInterface::class, RequestStack::class));
+        if (!$request_stack instanceof Session_Interface && !$request_stack instanceof Request_Stack) {
+            throw new \InvalidArgumentException(sprintf('The first argument of "%s" should be instance of "%s" or "%s"', __METHOD__, Session_Interface::class, Request_Stack::class));
         }
-
-        if ($requestStack instanceof SessionInterface) {
-            trigger_deprecation(
-                'sylius/resource-bundle',
-                '1.10',
-                'Passing an instance of "%s" as the constructor argument for "%s" is deprecated and will not be supported in 2.0. Pass an instance of "%s" instead.',
-                SessionInterface::class,
-                self::class,
-                RequestStack::class,
-            );
+        if ($request_stack instanceof Session_Interface) {
+            trigger_deprecation('sylius/resource-bundle', '1.10', 'Passing an instance of "%s" as the constructor argument for "%s" is deprecated and will not be supported in 2.0. Pass an instance of "%s" instead.', Session_Interface::class, self::class, Request_Stack::class);
         }
-
-        $this->requestStack = $requestStack;
+        $this->request_stack = $request_stack;
     }
-
     public function has(string $name): bool
     {
-        return $this->getSession()->has($name);
+        return $this->get_session()->has($name);
     }
-
     public function get(string $name, $default = null)
     {
-        return $this->getSession()->get($name, $default);
+        return $this->get_session()->get($name, $default);
     }
-
     public function set(string $name, $value): void
     {
-        $this->getSession()->set($name, $value);
+        $this->get_session()->set($name, $value);
     }
-
     public function remove(string $name): void
     {
-        $this->getSession()->remove($name);
+        $this->get_session()->remove($name);
     }
-
     public function all(): array
     {
-        return $this->getSession()->all();
+        return $this->get_session()->all();
     }
-
     /**
      * @throws StorageUnavailableException
      */
-    private function getSession(): SessionInterface
+    private function get_session(): Session_Interface
     {
         try {
-            if ($this->requestStack instanceof SessionInterface) {
-                return $this->requestStack;
+            if ($this->request_stack instanceof Session_Interface) {
+                return $this->request_stack;
             }
-
             /** @phpstan-ignore-next-line */
-            return $this->requestStack->getSession();
-        } catch (SessionNotFoundException $exception) {
-            throw new StorageUnavailableException($exception->getMessage(), $exception);
+            return $this->request_stack->get_session();
+        } catch (Session_Not_Found_Exception $exception) {
+            throw new Storage_Unavailable_Exception($exception->get_message(), $exception);
         }
     }
 }

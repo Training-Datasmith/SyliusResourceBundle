@@ -8,21 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Routing;
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Routing;
 
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-
-interface RouteFactoryInterface
+use Symfony\Component\Routing\Route_Collection;
+interface Route_Factory_Interface
 {
     /**
      * @return RouteCollection
      */
-    public function createRouteCollection();
-
+    public function create_route_collection();
     /**
      * @param string $path The path pattern to match
      * @param array $defaults An array of default parameter values
@@ -33,14 +29,5 @@ interface RouteFactoryInterface
      * @param array $methods An array of restricted HTTP methods
      * @param string $condition A condition that should evaluate to true for the route to match
      */
-    public function createRoute(
-        string $path,
-        array $defaults = [],
-        array $requirements = [],
-        array $options = [],
-        string $host = '',
-        array $schemes = [],
-        array $methods = [],
-        string $condition = '',
-    ): Route;
+    public function create_route(string $path, array $defaults = [], array $requirements = [], array $options = [], string $host = '', array $schemes = [], array $methods = [], string $condition = ''): Route;
 }

@@ -8,48 +8,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\EventDispatcher\State;
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Event_Dispatcher\State;
 
 use Sylius\Resource\Context\Context;
-use Sylius\Resource\Metadata\CreateOperationInterface;
+use Sylius\Resource\Metadata\Create_Operation_Interface;
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\ResourceActions;
-use Sylius\Resource\State\ProcessorInterface;
-use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
-use Sylius\Resource\Symfony\EventDispatcher\OperationEventHandlerInterface;
-
+use Sylius\Resource\Resource_Actions;
+use Sylius\Resource\State\Processor_Interface;
+use Sylius\Resource\Symfony\Event_Dispatcher\Operation_Event_Dispatcher_Interface;
+use Sylius\Resource\Symfony\Event_Dispatcher\Operation_Event_Handler_Interface;
 /**
  * @experimental
  */
-final readonly class DispatchPreWriteEventProcessor implements ProcessorInterface
+final readonly class Dispatch_Pre_Write_Event_Processor implements Processor_Interface
 {
-    public function __construct(
-        private ProcessorInterface $processor,
-        private OperationEventDispatcherInterface $operationEventDispatcher,
-        private OperationEventHandlerInterface $eventHandler,
-    ) {
+    public function __construct(private Processor_Interface $processor, private Operation_Event_Dispatcher_Interface $operation_event_dispatcher, private Operation_Event_Handler_Interface $event_handler)
+    {
     }
-
     /**
      * @inheritDoc
      */
     public function process(mixed $data, Operation $operation, Context $context): mixed
     {
-        $operationEvent = $this->operationEventDispatcher->dispatchPreEvent($data, $operation, $context);
-
-        $eventResponse = $this->eventHandler->handlePreProcessEvent(
-            $operationEvent,
-            $context,
-            $operation instanceof CreateOperationInterface ? ResourceActions::INDEX : null,
-        );
-
-        if (null !== $eventResponse) {
-            return $eventResponse;
+        $operation_event = $this->operation_event_dispatcher->dispatch_pre_event($data, $operation, $context);
+        $event_response = $this->event_handler->handle_pre_process_event($operation_event, $context, $operation instanceof Create_Operation_Interface ? Resource_Actions::INDEX : null);
+        if (null !== $event_response) {
+            return $event_response;
         }
-
         return $this->processor->process($data, $operation, $context);
     }
 }

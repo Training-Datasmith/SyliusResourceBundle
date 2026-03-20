@@ -8,22 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
-interface FactoryAwareOperationInterface
+interface Factory_Aware_Operation_Interface
 {
-    public function getFactory(): callable|string|false|null;
-
-    public function withFactory(string|callable|false|null $factory): self;
-
-    public function getFactoryMethod(): ?string;
-
-    public function withFactoryMethod(string $factoryMethod): self;
-
-    public function getFactoryArguments(): ?array;
-
-    public function withFactoryArguments(array $factoryArguments): self;
+    public function get_factory(): callable|string|false|null;
+    public function with_factory(string|callable|false|null $factory): self;
+    public function get_factory_method(): ?string;
+    public function with_factory_method(string $factory_method): self;
+    public function get_factory_arguments(): ?array;
+    public function with_factory_arguments(array $factory_arguments): self;
 }

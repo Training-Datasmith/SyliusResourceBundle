@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Metadata;
 
-interface_exists(\Sylius\Resource\Metadata\RegistryInterface::class);
-
+interface_exists(\Sylius\Resource\Metadata\Registry_Interface::class);
 if (false) {
-    interface RegistryInterface extends \Sylius\Resource\Metadata\RegistryInterface
+    interface Registry_Interface extends \Sylius\Resource\Metadata\Registry_Interface
     {
     }
 }

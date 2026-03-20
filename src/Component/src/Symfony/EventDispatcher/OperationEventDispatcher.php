@@ -8,70 +8,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\EventDispatcher;
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Event_Dispatcher;
 
 use Sylius\Resource\Context\Context;
 use Sylius\Resource\Metadata\Operation;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+use Symfony\Component\Event_Dispatcher\Event_Dispatcher_Interface;
 /**
  * @experimental
  */
-final readonly class OperationEventDispatcher implements OperationEventDispatcherInterface
+final readonly class Operation_Event_Dispatcher implements Operation_Event_Dispatcher_Interface
 {
-    public function __construct(
-        private EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
-
-    public function dispatch(mixed $data, Operation $operation, Context $context): OperationEvent
+    public function __construct(private Event_Dispatcher_Interface $event_dispatcher)
     {
-        return $this->dispatchEvent($data, $operation, $context);
     }
-
-    public function dispatchBulkEvent(mixed $data, Operation $operation, Context $context): OperationEvent
+    public function dispatch(mixed $data, Operation $operation, Context $context): Operation_Event
     {
-        return $this->dispatchEvent($data, $operation, $context, 'bulk');
+        return $this->dispatch_event($data, $operation, $context);
     }
-
-    public function dispatchPreEvent(mixed $data, Operation $operation, Context $context): OperationEvent
+    public function dispatch_bulk_event(mixed $data, Operation $operation, Context $context): Operation_Event
     {
-        return $this->dispatchEvent($data, $operation, $context, 'pre');
+        return $this->dispatch_event($data, $operation, $context, 'bulk');
     }
-
-    public function dispatchPostEvent(mixed $data, Operation $operation, Context $context): OperationEvent
+    public function dispatch_pre_event(mixed $data, Operation $operation, Context $context): Operation_Event
     {
-        return $this->dispatchEvent($data, $operation, $context, 'post');
+        return $this->dispatch_event($data, $operation, $context, 'pre');
     }
-
-    public function dispatchInitializeEvent(mixed $data, Operation $operation, Context $context): OperationEvent
+    public function dispatch_post_event(mixed $data, Operation $operation, Context $context): Operation_Event
     {
-        return $this->dispatchEvent($data, $operation, $context, 'initialize');
+        return $this->dispatch_event($data, $operation, $context, 'post');
     }
-
-    private function dispatchEvent(mixed $data, Operation $operation, Context $context, ?string $eventType = null): OperationEvent
+    public function dispatch_initialize_event(mixed $data, Operation $operation, Context $context): Operation_Event
     {
-        $operationEvent = new OperationEvent($data, ['operation' => $operation, 'context' => $context]);
-
-        $resource = $operation->getResource();
-
+        return $this->dispatch_event($data, $operation, $context, 'initialize');
+    }
+    private function dispatch_event(mixed $data, Operation $operation, Context $context, ?string $event_type = null): Operation_Event
+    {
+        $operation_event = new Operation_Event($data, ['operation' => $operation, 'context' => $context]);
+        $resource = $operation->get_resource();
         if (null === $resource) {
-            return $operationEvent;
+            return $operation_event;
         }
-
-        $eventName = sprintf(
-            '%s.%s.%s%s',
-            $resource->getApplicationName() ?? '',
-            $resource->getName() ?? '',
-            $eventType ? $eventType . '_' : '',
-            $operation->getEventShortName() ?? '',
-        );
-
-        $this->eventDispatcher->dispatch($operationEvent, $eventName);
-
-        return $operationEvent;
+        $event_name = sprintf('%s.%s.%s%s', $resource->get_application_name() ?? '', $resource->get_name() ?? '', $event_type ? $event_type . '_' : '', $operation->get_event_short_name() ?? '');
+        $this->event_dispatcher->dispatch($operation_event, $event_name);
+        return $operation_event;
     }
 }

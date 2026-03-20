@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Reflection;
 
-class_exists(\Sylius\Resource\Reflection\ClassReflection::class);
-
+class_exists(\Sylius\Resource\Reflection\Class_Reflection::class);
 if (false) {
-    final class ClassReflection extends \Sylius\Resource\Reflection\ClassReflection
+    final class Class_Reflection extends \Sylius\Resource\Reflection\Class_Reflection
     {
     }
 }

@@ -8,44 +8,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Compiler;
-
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-final class RegisterResourceStateMachinePass implements CompilerPassInterface
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+final class Register_Resource_State_Machine_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
-        if (!$container->hasParameter('sylius.resources')) {
+        if (!$container->has_parameter('sylius.resources')) {
             return;
         }
-
         /** @var array $resources */
-        $resources = $container->getParameter('sylius.resources');
-
+        $resources = $container->get_parameter('sylius.resources');
         foreach ($resources as $alias => $configuration) {
-            [$applicationName, $resourceName] = explode('.', (string) $alias, 2);
-            $stateMachineId = sprintf('%s.controller_state_machine.%s', $applicationName, $resourceName);
-
-            $stateMachineComponent = $configuration['state_machine_component'] ?? null;
-
-            if (null === $stateMachineComponent) {
-                $container->setAlias($stateMachineId, 'sylius.resource_controller.state_machine');
-
+            [$application_name, $resource_name] = explode('.', (string) $alias, 2);
+            $state_machine_id = sprintf('%s.controller_state_machine.%s', $application_name, $resource_name);
+            $state_machine_component = $configuration['state_machine_component'] ?? null;
+            if (null === $state_machine_component) {
+                $container->set_alias($state_machine_id, 'sylius.resource_controller.state_machine');
                 continue;
             }
-
-            $specificStateMachineId = sprintf('sylius.resource_controller.state_machine.%s', $stateMachineComponent);
-
-            if (!$container->hasDefinition($specificStateMachineId)) {
-                throw new \LogicException(sprintf('State machine "%s" is not available.', $stateMachineComponent));
+            $specific_state_machine_id = sprintf('sylius.resource_controller.state_machine.%s', $state_machine_component);
+            if (!$container->has_definition($specific_state_machine_id)) {
+                throw new \LogicException(sprintf('State machine "%s" is not available.', $state_machine_component));
             }
-
-            $container->setAlias($stateMachineId, $specificStateMachineId);
+            $container->set_alias($state_machine_id, $specific_state_machine_id);
         }
     }
 }

@@ -8,9 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource;
 
 /**
@@ -18,7 +16,7 @@ namespace Sylius\Resource\Metadata\Resource;
  *
  * @experimental
  */
-final readonly class ResourceClassList implements \IteratorAggregate, \Countable
+final readonly class Resource_Class_List implements \IteratorAggregate, \Countable
 {
     /**
      * @param string[] $classes
@@ -26,7 +24,6 @@ final readonly class ResourceClassList implements \IteratorAggregate, \Countable
     public function __construct(private array $classes = [])
     {
     }
-
     /**
      * @return \Traversable<string>
      */
@@ -34,7 +31,6 @@ final readonly class ResourceClassList implements \IteratorAggregate, \Countable
     {
         return new \ArrayIterator($this->classes);
     }
-
     public function count(): int
     {
         return \count($this->classes);

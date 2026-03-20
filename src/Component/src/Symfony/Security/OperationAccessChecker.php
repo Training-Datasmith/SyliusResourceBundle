@@ -8,75 +8,52 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Symfony\Security;
 
 use Sylius\Resource\Context\Context;
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\Metadata\OperationAccessCheckerInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface;
-use Symfony\Component\Security\Core\Authentication\Token\NullToken;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
-
-final readonly class OperationAccessChecker implements OperationAccessCheckerInterface
+use Sylius\Resource\Metadata\Operation_Access_Checker_Interface;
+use Symfony\Component\Expression_Language\Expression_Language;
+use Symfony\Component\Security\Core\Authentication\Authentication_Trust_Resolver_Interface;
+use Symfony\Component\Security\Core\Authentication\Token\Null_Token;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\Token_Storage_Interface;
+use Symfony\Component\Security\Core\Authentication\Token\Token_Interface;
+use Symfony\Component\Security\Core\Authorization\Authorization_Checker_Interface;
+use Symfony\Component\Security\Core\Role\Role_Hierarchy_Interface;
+final readonly class Operation_Access_Checker implements Operation_Access_Checker_Interface
 {
-    public function __construct(
-        private ?ExpressionLanguage $expressionLanguage = null,
-        private ?AuthenticationTrustResolverInterface $authenticationTrustResolver = null,
-        private ?RoleHierarchyInterface $roleHierarchy = null,
-        private ?TokenStorageInterface $tokenStorage = null,
-        private ?AuthorizationCheckerInterface $authorizationChecker = null,
-    ) {
-    }
-
-    public function isGranted(Operation $operation, Context $context, array $extraVariables = []): bool
+    public function __construct(private ?Expression_Language $expression_language = null, private ?Authentication_Trust_Resolver_Interface $authentication_trust_resolver = null, private ?Role_Hierarchy_Interface $role_hierarchy = null, private ?Token_Storage_Interface $token_storage = null, private ?Authorization_Checker_Interface $authorization_checker = null)
     {
-        if (null === $this->tokenStorage || null === $this->authenticationTrustResolver) {
+    }
+    public function is_granted(Operation $operation, Context $context, array $extra_variables = []): bool
+    {
+        if (null === $this->token_storage || null === $this->authentication_trust_resolver) {
             throw new \LogicException('The "symfony/security" library must be installed to use the "security" attribute.');
         }
-
-        if (null === $this->expressionLanguage) {
+        if (null === $this->expression_language) {
             throw new \LogicException('The "symfony/expression-language" library must be installed to use the "security" attribute.');
         }
-
-        $expression = $operation->getSecurity();
+        $expression = $operation->get_security();
         if (null === $expression) {
             return true;
         }
-
-        $token = $this->tokenStorage->getToken();
+        $token = $this->token_storage->get_token();
         if (null === $token) {
-            $token = new NullToken();
+            $token = new Null_Token();
         }
-
-        $variables = array_merge($extraVariables, $this->getVariables($token));
-
-        return (bool) $this->expressionLanguage->evaluate($expression, $variables);
+        $variables = array_merge($extra_variables, $this->get_variables($token));
+        return (bool) $this->expression_language->evaluate($expression, $variables);
     }
-
     /**
      * @see https://github.com/symfony/symfony/blob/master/src/Symfony/Component/Security/Core/Authorization/Voter/ExpressionVoter.php
      */
-    private function getVariables(TokenInterface $token): array
+    private function get_variables(Token_Interface $token): array
     {
-        $roleNames = $token->getRoleNames();
-
-        if (null !== $this->roleHierarchy) {
-            $roleNames = $this->roleHierarchy->getReachableRoleNames($roleNames);
+        $role_names = $token->get_role_names();
+        if (null !== $this->role_hierarchy) {
+            $role_names = $this->role_hierarchy->get_reachable_role_names($role_names);
         }
-
-        return [
-            'token' => $token,
-            'user' => $token->getUser(),
-            'roles' => $roleNames,
-            'trust_resolver' => $this->authenticationTrustResolver,
-            'auth_checker' => $this->authorizationChecker, // needed for the is_granted expression function
-        ];
+        return ['token' => $token, 'user' => $token->get_user(), 'roles' => $role_names, 'trust_resolver' => $this->authentication_trust_resolver, 'auth_checker' => $this->authorization_checker];
     }
 }

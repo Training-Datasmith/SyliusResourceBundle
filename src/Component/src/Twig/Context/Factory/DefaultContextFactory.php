@@ -8,43 +8,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Twig\Context\Factory;
 
 use Sylius\Resource\Context\Context;
-use Sylius\Resource\Metadata\CollectionOperationInterface;
+use Sylius\Resource\Metadata\Collection_Operation_Interface;
 use Sylius\Resource\Metadata\Operation;
-
 /**
  * @experimental
  */
-final class DefaultContextFactory implements ContextFactoryInterface
+final class Default_Context_Factory implements Context_Factory_Interface
 {
     public function create(mixed $data, Operation $operation, Context $context): array
     {
-        $twigContext = [
-            'operation' => $operation,
-            'resource_metadata' => $operation->getResource(),
-        ];
-
-        if ($operation instanceof CollectionOperationInterface) {
-            $twigContext['resources'] = $data;
-            $pluralName = $operation->getResource()?->getPluralName();
-
-            if (null !== $pluralName) {
-                $twigContext[$pluralName] = $data;
+        $twig_context = ['operation' => $operation, 'resource_metadata' => $operation->get_resource()];
+        if ($operation instanceof Collection_Operation_Interface) {
+            $twig_context['resources'] = $data;
+            $plural_name = $operation->get_resource()?->get_plural_name();
+            if (null !== $plural_name) {
+                $twig_context[$plural_name] = $data;
             }
         } else {
-            $twigContext['resource'] = $data;
-            $name = $operation->getResource()?->getName();
-
+            $twig_context['resource'] = $data;
+            $name = $operation->get_resource()?->get_name();
             if (null !== $name) {
-                $twigContext[$name] = $data;
+                $twig_context[$name] = $data;
             }
         }
-
-        return $twigContext;
+        return $twig_context;
     }
 }

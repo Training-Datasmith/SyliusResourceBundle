@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Annotation;
 
-class_exists(\Sylius\Resource\Annotation\SyliusRoute::class);
-
+class_exists(\Sylius\Resource\Annotation\Sylius_Route::class);
 if (false) {
     #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
-    final class SyliusRoute extends \Sylius\Resource\Annotation\SyliusRoute
+    final class Sylius_Route extends \Sylius\Resource\Annotation\Sylius_Route
     {
     }
 }

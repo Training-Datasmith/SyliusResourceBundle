@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Sylius\Resource\Factory\FactoryInterface;
-use Sylius\Resource\Model\ResourceInterface;
-
-interface NewResourceFactoryInterface
+use Sylius\Resource\Factory\Factory_Interface;
+use Sylius\Resource\Model\Resource_Interface;
+interface New_Resource_Factory_Interface
 {
-    public function create(RequestConfiguration $requestConfiguration, FactoryInterface $factory): ResourceInterface;
+    public function create(Request_Configuration $request_configuration, Factory_Interface $factory): Resource_Interface;
 }

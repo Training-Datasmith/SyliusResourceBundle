@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Component\Resource\State_Machine;
 
-declare(strict_types=1);
-
-namespace Sylius\Component\Resource\StateMachine;
-
-interface_exists(\Sylius\Resource\StateMachine\StateMachineInterface::class);
-
+interface_exists(\Sylius\Resource\State_Machine\State_Machine_Interface::class);
 if (false) {
-    interface StateMachineInterface extends \Sylius\Resource\StateMachine\StateMachineInterface
+    interface State_Machine_Interface extends \Sylius\Resource\State_Machine\State_Machine_Interface
     {
     }
 }

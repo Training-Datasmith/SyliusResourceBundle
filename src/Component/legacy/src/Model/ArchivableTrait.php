@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-trait_exists(\Sylius\Resource\Model\ArchivableTrait::class);
-
+trait_exists(\Sylius\Resource\Model\Archivable_Trait::class);
 if (false) {
-    trait ArchivableTrait
+    trait Archivable_Trait
     {
-        use \Sylius\Resource\Model\ArchivableTrait;
+        use \Sylius\Resource\Model\Archivable_Trait;
     }
 }

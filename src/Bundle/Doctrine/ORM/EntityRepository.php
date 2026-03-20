@@ -8,16 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Doctrine\ORM;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Doctrine\ORM;
-
-use Doctrine\ORM\EntityRepository as BaseEntityRepository;
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-
+use Doctrine\ORM\Entity_Repository as BaseEntityRepository;
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
 /** @psalm-suppress DeprecatedInterface */
-class EntityRepository extends BaseEntityRepository implements RepositoryInterface
+class Entity_Repository extends Base_Entity_Repository implements Repository_Interface
 {
-    use ResourceRepositoryTrait;
+    use Resource_Repository_Trait;
 }

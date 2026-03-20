@@ -8,40 +8,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\EventDispatcher\State;
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Event_Dispatcher\State;
 
 use Sylius\Resource\Context\Context;
-use Sylius\Resource\Metadata\CollectionOperationInterface;
+use Sylius\Resource\Metadata\Collection_Operation_Interface;
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\Metadata\ShowOperationInterface;
-use Sylius\Resource\State\ProviderInterface;
-use Sylius\Resource\Symfony\EventDispatcher\OperationEventDispatcherInterface;
-
+use Sylius\Resource\Metadata\Show_Operation_Interface;
+use Sylius\Resource\State\Provider_Interface;
+use Sylius\Resource\Symfony\Event_Dispatcher\Operation_Event_Dispatcher_Interface;
 /**
  * @experimental
  */
-final readonly class DispatchPostReadEventProvider implements ProviderInterface
+final readonly class Dispatch_Post_Read_Event_Provider implements Provider_Interface
 {
-    public function __construct(
-        private ProviderInterface $provider,
-        private OperationEventDispatcherInterface $operationEventDispatcher,
-    ) {
+    public function __construct(private Provider_Interface $provider, private Operation_Event_Dispatcher_Interface $operation_event_dispatcher)
+    {
     }
-
     public function provide(Operation $operation, Context $context): object|array|null
     {
         $data = $this->provider->provide($operation, $context);
-
-        if (
-            $operation instanceof CollectionOperationInterface ||
-            $operation instanceof ShowOperationInterface
-        ) {
-            $this->operationEventDispatcher->dispatch(null, $operation, $context);
+        if ($operation instanceof Collection_Operation_Interface || $operation instanceof Show_Operation_Interface) {
+            $this->operation_event_dispatcher->dispatch(null, $operation, $context);
         }
-
         return $data;
     }
 }

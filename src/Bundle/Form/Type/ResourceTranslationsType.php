@@ -8,78 +8,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Type;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\Type;
-
-use Sylius\Resource\Model\TranslatableInterface;
-use Sylius\Resource\Model\TranslationInterface;
-use Sylius\Resource\Translation\Provider\TranslationLocaleProviderInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Sylius\Resource\Model\Translatable_Interface;
+use Sylius\Resource\Model\Translation_Interface;
+use Sylius\Resource\Translation\Provider\Translation_Locale_Provider_Interface;
+use Symfony\Component\Form\Abstract_Type;
+use Symfony\Component\Form\Form_Builder_Interface;
+use Symfony\Component\Form\Form_Event;
+use Symfony\Component\Form\Form_Events;
+use Symfony\Component\Options_Resolver\Options_Resolver;
 use Webmozart\Assert\Assert;
-
-final class ResourceTranslationsType extends AbstractType
+final class Resource_Translations_Type extends Abstract_Type
 {
     /** @var string[] */
-    private readonly array $definedLocalesCodes;
-
-    private readonly string $defaultLocaleCode;
-
-    public function __construct(TranslationLocaleProviderInterface $localeProvider)
+    private readonly array $defined_locales_codes;
+    private readonly string $default_locale_code;
+    public function __construct(Translation_Locale_Provider_Interface $locale_provider)
     {
-        $this->definedLocalesCodes = $localeProvider->getDefinedLocalesCodes();
-        $this->defaultLocaleCode = $localeProvider->getDefaultLocaleCode();
+        $this->defined_locales_codes = $locale_provider->get_defined_locales_codes();
+        $this->default_locale_code = $locale_provider->get_default_locale_code();
     }
-
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function build_form(Form_Builder_Interface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
+        $builder->add_event_listener(Form_Events::SUBMIT, function (Form_Event $event): void {
             /** @var TranslationInterface[]|null[] $translations */
-            $translations = $event->getData();
-
-            $parentForm = $event->getForm()->getParent();
-            Assert::notNull($parentForm);
-
+            $translations = $event->get_data();
+            $parent_form = $event->get_form()->get_parent();
+            Assert::not_null($parent_form);
             /** @var TranslatableInterface $translatable */
-            $translatable = $parentForm->getData();
-
-            foreach ($translations as $localeCode => $translation) {
+            $translatable = $parent_form->get_data();
+            foreach ($translations as $locale_code => $translation) {
                 if (null === $translation) {
-                    unset($translations[$localeCode]);
-
+                    unset($translations[$locale_code]);
                     continue;
                 }
-
-                $translation->setLocale($localeCode);
-                $translation->setTranslatable($translatable);
+                $translation->set_locale($locale_code);
+                $translation->set_translatable($translatable);
             }
-
-            $event->setData($translations);
+            $event->set_data($translations);
         });
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configure_options(Options_Resolver $resolver): void
     {
-        $resolver->setDefaults([
-            'entries' => $this->definedLocalesCodes,
-            'entry_name' => fn (string $localeCode): string => $localeCode,
-            'entry_options' => fn (string $localeCode): array => [
-                'required' => $localeCode === $this->defaultLocaleCode,
-            ],
-        ]);
+        $resolver->set_defaults(['entries' => $this->defined_locales_codes, 'entry_name' => fn(string $locale_code): string => $locale_code, 'entry_options' => fn(string $locale_code): array => ['required' => $locale_code === $this->default_locale_code]]);
     }
-
-    public function getParent(): string
+    public function get_parent(): string
     {
-        return FixedCollectionType::class;
+        return Fixed_Collection_Type::class;
     }
-
-    public function getBlockPrefix(): string
+    public function get_block_prefix(): string
     {
         return 'sylius_translations';
     }

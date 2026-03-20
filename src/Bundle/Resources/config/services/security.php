@@ -8,25 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Symfony\Component\Dependency_Injection\Loader\Configurator;
 
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Sylius\Resource\Metadata\OperationAccessCheckerInterface;
-use Sylius\Resource\Symfony\Security\OperationAccessChecker;
-
-return static function (ContainerConfigurator $container): void {
+use Sylius\Resource\Metadata\Operation_Access_Checker_Interface;
+use Sylius\Resource\Symfony\Security\Operation_Access_Checker;
+return static function (Container_Configurator $container): void {
     $services = $container->services();
-
-    $services->set('sylius.security.operation_access_checker', OperationAccessChecker::class)
-        ->args([
-            service('sylius.expression_language')->nullOnInvalid(),
-            service('security.authentication.trust_resolver')->nullOnInvalid(),
-            service('security.role_hierarchy')->nullOnInvalid(),
-            service('security.token_storage')->nullOnInvalid(),
-            service('security.authorization_checker')->nullOnInvalid(),
-        ]);
-
-    $services->alias(OperationAccessCheckerInterface::class, 'sylius.security.operation_access_checker');
+    $services->set('sylius.security.operation_access_checker', Operation_Access_Checker::class)->args([service('sylius.expression_language')->null_on_invalid(), service('security.authentication.trust_resolver')->null_on_invalid(), service('security.role_hierarchy')->null_on_invalid(), service('security.token_storage')->null_on_invalid(), service('security.authorization_checker')->null_on_invalid()]);
+    $services->alias(Operation_Access_Checker_Interface::class, 'sylius.security.operation_access_checker');
 };

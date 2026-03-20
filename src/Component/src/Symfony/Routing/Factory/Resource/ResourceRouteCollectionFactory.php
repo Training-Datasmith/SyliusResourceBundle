@@ -8,78 +8,58 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Symfony\Routing\Factory\Resource;
 
-use Sylius\Resource\Metadata\HttpOperation;
-use Sylius\Resource\Metadata\MetadataInterface;
+use Sylius\Resource\Metadata\Http_Operation;
+use Sylius\Resource\Metadata\Metadata_Interface;
 use Sylius\Resource\Metadata\Operations;
-use Sylius\Resource\Metadata\RegistryInterface;
-use Sylius\Resource\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
-use Sylius\Resource\Metadata\ResourceMetadata;
-use Sylius\Resource\Symfony\Routing\Factory\OperationRouteFactoryInterface;
+use Sylius\Resource\Metadata\Registry_Interface;
+use Sylius\Resource\Metadata\Resource\Factory\Resource_Metadata_Collection_Factory_Interface;
+use Sylius\Resource\Metadata\Resource_Metadata;
+use Sylius\Resource\Symfony\Routing\Factory\Operation_Route_Factory_Interface;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Route_Collection;
 use Webmozart\Assert\Assert;
-
 /**
  * @experimental
  */
-final readonly class ResourceRouteCollectionFactory implements ResourceRouteCollectionFactoryInterface
+final readonly class Resource_Route_Collection_Factory implements Resource_Route_Collection_Factory_Interface
 {
-    public function __construct(
-        private OperationRouteFactoryInterface $operationRouteFactory,
-        private ResourceMetadataCollectionFactoryInterface $resourceMetadataFactory,
-        private RegistryInterface $resourceRegistry,
-    ) {
-    }
-
-    public function createRouteCollectionForClass(string $className): RouteCollection
+    public function __construct(private Operation_Route_Factory_Interface $operation_route_factory, private Resource_Metadata_Collection_Factory_Interface $resource_metadata_factory, private Registry_Interface $resource_registry)
     {
-        $routeCollection = new RouteCollection();
-        $resourceMetadata = $this->resourceMetadataFactory->create($className);
-
+    }
+    public function create_route_collection_for_class(string $class_name): Route_Collection
+    {
+        $route_collection = new Route_Collection();
+        $resource_metadata = $this->resource_metadata_factory->create($class_name);
         /** @var ResourceMetadata $resource */
-        foreach ($resourceMetadata->getIterator() as $resource) {
-            $this->createRoutesForResource($routeCollection, $resource);
+        foreach ($resource_metadata->getIterator() as $resource) {
+            $this->create_routes_for_resource($route_collection, $resource);
         }
-
-        return $routeCollection;
+        return $route_collection;
     }
-
-    private function createRoutesForResource(RouteCollection $routeCollection, ResourceMetadata $resource): void
+    private function create_routes_for_resource(Route_Collection $route_collection, Resource_Metadata $resource): void
     {
-        foreach ($resource->getOperations() ?? new Operations() as $operation) {
-            if (!$operation instanceof HttpOperation) {
+        foreach ($resource->get_operations() ?? new Operations() as $operation) {
+            if (!$operation instanceof Http_Operation) {
                 continue;
             }
-
-            $this->addRouteForOperation($routeCollection, $resource, $operation);
+            $this->add_route_for_operation($route_collection, $resource, $operation);
         }
     }
-
-    private function addRouteForOperation(RouteCollection $routeCollection, ResourceMetadata $resource, HttpOperation $operation): void
+    private function add_route_for_operation(Route_Collection $route_collection, Resource_Metadata $resource, Http_Operation $operation): void
     {
-        $alias = $resource->getAlias();
-        Assert::notNull($alias, sprintf('Resource of %s has no alias.', $resource->getClass() ?? ''));
-
-        $metadata = $this->resourceRegistry->get($alias);
-        $routeName = $operation->getRouteName();
-
-        Assert::notNull($routeName, sprintf(
-            'Operation %s of %s has no route name. Please define one.',
-            $operation::class,
-            $alias,
-        ));
-
-        $route = $this->createRoute($metadata, $resource, $operation);
-        $routeCollection->add($routeName, $route, $operation->getRoutePriority() ?? 0);
+        $alias = $resource->get_alias();
+        Assert::not_null($alias, sprintf('Resource of %s has no alias.', $resource->get_class() ?? ''));
+        $metadata = $this->resource_registry->get($alias);
+        $route_name = $operation->get_route_name();
+        Assert::not_null($route_name, sprintf('Operation %s of %s has no route name. Please define one.', $operation::class, $alias));
+        $route = $this->create_route($metadata, $resource, $operation);
+        $route_collection->add($route_name, $route, $operation->get_route_priority() ?? 0);
     }
-
-    private function createRoute(MetadataInterface $metadata, ResourceMetadata $resource, HttpOperation $operation): Route
+    private function create_route(Metadata_Interface $metadata, Resource_Metadata $resource, Http_Operation $operation): Route
     {
-        return $this->operationRouteFactory->create($metadata, $resource, $operation);
+        return $this->operation_route_factory->create($metadata, $resource, $operation);
     }
 }

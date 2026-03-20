@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Model;
 
-interface_exists(\Sylius\Resource\Model\CodeAwareInterface::class);
-
+interface_exists(\Sylius\Resource\Model\Code_Aware_Interface::class);
 if (false) {
-    interface CodeAwareInterface extends \Sylius\Resource\Model\CodeAwareInterface
+    interface Code_Aware_Interface extends \Sylius\Resource\Model\Code_Aware_Interface
     {
     }
 }

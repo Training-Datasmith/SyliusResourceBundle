@@ -8,165 +8,119 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
-use Sylius\Resource\Metadata\MetadataInterface;
-use Sylius\Resource\Model\ResourceInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use Sylius\Bundle\Resource_Bundle\Event\Resource_Controller_Event;
+use Sylius\Resource\Metadata\Metadata_Interface;
+use Sylius\Resource\Model\Resource_Interface;
+use Symfony\Component\Http_Foundation\Request_Stack;
+use Symfony\Component\Http_Foundation\Session\Flash\Flash_Bag_Interface;
+use Symfony\Component\Http_Foundation\Session\Session_Interface;
 use function Symfony\Component\String\u;
-
-use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-
-final class FlashHelper implements FlashHelperInterface
+use Symfony\Component\Translation\Translator_Bag_Interface;
+use Symfony\Contracts\Translation\Translator_Interface;
+final class Flash_Helper implements Flash_Helper_Interface
 {
-    private readonly \Symfony\Component\HttpFoundation\RequestStack|\Symfony\Component\HttpFoundation\Session\SessionInterface $requestStack;
-
-    private readonly TranslatorInterface $translator;
-
+    private readonly \Symfony\Component\Http_Foundation\Request_Stack|\Symfony\Component\Http_Foundation\Session\Session_Interface $request_stack;
+    private readonly Translator_Interface $translator;
     /**
      * @param RequestStack|SessionInterface $requestStack
      */
-    public function __construct(/* RequestStack */ $requestStack, TranslatorInterface $translator, private readonly string $defaultLocale)
+    public function __construct(
+        /* RequestStack */
+        $request_stack,
+        Translator_Interface $translator,
+        private readonly string $default_locale
+    )
     {
         /** @phpstan-ignore-next-line */
-        if (!$requestStack instanceof SessionInterface && !$requestStack instanceof RequestStack) {
-            throw new \InvalidArgumentException(sprintf('The first argument of "%s" should be instance of "%s" or "%s"', __METHOD__, SessionInterface::class, RequestStack::class));
+        if (!$request_stack instanceof Session_Interface && !$request_stack instanceof Request_Stack) {
+            throw new \InvalidArgumentException(sprintf('The first argument of "%s" should be instance of "%s" or "%s"', __METHOD__, Session_Interface::class, Request_Stack::class));
         }
-
-        if ($requestStack instanceof SessionInterface) {
-            trigger_deprecation(
-                'sylius/resource-bundle',
-                '1.10',
-                'Passing an instance of "%s" as the first constructor argument for "%s" is deprecated and will not be supported in 2.0. Pass an instance of "%s" instead.',
-                SessionInterface::class,
-                self::class,
-                RequestStack::class,
-            );
+        if ($request_stack instanceof Session_Interface) {
+            trigger_deprecation('sylius/resource-bundle', '1.10', 'Passing an instance of "%s" as the first constructor argument for "%s" is deprecated and will not be supported in 2.0. Pass an instance of "%s" instead.', Session_Interface::class, self::class, Request_Stack::class);
         }
-
-        $this->requestStack = $requestStack;
+        $this->request_stack = $request_stack;
         $this->translator = $translator;
     }
-
-    public function addSuccessFlash(
-        RequestConfiguration $requestConfiguration,
-        string $actionName,
-        ?ResourceInterface $resource = null,
-    ): void {
-        $this->addFlashWithType($requestConfiguration, $actionName, 'success');
-    }
-
-    public function addErrorFlash(RequestConfiguration $requestConfiguration, string $actionName): void
+    public function add_success_flash(Request_Configuration $request_configuration, string $action_name, ?Resource_Interface $resource = null): void
     {
-        $this->addFlashWithType($requestConfiguration, $actionName, 'error');
+        $this->add_flash_with_type($request_configuration, $action_name, 'success');
     }
-
-    public function addFlashFromEvent(RequestConfiguration $requestConfiguration, ResourceControllerEvent $event): void
+    public function add_error_flash(Request_Configuration $request_configuration, string $action_name): void
     {
-        $this->addFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+        $this->add_flash_with_type($request_configuration, $action_name, 'error');
     }
-
-    private function addFlashWithType(RequestConfiguration $requestConfiguration, string $actionName, string $type): void
+    public function add_flash_from_event(Request_Configuration $request_configuration, Resource_Controller_Event $event): void
     {
-        $metadata = $requestConfiguration->getMetadata();
-        $parameters = $this->getParametersWithName($metadata, $actionName);
-
-        $message = (string) $requestConfiguration->getFlashMessage($actionName);
+        $this->add_flash($event->get_message_type(), $event->get_message(), $event->get_message_parameters());
+    }
+    private function add_flash_with_type(Request_Configuration $request_configuration, string $action_name, string $type): void
+    {
+        $metadata = $request_configuration->get_metadata();
+        $parameters = $this->get_parameters_with_name($metadata, $action_name);
+        $message = (string) $request_configuration->get_flash_message($action_name);
         if (empty($message)) {
             return;
         }
-
-        if ($this->isTranslationDefined($message, $this->defaultLocale, $parameters)) {
-            if (!$this->translator instanceof TranslatorBagInterface) {
-                $this->addFlash($type, $message, $parameters);
-
+        if ($this->is_translation_defined($message, $this->default_locale, $parameters)) {
+            if (!$this->translator instanceof Translator_Bag_Interface) {
+                $this->add_flash($type, $message, $parameters);
                 return;
             }
-
-            $this->addFlash($type, $message);
-
+            $this->add_flash($type, $message);
             return;
         }
-
-        $this->addFlash(
-            $type,
-            $this->getResourceMessage($actionName),
-            $parameters,
-        );
+        $this->add_flash($type, $this->get_resource_message($action_name), $parameters);
     }
-
-    private function addFlash(string $type, string $message, array $parameters = []): void
+    private function add_flash(string $type, string $message, array $parameters = []): void
     {
         if (!empty($parameters)) {
-            $message = $this->prepareMessage($message, $parameters);
+            $message = $this->prepare_message($message, $parameters);
         }
-
-        if ($this->requestStack instanceof SessionInterface) {
-            $session = $this->requestStack;
+        if ($this->request_stack instanceof Session_Interface) {
+            $session = $this->request_stack;
         } else {
-            $session = $this->requestStack->getSession();
+            $session = $this->request_stack->get_session();
         }
-
         /** @var FlashBagInterface $flashBag */
-        $flashBag = $session->getBag('flashes');
-        $flashBag->add($type, $message);
+        $flash_bag = $session->get_bag('flashes');
+        $flash_bag->add($type, $message);
     }
-
-    private function prepareMessage(string $message, array $parameters): array
+    private function prepare_message(string $message, array $parameters): array
     {
-        return [
-            'message' => $message,
-            'parameters' => $parameters,
-        ];
+        return ['message' => $message, 'parameters' => $parameters];
     }
-
-    private function getResourceMessage(string $actionName): string
+    private function get_resource_message(string $action_name): string
     {
-        return sprintf('sylius.resource.%s', $actionName);
+        return sprintf('sylius.resource.%s', $action_name);
     }
-
-    private function isTranslationDefined(string $message, string $locale, array $parameters): bool
+    private function is_translation_defined(string $message, string $locale, array $parameters): bool
     {
-        if ($this->translator instanceof TranslatorBagInterface) {
-            $defaultCatalogue = $this->translator->getCatalogue($locale);
-
-            return $defaultCatalogue->has($message, 'flashes');
+        if ($this->translator instanceof Translator_Bag_Interface) {
+            $default_catalogue = $this->translator->get_catalogue($locale);
+            return $default_catalogue->has($message, 'flashes');
         }
-
         return $message !== $this->translator->trans($message, $parameters, 'flashes');
     }
-
-    private function getParametersWithName(MetadataInterface $metadata, string $actionName): array
+    private function get_parameters_with_name(Metadata_Interface $metadata, string $action_name): array
     {
-        $applicationName = $metadata->getApplicationName();
-
-        if (stripos($actionName, 'bulk') !== false) {
-            $resourceName = $metadata->getPluralName();
-            $fallback = ucfirst($resourceName);
-
-            return ['%resources%' => $this->translateResourceName($applicationName, $resourceName, $fallback)];
+        $application_name = $metadata->get_application_name();
+        if (stripos($action_name, 'bulk') !== false) {
+            $resource_name = $metadata->get_plural_name();
+            $fallback = ucfirst($resource_name);
+            return ['%resources%' => $this->translate_resource_name($application_name, $resource_name, $fallback)];
         }
-
-        $resourceName = $metadata->getName();
-        $fallback = ucfirst($metadata->getHumanizedName());
-
-        return ['%resource%' => $this->translateResourceName($applicationName, $resourceName, $fallback)];
+        $resource_name = $metadata->get_name();
+        $fallback = ucfirst($metadata->get_humanized_name());
+        return ['%resource%' => $this->translate_resource_name($application_name, $resource_name, $fallback)];
     }
-
-    private function translateResourceName(string $applicationName, string $resourceName, string $fallback): string
+    private function translate_resource_name(string $application_name, string $resource_name, string $fallback): string
     {
-        $snakeCaseName = u($resourceName)->snake()->toString();
-        $translationKey = sprintf('%s.ui.%s', $applicationName, $snakeCaseName);
-        $translated = $this->translator->trans($translationKey, [], 'messages');
-
-        return $translated === $translationKey ? $fallback : $translated;
+        $snake_case_name = u($resource_name)->snake()->to_string();
+        $translation_key = sprintf('%s.ui.%s', $application_name, $snake_case_name);
+        $translated = $this->translator->trans($translation_key, [], 'messages');
+        return $translated === $translation_key ? $fallback : $translated;
     }
 }

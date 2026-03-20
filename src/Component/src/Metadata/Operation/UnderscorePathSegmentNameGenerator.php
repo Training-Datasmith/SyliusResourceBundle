@@ -8,30 +8,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Operation;
 
-use Sylius\Resource\Metadata\Inflector\InflectorInterface;
-
+use Sylius\Resource\Metadata\Inflector\Inflector_Interface;
 /**
  * Generate a path name with an underscore separator according to a string and whether it's a collection or not.
  */
-final readonly class UnderscorePathSegmentNameGenerator implements PathSegmentNameGeneratorInterface
+final readonly class Underscore_Path_Segment_Name_Generator implements Path_Segment_Name_Generator_Interface
 {
-    public function __construct(
-        private InflectorInterface $inflector,
-    ) {
+    public function __construct(private Inflector_Interface $inflector)
+    {
     }
-
     /**
      * @inheritdoc
      */
-    public function getSegmentName(string $name, bool $pluralize = true): string
+    public function get_segment_name(string $name, bool $pluralize = true): string
     {
         $name = $this->inflector->tableize($name);
-
         return $pluralize ? $this->inflector->pluralize($name) : $name;
     }
 }

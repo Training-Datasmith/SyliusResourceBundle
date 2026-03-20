@@ -8,50 +8,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Grid\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Grid\Controller;
-
-use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
-use Sylius\Bundle\ResourceBundle\Controller\ResourcesResolverInterface;
-use Sylius\Bundle\ResourceBundle\Grid\View\ResourceGridViewFactoryInterface;
+use Sylius\Bundle\Resource_Bundle\Controller\Request_Configuration;
+use Sylius\Bundle\Resource_Bundle\Controller\Resources_Resolver_Interface;
+use Sylius\Bundle\Resource_Bundle\Grid\View\Resource_Grid_View_Factory_Interface;
 use Sylius\Component\Grid\Parameters;
-use Sylius\Component\Grid\Provider\GridProviderInterface;
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-
-final readonly class ResourcesResolver implements ResourcesResolverInterface
+use Sylius\Component\Grid\Provider\Grid_Provider_Interface;
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
+final readonly class Resources_Resolver implements Resources_Resolver_Interface
 {
-    private GridProviderInterface $gridProvider;
-
-    public function __construct(
-        private ResourcesResolverInterface $decoratedResolver,
-        GridProviderInterface $gridProvider,
-        private ResourceGridViewFactoryInterface $gridViewFactory,
-    ) {
-        $this->gridProvider = $gridProvider;
+    private Grid_Provider_Interface $grid_provider;
+    public function __construct(private Resources_Resolver_Interface $decorated_resolver, Grid_Provider_Interface $grid_provider, private Resource_Grid_View_Factory_Interface $grid_view_factory)
+    {
+        $this->grid_provider = $grid_provider;
     }
-
     /**
      * @psalm-suppress MissingReturnType
      */
-    public function getResources(RequestConfiguration $requestConfiguration, RepositoryInterface $repository)
+    public function get_resources(Request_Configuration $request_configuration, Repository_Interface $repository)
     {
-        if (!$requestConfiguration->hasGrid()) {
-            return $this->decoratedResolver->getResources($requestConfiguration, $repository);
+        if (!$request_configuration->has_grid()) {
+            return $this->decorated_resolver->get_resources($request_configuration, $repository);
         }
-
-        $gridDefinition = $this->gridProvider->get($requestConfiguration->getGrid());
-
-        $request = $requestConfiguration->getRequest();
+        $grid_definition = $this->grid_provider->get($request_configuration->get_grid());
+        $request = $request_configuration->get_request();
         $parameters = new Parameters($request->query->all());
-
-        $gridView = $this->gridViewFactory->create($gridDefinition, $parameters, $requestConfiguration->getMetadata(), $requestConfiguration);
-
-        if ($requestConfiguration->isHtmlRequest()) {
-            return $gridView;
+        $grid_view = $this->grid_view_factory->create($grid_definition, $parameters, $request_configuration->get_metadata(), $request_configuration);
+        if ($request_configuration->is_html_request()) {
+            return $grid_view;
         }
-
-        return $gridView->getData();
+        return $grid_view->get_data();
     }
 }

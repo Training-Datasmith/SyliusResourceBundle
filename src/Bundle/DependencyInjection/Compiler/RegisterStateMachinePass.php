@@ -8,143 +8,111 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Compiler;
-
-use Sylius\Bundle\ResourceBundle\Controller\StateMachine;
-use Sylius\Bundle\ResourceBundle\Controller\Workflow;
-use Sylius\Bundle\ResourceBundle\ResourceBundleInterface;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use Sylius\Bundle\Resource_Bundle\Controller\State_Machine;
+use Sylius\Bundle\Resource_Bundle\Controller\Workflow;
+use Sylius\Bundle\Resource_Bundle\Resource_Bundle_Interface;
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+use Symfony\Component\Dependency_Injection\Reference;
 use Symfony\Component\Workflow\Workflow as SymfonyWorkflow;
-use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
-
-final class RegisterStateMachinePass implements CompilerPassInterface
+use winzou\Bundle\State_Machine_Bundle\Winzou_State_Machine_Bundle;
+final class Register_State_Machine_Pass implements Compiler_Pass_Interface
 {
     /**
      * @inheritdoc
      */
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
         /** @var array $settings */
-        $settings = $container->getParameter('sylius.resource.settings');
-        $stateMachine = $settings['state_machine_component'];
-        $container->setParameter('sylius.state_machine_component.default', null);
-
-        $this->registerWinzouStateMachine($container);
-        $this->registerSymfonyWorkflowStateMachine($container);
-
-        $this->registerWinzouStateMachine($container);
-        $this->registerSymfonyWorkflowStateMachine($container);
-
-        if (null !== $stateMachine) {
-            $this->setStateMachine($container, $stateMachine);
-
+        $settings = $container->get_parameter('sylius.resource.settings');
+        $state_machine = $settings['state_machine_component'];
+        $container->set_parameter('sylius.state_machine_component.default', null);
+        $this->register_winzou_state_machine($container);
+        $this->register_symfony_workflow_state_machine($container);
+        $this->register_winzou_state_machine($container);
+        $this->register_symfony_workflow_state_machine($container);
+        if (null !== $state_machine) {
+            $this->set_state_machine($container, $state_machine);
             return;
         }
-
         // No state machine enabled
-        if (
-            !$this->isSymfonyWorkflowEnabled($container) &&
-            !$this->isWinzouStateMachineEnabled($container)
-        ) {
+        if (!$this->is_symfony_workflow_enabled($container) && !$this->is_winzou_state_machine_enabled($container)) {
             return;
         }
-
-        if ($this->isWinzouStateMachineEnabled($container)) {
-            $this->setStateMachine($container, ResourceBundleInterface::STATE_MACHINE_WINZOU);
-
+        if ($this->is_winzou_state_machine_enabled($container)) {
+            $this->set_state_machine($container, Resource_Bundle_Interface::STATE_MACHINE_WINZOU);
             return;
         }
-
-        $this->setStateMachine($container, ResourceBundleInterface::STATE_MACHINE_SYMFONY);
+        $this->set_state_machine($container, Resource_Bundle_Interface::STATE_MACHINE_SYMFONY);
     }
-
-    private function setStateMachine(ContainerBuilder $container, string $stateMachine): void
+    private function set_state_machine(Container_Builder $container, string $state_machine): void
     {
-        if (ResourceBundleInterface::STATE_MACHINE_SYMFONY === $stateMachine) {
-            $this->setSymfonyWorkflowAsStateMachine($container);
-
+        if (Resource_Bundle_Interface::STATE_MACHINE_SYMFONY === $state_machine) {
+            $this->set_symfony_workflow_as_state_machine($container);
             return;
         }
-
-        if (ResourceBundleInterface::STATE_MACHINE_WINZOU === $stateMachine) {
-            $this->setWinzouAsStateMachine($container);
-
+        if (Resource_Bundle_Interface::STATE_MACHINE_WINZOU === $state_machine) {
+            $this->set_winzou_as_state_machine($container);
             return;
         }
     }
-
-    private function setWinzouAsStateMachine(ContainerBuilder $container): void
+    private function set_winzou_as_state_machine(Container_Builder $container): void
     {
-        if (!$this->isWinzouStateMachineEnabled($container)) {
+        if (!$this->is_winzou_state_machine_enabled($container)) {
             throw new \LogicException('You can not use "Winzou" for your state machine if it is not available. Try running "composer require winzou/state-machine-bundle".');
         }
-
-        $container->setParameter('sylius.state_machine_component.default', 'winzou');
-        $stateMachineDefinition = $container->register('sylius.resource_controller.state_machine', StateMachine::class);
-        $stateMachineDefinition->setPublic(false);
-        $stateMachineDefinition->addArgument(new Reference('sm.factory'));
-
-        $container->setAlias('sylius.state_machine.operation.default', 'sylius.state_machine.operation.winzou');
+        $container->set_parameter('sylius.state_machine_component.default', 'winzou');
+        $state_machine_definition = $container->register('sylius.resource_controller.state_machine', State_Machine::class);
+        $state_machine_definition->set_public(false);
+        $state_machine_definition->add_argument(new Reference('sm.factory'));
+        $container->set_alias('sylius.state_machine.operation.default', 'sylius.state_machine.operation.winzou');
     }
-
-    private function registerWinzouStateMachine(ContainerBuilder $container): void
+    private function register_winzou_state_machine(Container_Builder $container): void
     {
-        if (!$this->isWinzouStateMachineEnabled($container)) {
+        if (!$this->is_winzou_state_machine_enabled($container)) {
             return;
         }
-
-        $stateMachineDefinition = $container->register('sylius.resource_controller.state_machine.winzou', StateMachine::class);
-        $stateMachineDefinition->setPublic(false);
-        $stateMachineDefinition->addArgument(new Reference('sm.factory'));
+        $state_machine_definition = $container->register('sylius.resource_controller.state_machine.winzou', State_Machine::class);
+        $state_machine_definition->set_public(false);
+        $state_machine_definition->add_argument(new Reference('sm.factory'));
     }
-
-    private function registerSymfonyWorkflowStateMachine(ContainerBuilder $container): void
+    private function register_symfony_workflow_state_machine(Container_Builder $container): void
     {
-        if (!$this->isSymfonyWorkflowEnabled($container)) {
+        if (!$this->is_symfony_workflow_enabled($container)) {
             return;
         }
-
-        $stateMachineDefinition = $container->register('sylius.resource_controller.state_machine.symfony', Workflow::class);
-        $stateMachineDefinition->setPublic(false);
-        $stateMachineDefinition->addArgument(new Reference('workflow.registry'));
+        $state_machine_definition = $container->register('sylius.resource_controller.state_machine.symfony', Workflow::class);
+        $state_machine_definition->set_public(false);
+        $state_machine_definition->add_argument(new Reference('workflow.registry'));
     }
-
-    private function setSymfonyWorkflowAsStateMachine(ContainerBuilder $container): void
+    private function set_symfony_workflow_as_state_machine(Container_Builder $container): void
     {
-        if (!$this->isSymfonyWorkflowEnabled($container)) {
-            if (class_exists(SymfonyWorkflow::class)) {
+        if (!$this->is_symfony_workflow_enabled($container)) {
+            if (class_exists(Symfony_Workflow::class)) {
                 throw new \LogicException('You can not use "Symfony" for your state machine if it is not enabled on framework bundle.');
             }
-
             throw new \LogicException('You can not use "Symfony" for your state machine if it is not available. Try running "composer require symfony/workflow".');
         }
-
-        $container->setParameter('sylius.state_machine_component.default', 'symfony');
-        $stateMachineDefinition = $container->register('sylius.resource_controller.state_machine', Workflow::class);
-        $stateMachineDefinition->setPublic(false);
-        $stateMachineDefinition->addArgument(new Reference('workflow.registry'));
-
-        $container->setAlias('sylius.state_machine.operation.default', 'sylius.state_machine.operation.symfony');
+        $container->set_parameter('sylius.state_machine_component.default', 'symfony');
+        $state_machine_definition = $container->register('sylius.resource_controller.state_machine', Workflow::class);
+        $state_machine_definition->set_public(false);
+        $state_machine_definition->add_argument(new Reference('workflow.registry'));
+        $container->set_alias('sylius.state_machine.operation.default', 'sylius.state_machine.operation.symfony');
     }
-
-    private function isSymfonyWorkflowEnabled(ContainerBuilder $container): bool
+    private function is_symfony_workflow_enabled(Container_Builder $container): bool
     {
-        if ($container->hasDefinition('workflow.registry')) {
+        if ($container->has_definition('workflow.registry')) {
             return true;
         }
-        return (bool) $container->hasAlias('workflow.registry');
+        return (bool) $container->has_alias('workflow.registry');
     }
-
-    private function isWinzouStateMachineEnabled(ContainerBuilder $container): bool
+    private function is_winzou_state_machine_enabled(Container_Builder $container): bool
     {
         /** @var array $bundles */
-        $bundles = $container->getParameter('kernel.bundles');
-
-        return in_array(winzouStateMachineBundle::class, $bundles, true);
+        $bundles = $container->get_parameter('kernel.bundles');
+        return in_array(Winzou_State_Machine_Bundle::class, $bundles, true);
     }
 }

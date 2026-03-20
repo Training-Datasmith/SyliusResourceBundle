@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Exception;
 
-class_exists(\Sylius\Resource\Exception\DeleteHandlingException::class);
-
+class_exists(\Sylius\Resource\Exception\Delete_Handling_Exception::class);
 if (false) {
-    class DeleteHandlingException extends \Sylius\Resource\Exception\DeleteHandlingException
+    class Delete_Handling_Exception extends \Sylius\Resource\Exception\Delete_Handling_Exception
     {
     }
 }

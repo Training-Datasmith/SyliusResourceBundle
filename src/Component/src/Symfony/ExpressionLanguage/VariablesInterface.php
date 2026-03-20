@@ -8,15 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\ExpressionLanguage;
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Expression_Language;
 
 /**
  * @experimental
  */
-interface VariablesInterface
+interface Variables_Interface
 {
-    public function getVariables(): array;
+    public function get_variables(): array;
 }

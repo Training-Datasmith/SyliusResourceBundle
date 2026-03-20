@@ -8,46 +8,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
-
-final class ResourcesResolver implements ResourcesResolverInterface
+use Sylius\Resource\Doctrine\Persistence\Repository_Interface;
+final class Resources_Resolver implements Resources_Resolver_Interface
 {
     /**
      * @psalm-suppress MissingReturnType
      */
-    public function getResources(RequestConfiguration $requestConfiguration, RepositoryInterface $repository)
+    public function get_resources(Request_Configuration $request_configuration, Repository_Interface $repository)
     {
-        $method = $requestConfiguration->getRepositoryMethod();
+        $method = $request_configuration->get_repository_method();
         if (null !== $method) {
             if (is_array($method) && 2 === count($method)) {
                 $repository = $method[0];
                 $method = $method[1];
             }
-
-            $arguments = array_values($requestConfiguration->getRepositoryArguments());
-
-            return $repository->$method(...$arguments);
+            $arguments = array_values($request_configuration->get_repository_arguments());
+            return $repository->{$method}(...$arguments);
         }
-
         $criteria = [];
-        if ($requestConfiguration->isFilterable()) {
-            $criteria = $requestConfiguration->getCriteria();
+        if ($request_configuration->is_filterable()) {
+            $criteria = $request_configuration->get_criteria();
         }
-
         $sorting = [];
-        if ($requestConfiguration->isSortable()) {
-            $sorting = $requestConfiguration->getSorting();
+        if ($request_configuration->is_sortable()) {
+            $sorting = $request_configuration->get_sorting();
         }
-
-        if ($requestConfiguration->isPaginated()) {
-            return $repository->createPaginator($criteria, $sorting);
+        if ($request_configuration->is_paginated()) {
+            return $repository->create_paginator($criteria, $sorting);
         }
-
-        return $repository->findBy($criteria, $sorting, $requestConfiguration->getLimit());
+        return $repository->find_by($criteria, $sorting, $request_configuration->get_limit());
     }
 }

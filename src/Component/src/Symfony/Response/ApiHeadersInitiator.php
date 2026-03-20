@@ -8,23 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Symfony\Response;
 
 /**
  * @experimental
  */
-final class ApiHeadersInitiator implements HeadersInitiatorInterface
+final class Api_Headers_Initiator implements Headers_Initiator_Interface
 {
-    public function initializeHeaders(string $mimeType): array
+    public function initialize_headers(string $mime_type): array
     {
-        return [
-            'Content-Type' => sprintf('%s; charset=utf-8', $mimeType),
-            'Vary' => 'Accept',
-            'X-Content-Type-Options' => 'nosniff',
-            'X-Frame-Options' => 'deny',
-        ];
+        return ['Content-Type' => sprintf('%s; charset=utf-8', $mime_type), 'Vary' => 'Accept', 'X-Content-Type-Options' => 'nosniff', 'X-Frame-Options' => 'deny'];
     }
 }

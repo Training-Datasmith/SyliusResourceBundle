@@ -8,58 +8,44 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Model;
 
 use Webmozart\Assert\Assert;
-
-class AbstractTranslation implements TranslationInterface
+class Abstract_Translation implements Translation_Interface
 {
     protected ?string $locale = null;
-
-    protected ?TranslatableInterface $translatable = null;
-
-    public function getTranslatable(): TranslatableInterface
+    protected ?Translatable_Interface $translatable = null;
+    public function get_translatable(): Translatable_Interface
     {
         $translatable = $this->translatable;
-
         // Return typehint should account for null value.
-        Assert::notNull($translatable);
-
+        Assert::not_null($translatable);
         return $translatable;
     }
-
-    public function setTranslatable(?TranslatableInterface $translatable): void
+    public function set_translatable(?Translatable_Interface $translatable): void
     {
         if ($translatable === $this->translatable) {
             return;
         }
-
-        $previousTranslatable = $this->translatable;
+        $previous_translatable = $this->translatable;
         $this->translatable = $translatable;
-
-        if (null !== $previousTranslatable) {
-            $previousTranslatable->removeTranslation($this);
+        if (null !== $previous_translatable) {
+            $previous_translatable->remove_translation($this);
         }
-
         if (null !== $translatable) {
-            $translatable->addTranslation($this);
+            $translatable->add_translation($this);
         }
     }
-
-    public function getLocale(): ?string
+    public function get_locale(): ?string
     {
         return $this->locale;
     }
-
-    public function setLocale(?string $locale): void
+    public function set_locale(?string $locale): void
     {
         $this->locale = $locale;
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\Model\AbstractTranslation::class, false)) {
-    class_alias(AbstractTranslation::class, \Sylius\Component\Resource\Model\AbstractTranslation::class);
+if (!class_exists(\Sylius\Component\Resource\Model\Abstract_Translation::class, false)) {
+    class_alias(Abstract_Translation::class, \Sylius\Component\Resource\Model\Abstract_Translation::class);
 }

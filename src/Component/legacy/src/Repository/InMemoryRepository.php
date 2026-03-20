@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Repository;
 
-class_exists(\Sylius\Resource\Doctrine\Persistence\InMemoryRepository::class);
-
+class_exists(\Sylius\Resource\Doctrine\Persistence\In_Memory_Repository::class);
 if (false) {
-    class InMemoryRepository extends \Sylius\Resource\Doctrine\Persistence\InMemoryRepository
+    class In_Memory_Repository extends \Sylius\Resource\Doctrine\Persistence\In_Memory_Repository
     {
     }
 }

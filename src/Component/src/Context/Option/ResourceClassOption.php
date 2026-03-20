@@ -8,21 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Context\Option;
 
-final readonly class ResourceClassOption
+final readonly class Resource_Class_Option
 {
     /** @param class-string $resourceClass */
-    public function __construct(private string $resourceClass)
+    public function __construct(private string $resource_class)
     {
     }
-
     /** @return class-string */
-    public function resourceClass(): string
+    public function resource_class(): string
     {
-        return $this->resourceClass;
+        return $this->resource_class;
     }
 }

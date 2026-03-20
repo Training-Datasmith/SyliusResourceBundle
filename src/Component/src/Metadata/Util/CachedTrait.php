@@ -8,14 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Util;
 
-use Psr\Cache\CacheException;
-use Psr\Cache\CacheItemPoolInterface;
-
+use Psr\Cache\Cache_Exception;
+use Psr\Cache\Cache_Item_Pool_Interface;
 /**
  * This trait in inspired by this API Platform one:
  *
@@ -23,34 +20,27 @@ use Psr\Cache\CacheItemPoolInterface;
  *
  * @internal
  */
-trait CachedTrait
+trait Cached_Trait
 {
-    private CacheItemPoolInterface $cacheItemPool;
-
+    private Cache_Item_Pool_Interface $cache_item_pool;
     /** @var array<string, mixed> */
-    private array $localCache = [];
-
-    private function getCached(string $cacheKey, callable $getValue): mixed
+    private array $local_cache = [];
+    private function get_cached(string $cache_key, callable $get_value): mixed
     {
-        if (\array_key_exists($cacheKey, $this->localCache)) {
-            return $this->localCache[$cacheKey];
+        if (\array_key_exists($cache_key, $this->local_cache)) {
+            return $this->local_cache[$cache_key];
         }
-
         try {
-            $cacheItem = $this->cacheItemPool->getItem($cacheKey);
-        } catch (CacheException) {
-            return $this->localCache[$cacheKey] = $getValue();
+            $cache_item = $this->cache_item_pool->get_item($cache_key);
+        } catch (Cache_Exception) {
+            return $this->local_cache[$cache_key] = $get_value();
         }
-
-        if ($cacheItem->isHit()) {
-            return $this->localCache[$cacheKey] = $cacheItem->get();
+        if ($cache_item->is_hit()) {
+            return $this->local_cache[$cache_key] = $cache_item->get();
         }
-
-        $value = $getValue();
-
-        $cacheItem->set($value);
-        $this->cacheItemPool->save($cacheItem);
-
-        return $this->localCache[$cacheKey] = $value;
+        $value = $get_value();
+        $cache_item->set($value);
+        $this->cache_item_pool->save($cache_item);
+        return $this->local_cache[$cache_key] = $value;
     }
 }

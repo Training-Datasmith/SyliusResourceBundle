@@ -8,26 +8,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Exception;
 
-class UnexpectedTypeException extends InvalidArgumentException
+class Unexpected_Type_Exception extends InvalidArgumentException
 {
     /**
      * @param mixed $value
      */
-    public function __construct($value, string $expectedType)
+    public function __construct($value, string $expected_type)
     {
-        parent::__construct(sprintf(
-            'Expected argument of type "%s", "%s" given.',
-            $expectedType,
-            get_debug_type($value),
-        ));
+        parent::__construct(sprintf('Expected argument of type "%s", "%s" given.', $expected_type, get_debug_type($value)));
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\Exception\UnexpectedTypeException::class, false)) {
-    class_alias(UnexpectedTypeException::class, \Sylius\Component\Resource\Exception\UnexpectedTypeException::class);
+if (!class_exists(\Sylius\Component\Resource\Exception\Unexpected_Type_Exception::class, false)) {
+    class_alias(Unexpected_Type_Exception::class, \Sylius\Component\Resource\Exception\Unexpected_Type_Exception::class);
 }

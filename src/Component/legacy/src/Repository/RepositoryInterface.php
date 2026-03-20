@@ -8,18 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Repository;
 
-interface_exists(\Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class);
-
+interface_exists(\Sylius\Resource\Doctrine\Persistence\Repository_Interface::class);
 if (false) {
     /**
      * @inheritDoc
      */
-    interface RepositoryInterface extends \Sylius\Resource\Doctrine\Persistence\RepositoryInterface
+    interface Repository_Interface extends \Sylius\Resource\Doctrine\Persistence\Repository_Interface
     {
     }
 }

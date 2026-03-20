@@ -8,34 +8,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use FOS\RestBundle\View\ConfigurableViewHandlerInterface;
-use FOS\RestBundle\View\View;
-use Symfony\Component\HttpFoundation\Response;
-
-final readonly class ViewHandler implements ViewHandlerInterface
+use FOS\Rest_Bundle\View\Configurable_View_Handler_Interface;
+use FOS\Rest_Bundle\View\View;
+use Symfony\Component\Http_Foundation\Response;
+final readonly class View_Handler implements View_Handler_Interface
 {
-    public function __construct(private ConfigurableViewHandlerInterface $restViewHandler)
+    public function __construct(private Configurable_View_Handler_Interface $rest_view_handler)
     {
     }
-
-    public function handle(RequestConfiguration $requestConfiguration, View $view): Response
+    public function handle(Request_Configuration $request_configuration, View $view): Response
     {
-        if (!$requestConfiguration->isHtmlRequest()) {
-            $this->restViewHandler->setExclusionStrategyGroups($requestConfiguration->getSerializationGroups() ?? []);
-
-            $version = $requestConfiguration->getSerializationVersion();
+        if (!$request_configuration->is_html_request()) {
+            $this->rest_view_handler->set_exclusion_strategy_groups($request_configuration->get_serialization_groups() ?? []);
+            $version = $request_configuration->get_serialization_version();
             if (null !== $version) {
-                $this->restViewHandler->setExclusionStrategyVersion($version);
+                $this->rest_view_handler->set_exclusion_strategy_version($version);
             }
-
-            $view->getContext()->enableMaxDepth();
+            $view->get_context()->enable_max_depth();
         }
-
-        return $this->restViewHandler->handle($view);
+        return $this->rest_view_handler->handle($view);
     }
 }

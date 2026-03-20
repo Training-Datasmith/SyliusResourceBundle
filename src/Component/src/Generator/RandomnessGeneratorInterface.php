@@ -8,20 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Generator;
 
-interface RandomnessGeneratorInterface
+interface Randomness_Generator_Interface
 {
-    public function generateUriSafeString(int $length): string;
-
-    public function generateNumeric(int $length): string;
-
-    public function generateInt(int $min, int $max): int;
+    public function generate_uri_safe_string(int $length): string;
+    public function generate_numeric(int $length): string;
+    public function generate_int(int $min, int $max): int;
 }
-
-if (!class_exists(\Sylius\Component\Resource\Generator\RandomnessGeneratorInterface::class, false)) {
-    class_alias(RandomnessGeneratorInterface::class, \Sylius\Component\Resource\Generator\RandomnessGeneratorInterface::class);
+if (!class_exists(\Sylius\Component\Resource\Generator\Randomness_Generator_Interface::class, false)) {
+    class_alias(Randomness_Generator_Interface::class, \Sylius\Component\Resource\Generator\Randomness_Generator_Interface::class);
 }

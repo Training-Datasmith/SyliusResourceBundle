@@ -8,134 +8,70 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Symfony\Component\Dependency_Injection\Loader\Configurator;
 
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Hateoas\Representation\Factory\PagerfantaFactory;
-use Sylius\Bundle\ResourceBundle\Controller\DisabledAuthorizationChecker;
-use Sylius\Bundle\ResourceBundle\Controller\EventDispatcher;
-use Sylius\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
-use Sylius\Bundle\ResourceBundle\Controller\FlashHelper;
-use Sylius\Bundle\ResourceBundle\Controller\FlashHelperInterface;
-use Sylius\Bundle\ResourceBundle\Controller\NewResourceFactory;
-use Sylius\Bundle\ResourceBundle\Controller\NewResourceFactoryInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ParametersParser;
-use Sylius\Bundle\ResourceBundle\Controller\ParametersParserInterface;
-use Sylius\Bundle\ResourceBundle\Controller\RedirectHandler;
-use Sylius\Bundle\ResourceBundle\Controller\RedirectHandlerInterface;
-use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
-use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactory;
-use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceDeleteHandler;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceDeleteHandlerInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceFormFactory;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ResourcesCollectionProvider;
-use Sylius\Bundle\ResourceBundle\Controller\ResourcesCollectionProviderInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ResourcesResolver;
-use Sylius\Bundle\ResourceBundle\Controller\ResourcesResolverInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceUpdateHandler;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceUpdateHandlerInterface;
-use Sylius\Bundle\ResourceBundle\Controller\SingleResourceProvider;
-use Sylius\Bundle\ResourceBundle\Controller\SingleResourceProviderInterface;
-use Sylius\Bundle\ResourceBundle\Controller\ViewHandler;
-use Sylius\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
-use Sylius\Resource\Symfony\Controller\MainController;
-
-return static function (ContainerConfigurator $container): void {
+use Hateoas\Representation\Factory\Pagerfanta_Factory;
+use Sylius\Bundle\Resource_Bundle\Controller\Disabled_Authorization_Checker;
+use Sylius\Bundle\Resource_Bundle\Controller\Event_Dispatcher;
+use Sylius\Bundle\Resource_Bundle\Controller\Event_Dispatcher_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Flash_Helper;
+use Sylius\Bundle\Resource_Bundle\Controller\Flash_Helper_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\New_Resource_Factory;
+use Sylius\Bundle\Resource_Bundle\Controller\New_Resource_Factory_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Parameters_Parser;
+use Sylius\Bundle\Resource_Bundle\Controller\Parameters_Parser_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Redirect_Handler;
+use Sylius\Bundle\Resource_Bundle\Controller\Redirect_Handler_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Request_Configuration;
+use Sylius\Bundle\Resource_Bundle\Controller\Request_Configuration_Factory;
+use Sylius\Bundle\Resource_Bundle\Controller\Request_Configuration_Factory_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Delete_Handler;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Delete_Handler_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Form_Factory;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Form_Factory_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Resources_Collection_Provider;
+use Sylius\Bundle\Resource_Bundle\Controller\Resources_Collection_Provider_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Resources_Resolver;
+use Sylius\Bundle\Resource_Bundle\Controller\Resources_Resolver_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Update_Handler;
+use Sylius\Bundle\Resource_Bundle\Controller\Resource_Update_Handler_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\Single_Resource_Provider;
+use Sylius\Bundle\Resource_Bundle\Controller\Single_Resource_Provider_Interface;
+use Sylius\Bundle\Resource_Bundle\Controller\View_Handler;
+use Sylius\Bundle\Resource_Bundle\Controller\View_Handler_Interface;
+use Sylius\Resource\Symfony\Controller\Main_Controller;
+return static function (Container_Configurator $container): void {
     $services = $container->services();
-
-    $services->set('sylius.main_controller', MainController::class)
-        ->args([
-            service('sylius.resource_metadata_operation.initiator.http_operation'),
-            service('sylius.context.initiator.request_context'),
-            service('sylius.state_provider.main'),
-            service('sylius.state_processor.main'),
-        ])
-        ->tag('controller.service_arguments');
-
-    $services->set('sylius.resource_controller.parameters_parser', ParametersParser::class)
-        ->args([
-            service('service_container'),
-            service('sylius.expression_language'),
-        ]);
-
-    $services->alias(ParametersParserInterface::class, 'sylius.resource_controller.parameters_parser');
-
-    $services->set('sylius.resource_controller.request_configuration_factory', RequestConfigurationFactory::class)
-        ->args([
-            service('sylius.resource_controller.parameters_parser'),
-            RequestConfiguration::class,
-            '%sylius.resource.settings%',
-        ]);
-
-    $services->alias(RequestConfigurationFactoryInterface::class, 'sylius.resource_controller.request_configuration_factory');
-
-    $services->set('sylius.resource_controller.new_resource_factory', NewResourceFactory::class);
-
-    $services->alias(NewResourceFactoryInterface::class, 'sylius.resource_controller.new_resource_factory');
-
-    $services->set('sylius.resource_controller.single_resource_provider', SingleResourceProvider::class);
-
-    $services->alias(SingleResourceProviderInterface::class, 'sylius.resource_controller.single_resource_provider');
-
-    $services->set('sylius.resource_controller.pagerfanta_representation_factory', PagerfantaFactory::class);
-
-    $services->alias(PagerfantaFactory::class, 'sylius.resource_controller.pagerfanta_representation_factory');
-
-    $services->set('sylius.resource_controller.resources_resolver', ResourcesResolver::class);
-
-    $services->alias(ResourcesResolverInterface::class, 'sylius.resource_controller.resources_resolver');
-
-    $services->set('sylius.resource_controller.resources_collection_provider', ResourcesCollectionProvider::class)
-        ->args([
-            service('sylius.resource_controller.resources_resolver'),
-            service('sylius.resource_controller.pagerfanta_representation_factory')->nullOnInvalid(),
-        ]);
-
-    $services->alias(ResourcesCollectionProviderInterface::class, 'sylius.resource_controller.resources_collection_provider');
-
-    $services->set('sylius.resource_controller.form_factory', ResourceFormFactory::class)
-        ->args([service('form.factory')]);
-
-    $services->alias(ResourceFormFactoryInterface::class, 'sylius.resource_controller.form_factory');
-
-    $services->set('sylius.resource_controller.redirect_handler', RedirectHandler::class)
-        ->args([service('router')]);
-
-    $services->alias(RedirectHandlerInterface::class, 'sylius.resource_controller.redirect_handler');
-
-    $services->set('sylius.resource_controller.authorization_checker.disabled', DisabledAuthorizationChecker::class);
-
-    $services->alias(DisabledAuthorizationChecker::class, 'sylius.resource_controller.authorization_checker.disabled');
-
-    $services->set('sylius.resource_controller.flash_helper', FlashHelper::class)
-        ->args([
-            service('request_stack'),
-            service('translator'),
-            '%locale%',
-        ]);
-
-    $services->alias(FlashHelperInterface::class, 'sylius.resource_controller.flash_helper');
-
-    $services->set('sylius.resource_controller.event_dispatcher', EventDispatcher::class)
-        ->args([service('event_dispatcher')]);
-
-    $services->alias(EventDispatcherInterface::class, 'sylius.resource_controller.event_dispatcher');
-
-    $services->set('sylius.resource_controller.view_handler', ViewHandler::class)
-        ->args([service('fos_rest.view_handler')->nullOnInvalid()]);
-
-    $services->alias(ViewHandlerInterface::class, 'sylius.resource_controller.view_handler');
-
-    $services->set('sylius.resource_controller.resource_update_handler', ResourceUpdateHandler::class)
-        ->args([service('sylius.resource_controller.state_machine')->nullOnInvalid()]);
-
-    $services->alias(ResourceUpdateHandlerInterface::class, 'sylius.resource_controller.resource_update_handler');
-
-    $services->set('sylius.resource_controller.resource_delete_handler', ResourceDeleteHandler::class);
-
-    $services->alias(ResourceDeleteHandlerInterface::class, 'sylius.resource_controller.resource_delete_handler');
+    $services->set('sylius.main_controller', Main_Controller::class)->args([service('sylius.resource_metadata_operation.initiator.http_operation'), service('sylius.context.initiator.request_context'), service('sylius.state_provider.main'), service('sylius.state_processor.main')])->tag('controller.service_arguments');
+    $services->set('sylius.resource_controller.parameters_parser', Parameters_Parser::class)->args([service('service_container'), service('sylius.expression_language')]);
+    $services->alias(Parameters_Parser_Interface::class, 'sylius.resource_controller.parameters_parser');
+    $services->set('sylius.resource_controller.request_configuration_factory', Request_Configuration_Factory::class)->args([service('sylius.resource_controller.parameters_parser'), Request_Configuration::class, '%sylius.resource.settings%']);
+    $services->alias(Request_Configuration_Factory_Interface::class, 'sylius.resource_controller.request_configuration_factory');
+    $services->set('sylius.resource_controller.new_resource_factory', New_Resource_Factory::class);
+    $services->alias(New_Resource_Factory_Interface::class, 'sylius.resource_controller.new_resource_factory');
+    $services->set('sylius.resource_controller.single_resource_provider', Single_Resource_Provider::class);
+    $services->alias(Single_Resource_Provider_Interface::class, 'sylius.resource_controller.single_resource_provider');
+    $services->set('sylius.resource_controller.pagerfanta_representation_factory', Pagerfanta_Factory::class);
+    $services->alias(Pagerfanta_Factory::class, 'sylius.resource_controller.pagerfanta_representation_factory');
+    $services->set('sylius.resource_controller.resources_resolver', Resources_Resolver::class);
+    $services->alias(Resources_Resolver_Interface::class, 'sylius.resource_controller.resources_resolver');
+    $services->set('sylius.resource_controller.resources_collection_provider', Resources_Collection_Provider::class)->args([service('sylius.resource_controller.resources_resolver'), service('sylius.resource_controller.pagerfanta_representation_factory')->null_on_invalid()]);
+    $services->alias(Resources_Collection_Provider_Interface::class, 'sylius.resource_controller.resources_collection_provider');
+    $services->set('sylius.resource_controller.form_factory', Resource_Form_Factory::class)->args([service('form.factory')]);
+    $services->alias(Resource_Form_Factory_Interface::class, 'sylius.resource_controller.form_factory');
+    $services->set('sylius.resource_controller.redirect_handler', Redirect_Handler::class)->args([service('router')]);
+    $services->alias(Redirect_Handler_Interface::class, 'sylius.resource_controller.redirect_handler');
+    $services->set('sylius.resource_controller.authorization_checker.disabled', Disabled_Authorization_Checker::class);
+    $services->alias(Disabled_Authorization_Checker::class, 'sylius.resource_controller.authorization_checker.disabled');
+    $services->set('sylius.resource_controller.flash_helper', Flash_Helper::class)->args([service('request_stack'), service('translator'), '%locale%']);
+    $services->alias(Flash_Helper_Interface::class, 'sylius.resource_controller.flash_helper');
+    $services->set('sylius.resource_controller.event_dispatcher', Event_Dispatcher::class)->args([service('event_dispatcher')]);
+    $services->alias(Event_Dispatcher_Interface::class, 'sylius.resource_controller.event_dispatcher');
+    $services->set('sylius.resource_controller.view_handler', View_Handler::class)->args([service('fos_rest.view_handler')->null_on_invalid()]);
+    $services->alias(View_Handler_Interface::class, 'sylius.resource_controller.view_handler');
+    $services->set('sylius.resource_controller.resource_update_handler', Resource_Update_Handler::class)->args([service('sylius.resource_controller.state_machine')->null_on_invalid()]);
+    $services->alias(Resource_Update_Handler_Interface::class, 'sylius.resource_controller.resource_update_handler');
+    $services->set('sylius.resource_controller.resource_delete_handler', Resource_Delete_Handler::class);
+    $services->alias(Resource_Delete_Handler_Interface::class, 'sylius.resource_controller.resource_delete_handler');
 };

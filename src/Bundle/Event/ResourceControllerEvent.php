@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Event;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Event;
-
-\class_exists(\Sylius\Resource\Symfony\EventDispatcher\GenericEvent::class);
-
+\class_exists(\Sylius\Resource\Symfony\Event_Dispatcher\Generic_Event::class);
 if (false) {
-    class ResourceControllerEvent extends \Sylius\Resource\Symfony\EventDispatcher\GenericEvent
+    class Resource_Controller_Event extends \Sylius\Resource\Symfony\Event_Dispatcher\Generic_Event
     {
     }
 }

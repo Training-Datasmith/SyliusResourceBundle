@@ -8,15 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Storage;
 
-interface_exists(\Sylius\Resource\Storage\StorageInterface::class);
-
+interface_exists(\Sylius\Resource\Storage\Storage_Interface::class);
 if (false) {
-    interface StorageInterface extends \Sylius\Resource\Storage\StorageInterface
+    interface Storage_Interface extends \Sylius\Resource\Storage\Storage_Interface
     {
     }
 }

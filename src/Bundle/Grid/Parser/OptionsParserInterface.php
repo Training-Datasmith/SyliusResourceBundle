@@ -8,17 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Grid\Parser;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Grid\Parser;
-
-use Symfony\Component\HttpFoundation\Request;
-
-interface OptionsParserInterface
+use Symfony\Component\Http_Foundation\Request;
+interface Options_Parser_Interface
 {
     /**
      * @param mixed $data
      */
-    public function parseOptions(array $parameters, Request $request, $data = null): array;
+    public function parse_options(array $parameters, Request $request, $data = null): array;
 }

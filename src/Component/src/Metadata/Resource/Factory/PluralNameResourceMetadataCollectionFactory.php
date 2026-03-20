@@ -8,61 +8,43 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource\Factory;
 
 use Sylius\Resource\Exception\LogicException;
-use Sylius\Resource\Metadata\Inflector\InflectorInterface;
-use Sylius\Resource\Metadata\RegistryInterface;
-use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
-use Sylius\Resource\Metadata\ResourceMetadata;
-
+use Sylius\Resource\Metadata\Inflector\Inflector_Interface;
+use Sylius\Resource\Metadata\Registry_Interface;
+use Sylius\Resource\Metadata\Resource\Resource_Metadata_Collection;
+use Sylius\Resource\Metadata\Resource_Metadata;
 /**
  * @experimental
  */
-final readonly class PluralNameResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+final readonly class Plural_Name_Resource_Metadata_Collection_Factory implements Resource_Metadata_Collection_Factory_Interface
 {
-    public function __construct(
-        private ResourceMetadataCollectionFactoryInterface $decorated,
-        private InflectorInterface $inflector,
-        private bool $routingBcLayerEnabled = true,
-        private ?RegistryInterface $resourceRegistry = null,
-    ) {
-    }
-
-    public function create(string $resourceClass): ResourceMetadataCollection
+    public function __construct(private Resource_Metadata_Collection_Factory_Interface $decorated, private Inflector_Interface $inflector, private bool $routing_bc_layer_enabled = true, private ?Registry_Interface $resource_registry = null)
     {
-        $resourceCollectionMetadata = $this->decorated->create($resourceClass);
-
+    }
+    public function create(string $resource_class): Resource_Metadata_Collection
+    {
+        $resource_collection_metadata = $this->decorated->create($resource_class);
         /** @var ResourceMetadata $resource */
-        foreach ($resourceCollectionMetadata->getIterator() as $i => $resource) {
-            $resourceCollectionMetadata[$i] = $this->addDefaults($resource);
+        foreach ($resource_collection_metadata->getIterator() as $i => $resource) {
+            $resource_collection_metadata[$i] = $this->add_defaults($resource);
         }
-
-        return $resourceCollectionMetadata;
+        return $resource_collection_metadata;
     }
-
-    private function addDefaults(ResourceMetadata $resource): ResourceMetadata
+    private function add_defaults(Resource_Metadata $resource): Resource_Metadata
     {
-        if (null !== $resource->getPluralName()) {
+        if (null !== $resource->get_plural_name()) {
             return $resource;
         }
-
-        if ($this->routingBcLayerEnabled) {
-            if (null === $this->resourceRegistry) {
-                throw new LogicException(sprintf(
-                    'Routing Bc-Layer is enabled, but the resource registry is not passed as constructor arguments of "%s" class.',
-                    self::class,
-                ));
+        if ($this->routing_bc_layer_enabled) {
+            if (null === $this->resource_registry) {
+                throw new LogicException(sprintf('Routing Bc-Layer is enabled, but the resource registry is not passed as constructor arguments of "%s" class.', self::class));
             }
-
-            $resourceConfiguration = $this->resourceRegistry->get($resource->getAlias() ?? '');
-
-            return $resource->withPluralName($resourceConfiguration->getPluralName());
+            $resource_configuration = $this->resource_registry->get($resource->get_alias() ?? '');
+            return $resource->with_plural_name($resource_configuration->get_plural_name());
         }
-
         /**
          * Resource name has already been configured.
          *
@@ -70,8 +52,7 @@ final readonly class PluralNameResourceMetadataCollectionFactory implements Reso
          *
          * @var string $resourceName
          */
-        $resourceName = $resource->getName();
-
-        return $resource->withPluralName($this->inflector->pluralize($resourceName));
+        $resource_name = $resource->get_name();
+        return $resource->with_plural_name($this->inflector->pluralize($resource_name));
     }
 }

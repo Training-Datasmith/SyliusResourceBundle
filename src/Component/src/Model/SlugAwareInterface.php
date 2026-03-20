@@ -8,18 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Model;
 
-interface SlugAwareInterface
+interface Slug_Aware_Interface
 {
-    public function getSlug(): ?string;
-
-    public function setSlug(?string $slug): void;
+    public function get_slug(): ?string;
+    public function set_slug(?string $slug): void;
 }
-
-if (!class_exists(\Sylius\Component\Resource\Model\SlugAwareInterface::class, false)) {
-    class_alias(SlugAwareInterface::class, \Sylius\Component\Resource\Model\SlugAwareInterface::class);
+if (!class_exists(\Sylius\Component\Resource\Model\Slug_Aware_Interface::class, false)) {
+    class_alias(Slug_Aware_Interface::class, \Sylius\Component\Resource\Model\Slug_Aware_Interface::class);
 }

@@ -8,108 +8,79 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata\Resource\Factory;
 
-use Sylius\Resource\Metadata\BulkOperationInterface;
-use Sylius\Resource\Metadata\CreateOperationInterface;
-use Sylius\Resource\Metadata\DeleteOperationInterface;
-use Sylius\Resource\Metadata\HttpOperation;
+use Sylius\Resource\Metadata\Bulk_Operation_Interface;
+use Sylius\Resource\Metadata\Create_Operation_Interface;
+use Sylius\Resource\Metadata\Delete_Operation_Interface;
+use Sylius\Resource\Metadata\Http_Operation;
 use Sylius\Resource\Metadata\Operation;
 use Sylius\Resource\Metadata\Operations;
-use Sylius\Resource\Metadata\Resource\ResourceMetadataCollection;
-use Sylius\Resource\Metadata\ResourceMetadata;
-use Sylius\Resource\Metadata\UpdateOperationInterface;
-use Sylius\Resource\Symfony\Routing\Factory\RouteName\OperationRouteNameFactory;
-
-final readonly class RedirectResourceMetadataCollectionFactory implements ResourceMetadataCollectionFactoryInterface
+use Sylius\Resource\Metadata\Resource\Resource_Metadata_Collection;
+use Sylius\Resource\Metadata\Resource_Metadata;
+use Sylius\Resource\Metadata\Update_Operation_Interface;
+use Sylius\Resource\Symfony\Routing\Factory\Route_Name\Operation_Route_Name_Factory;
+final readonly class Redirect_Resource_Metadata_Collection_Factory implements Resource_Metadata_Collection_Factory_Interface
 {
-    public function __construct(
-        private OperationRouteNameFactory $operationRouteNameFactory,
-        private ResourceMetadataCollectionFactoryInterface $decorated,
-    ) {
-    }
-
-    public function create(string $resourceClass): ResourceMetadataCollection
+    public function __construct(private Operation_Route_Name_Factory $operation_route_name_factory, private Resource_Metadata_Collection_Factory_Interface $decorated)
     {
-        $resourceCollectionMetadata = $this->decorated->create($resourceClass);
-
+    }
+    public function create(string $resource_class): Resource_Metadata_Collection
+    {
+        $resource_collection_metadata = $this->decorated->create($resource_class);
         /** @var ResourceMetadata $resource */
-        foreach ($resourceCollectionMetadata->getIterator() as $i => $resource) {
-            $operations = $resource->getOperations() ?? new Operations();
-
+        foreach ($resource_collection_metadata->getIterator() as $i => $resource) {
+            $operations = $resource->get_operations() ?? new Operations();
             /** @var Operation $operation */
             foreach ($operations as $operation) {
-                if (!$operation instanceof HttpOperation) {
+                if (!$operation instanceof Http_Operation) {
                     continue;
                 }
-
                 /** @var string $key */
-                $key = $operation->getName();
-
-                $operations->add($key, $this->addDefaults($resource, $operation));
+                $key = $operation->get_name();
+                $operations->add($key, $this->add_defaults($resource, $operation));
             }
-
-            $resource = $resource->withOperations($operations);
-
-            $resourceCollectionMetadata[$i] = $resource;
+            $resource = $resource->with_operations($operations);
+            $resource_collection_metadata[$i] = $resource;
         }
-
-        return $resourceCollectionMetadata;
+        return $resource_collection_metadata;
     }
-
-    private function addDefaults(ResourceMetadata $resource, HttpOperation $operation): Operation
+    private function add_defaults(Resource_Metadata $resource, Http_Operation $operation): Operation
     {
-        if (null !== $operation->getRedirectToRoute()) {
+        if (null !== $operation->get_redirect_to_route()) {
             return $operation;
         }
-
-        if ($operation instanceof BulkOperationInterface) {
-            $newOperation = $this->setRedirectIfRouteExists($resource, $operation, 'index');
-
-            if (null !== $newOperation) {
-                return $newOperation;
+        if ($operation instanceof Bulk_Operation_Interface) {
+            $new_operation = $this->set_redirect_if_route_exists($resource, $operation, 'index');
+            if (null !== $new_operation) {
+                return $new_operation;
             }
         }
-
-        if (
-            $operation instanceof CreateOperationInterface ||
-            $operation instanceof UpdateOperationInterface
-        ) {
-            $newOperation = $this->setRedirectIfRouteExists($resource, $operation, 'show');
-
-            if (null !== $newOperation) {
-                return $newOperation;
+        if ($operation instanceof Create_Operation_Interface || $operation instanceof Update_Operation_Interface) {
+            $new_operation = $this->set_redirect_if_route_exists($resource, $operation, 'show');
+            if (null !== $new_operation) {
+                return $new_operation;
             }
-
-            $newOperation = $this->setRedirectIfRouteExists($resource, $operation, 'index');
-
-            if (null !== $newOperation) {
-                return $newOperation;
+            $new_operation = $this->set_redirect_if_route_exists($resource, $operation, 'index');
+            if (null !== $new_operation) {
+                return $new_operation;
             }
         }
-
-        if ($operation instanceof DeleteOperationInterface) {
-            $newOperation = $this->setRedirectIfRouteExists($resource, $operation, 'index');
-
-            if (null !== $newOperation) {
-                return $newOperation;
+        if ($operation instanceof Delete_Operation_Interface) {
+            $new_operation = $this->set_redirect_if_route_exists($resource, $operation, 'index');
+            if (null !== $new_operation) {
+                return $new_operation;
             }
         }
-
         return $operation;
     }
-
-    private function setRedirectIfRouteExists(ResourceMetadata $resource, HttpOperation $operation, string $shortName): ?Operation
+    private function set_redirect_if_route_exists(Resource_Metadata $resource, Http_Operation $operation, string $short_name): ?Operation
     {
-        $routeName = $this->operationRouteNameFactory->createRouteName($operation, $shortName);
-
-        if ($resource->hasOperation($routeName)) {
-            return $operation->withRedirectToRoute($routeName);
+        $route_name = $this->operation_route_name_factory->create_route_name($operation, $short_name);
+        if ($resource->has_operation($route_name)) {
+            return $operation->with_redirect_to_route($route_name);
         }
-
         return null;
     }
 }

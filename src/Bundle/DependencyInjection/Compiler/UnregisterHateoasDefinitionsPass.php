@@ -8,26 +8,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Dependency_Injection\Compiler;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\DependencyInjection\Compiler;
-
-use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-final class UnregisterHateoasDefinitionsPass implements CompilerPassInterface
+use Bazinga\Bundle\Hateoas_Bundle\Bazinga_Hateoas_Bundle;
+use Symfony\Component\Dependency_Injection\Compiler\Compiler_Pass_Interface;
+use Symfony\Component\Dependency_Injection\Container_Builder;
+final class Unregister_Hateoas_Definitions_Pass implements Compiler_Pass_Interface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(Container_Builder $container): void
     {
         /** @var array $bundles */
-        $bundles = $container->getParameter('kernel.bundles');
-
-        if (class_exists(BazingaHateoasBundle::class) && in_array(BazingaHateoasBundle::class, $bundles, true)) {
+        $bundles = $container->get_parameter('kernel.bundles');
+        if (class_exists(Bazinga_Hateoas_Bundle::class) && in_array(Bazinga_Hateoas_Bundle::class, $bundles, true)) {
             return;
         }
-
-        $container->removeDefinition('sylius.resource_controller.pagerfanta_representation_factory');
+        $container->remove_definition('sylius.resource_controller.pagerfanta_representation_factory');
     }
 }

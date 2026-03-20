@@ -8,44 +8,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\State;
 
-use Psr\Container\ContainerInterface;
+use Psr\Container\Container_Interface;
 use Sylius\Resource\Context\Context;
 use Sylius\Resource\Metadata\Operation;
 use Webmozart\Assert\Assert;
-
 /**
  * @experimental
  */
-final readonly class Responder implements ResponderInterface
+final readonly class Responder implements Responder_Interface
 {
-    public function __construct(private ContainerInterface $locator)
+    public function __construct(private Container_Interface $locator)
     {
     }
-
     public function respond(mixed $data, Operation $operation, Context $context): mixed
     {
-        $responder = $operation->getResponder();
-
+        $responder = $operation->get_responder();
         if (null === $responder) {
             return null;
         }
-
         if (\is_callable($responder)) {
             return $responder($data, $operation, $context);
         }
-
         if (!$this->locator->has($responder)) {
-            throw new \RuntimeException(sprintf('Responder "%s" not found on operation "%s"', $responder, $operation->getName() ?? ''));
+            throw new \RuntimeException(sprintf('Responder "%s" not found on operation "%s"', $responder, $operation->get_name() ?? ''));
         }
-
-        $responderInstance = $this->locator->get($responder);
-        Assert::isInstanceOf($responderInstance, ResponderInterface::class);
-
-        return $responderInstance->respond($data, $operation, $context);
+        $responder_instance = $this->locator->get($responder);
+        Assert::is_instance_of($responder_instance, Responder_Interface::class);
+        return $responder_instance->respond($data, $operation, $context);
     }
 }

@@ -8,19 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Metadata;
 
 use Sylius\Resource\Context\Context;
-
-interface OperationAccessCheckerInterface
+interface Operation_Access_Checker_Interface
 {
     /**
      * Checks if the current user can access the given operation.
      *
      * @param array{object?: object|array|null} $extraVariables
      */
-    public function isGranted(Operation $operation, Context $context, array $extraVariables = []): bool;
+    public function is_granted(Operation $operation, Context $context, array $extra_variables = []): bool;
 }

@@ -8,79 +8,62 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Data_Transformer;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\DataTransformer;
-
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Array_Collection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ReadableCollection;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
-
-final readonly class RecursiveTransformer implements DataTransformerInterface
+use Doctrine\Common\Collections\Readable_Collection;
+use Symfony\Component\Form\Data_Transformer_Interface;
+use Symfony\Component\Form\Exception\Transformation_Failed_Exception;
+final readonly class Recursive_Transformer implements Data_Transformer_Interface
 {
-    private DataTransformerInterface $decoratedTransformer;
-
-    public function __construct(DataTransformerInterface $decoratedTransformer)
+    private Data_Transformer_Interface $decorated_transformer;
+    public function __construct(Data_Transformer_Interface $decorated_transformer)
     {
-        $this->decoratedTransformer = $decoratedTransformer;
+        $this->decorated_transformer = $decorated_transformer;
     }
-
     /** @param Collection|null $value */
-    public function transform($value): ReadableCollection
+    public function transform($value): Readable_Collection
     {
         if (null === $value) {
-            return new ArrayCollection();
+            return new Array_Collection();
         }
-
-        $this->assertTransformationValueType($value, Collection::class);
-
+        $this->assert_transformation_value_type($value, Collection::class);
         return $value->map(
             /**
              * @param mixed $currentValue
              *
              * @return mixed
              */
-            fn ($currentValue) => $this->decoratedTransformer->transform($currentValue),
+            fn($current_value) => $this->decorated_transformer->transform($current_value)
         );
     }
-
     /** @param Collection|null $value */
-    public function reverseTransform($value): ReadableCollection
+    public function reverse_transform($value): Readable_Collection
     {
         if (null === $value) {
-            return new ArrayCollection();
+            return new Array_Collection();
         }
-
-        $this->assertTransformationValueType($value, Collection::class);
-
+        $this->assert_transformation_value_type($value, Collection::class);
         return $value->map(
             /**
              * @param mixed $currentValue
              *
              * @return mixed
              */
-            fn ($currentValue) => $this->decoratedTransformer->reverseTransform($currentValue),
+            fn($current_value) => $this->decorated_transformer->reverse_transform($current_value)
         );
     }
-
     /**
      * @param mixed $value
      *
      * @throws TransformationFailedException
      */
-    private function assertTransformationValueType($value, string $expectedType): void
+    private function assert_transformation_value_type($value, string $expected_type): void
     {
-        if (!($value instanceof $expectedType)) {
-            throw new TransformationFailedException(
-                sprintf(
-                    'Expected "%s", but got "%s"',
-                    $expectedType,
-                    get_debug_type($value),
-                ),
-            );
+        if (!$value instanceof $expected_type) {
+            throw new Transformation_Failed_Exception(sprintf('Expected "%s", but got "%s"', $expected_type, get_debug_type($value)));
         }
     }
 }

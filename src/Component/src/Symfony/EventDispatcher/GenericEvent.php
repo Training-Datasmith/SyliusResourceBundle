@@ -8,111 +8,85 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Event_Dispatcher;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\EventDispatcher;
-
-use Symfony\Component\EventDispatcher\GenericEvent as BaseGenericEvent;
-use Symfony\Component\HttpFoundation\Response;
-
-class GenericEvent extends BaseGenericEvent
+use Symfony\Component\Event_Dispatcher\Generic_Event as BaseGenericEvent;
+use Symfony\Component\Http_Foundation\Response;
+class Generic_Event extends Base_Generic_Event
 {
     public const TYPE_ERROR = 'error';
-
     public const TYPE_WARNING = 'warning';
-
     public const TYPE_INFO = 'info';
-
     public const TYPE_SUCCESS = 'success';
-
-    private string $messageType = '';
-
+    private string $message_type = '';
     private string $message = '';
-
-    private array $messageParameters = [];
-
-    private int $errorCode = 500;
-
+    private array $message_parameters = [];
+    private int $error_code = 500;
     private ?Response $response = null;
-
     /**
      * @psalm-suppress MissingReturnType
      */
-    public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500): void
+    public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $error_code = 500): void
     {
-        $this->messageType = $type;
+        $this->message_type = $type;
         $this->message = $message;
-        $this->messageParameters = $parameters;
-        $this->errorCode = $errorCode;
-
-        $this->stopPropagation();
+        $this->message_parameters = $parameters;
+        $this->error_code = $error_code;
+        $this->stop_propagation();
     }
-
-    public function isStopped(): bool
+    public function is_stopped(): bool
     {
-        return $this->isPropagationStopped();
+        return $this->is_propagation_stopped();
     }
-
-    public function getMessageType(): string
+    public function get_message_type(): string
     {
-        return $this->messageType;
+        return $this->message_type;
     }
-
     /**
      * @param string $messageType Should be one of ResourceEvent's TYPE constants
      */
-    public function setMessageType(string $messageType): void
+    public function set_message_type(string $message_type): void
     {
-        $this->messageType = $messageType;
+        $this->message_type = $message_type;
     }
-
-    public function getMessage(): string
+    public function get_message(): string
     {
         return $this->message;
     }
-
-    public function setMessage(string $message): void
+    public function set_message(string $message): void
     {
         $this->message = $message;
     }
-
-    public function getMessageParameters(): array
+    public function get_message_parameters(): array
     {
-        return $this->messageParameters;
+        return $this->message_parameters;
     }
-
-    public function setMessageParameters(array $messageParameters): void
+    public function set_message_parameters(array $message_parameters): void
     {
-        $this->messageParameters = $messageParameters;
+        $this->message_parameters = $message_parameters;
     }
-
-    public function getErrorCode(): int
+    public function get_error_code(): int
     {
-        return $this->errorCode;
+        return $this->error_code;
     }
-
-    public function setErrorCode(int $errorCode): void
+    public function set_error_code(int $error_code): void
     {
-        $this->errorCode = $errorCode;
+        $this->error_code = $error_code;
     }
-
-    public function setResponse(Response $response): void
+    public function set_response(Response $response): void
     {
         $this->response = $response;
     }
-
-    public function hasResponse(): bool
+    public function has_response(): bool
     {
         return null !== $this->response;
     }
-
-    public function getResponse(): ?Response
+    public function get_response(): ?Response
     {
         return $this->response;
     }
 }
-
-if (!class_exists(\Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent::class, false)) {
-    class_alias(GenericEvent::class, \Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent::class);
+if (!class_exists(\Sylius\Bundle\Resource_Bundle\Event\Resource_Controller_Event::class, false)) {
+    class_alias(Generic_Event::class, \Sylius\Bundle\Resource_Bundle\Event\Resource_Controller_Event::class);
 }

@@ -8,50 +8,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Event_Subscriber;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\EventSubscriber;
-
-use Sylius\Resource\Exception\UnexpectedTypeException;
-use Sylius\Resource\Model\CodeAwareInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-
-final readonly class AddCodeFormSubscriber implements EventSubscriberInterface
+use Sylius\Resource\Exception\Unexpected_Type_Exception;
+use Sylius\Resource\Model\Code_Aware_Interface;
+use Symfony\Component\Event_Dispatcher\Event_Subscriber_Interface;
+use Symfony\Component\Form\Extension\Core\Type\Text_Type;
+use Symfony\Component\Form\Form_Event;
+use Symfony\Component\Form\Form_Events;
+final readonly class Add_Code_Form_Subscriber implements Event_Subscriber_Interface
 {
     private string $type;
-
     public function __construct(?string $type = null, private array $options = [])
     {
-        $this->type = $type ?? TextType::class;
+        $this->type = $type ?? Text_Type::class;
     }
-
-    public static function getSubscribedEvents(): array
+    public static function get_subscribed_events(): array
     {
-        return [
-            FormEvents::PRE_SET_DATA => 'preSetData',
-        ];
+        return [Form_Events::PRE_SET_DATA => 'preSetData'];
     }
-
-    public function preSetData(FormEvent $event): void
+    public function pre_set_data(Form_Event $event): void
     {
-        $resource = $event->getData();
+        $resource = $event->get_data();
         $disabled = false;
-
-        if ($resource instanceof CodeAwareInterface) {
-            $disabled = null !== $resource->getCode();
+        if ($resource instanceof Code_Aware_Interface) {
+            $disabled = null !== $resource->get_code();
         } elseif (null !== $resource) {
-            throw new UnexpectedTypeException($resource, CodeAwareInterface::class);
+            throw new Unexpected_Type_Exception($resource, Code_Aware_Interface::class);
         }
-
-        $form = $event->getForm();
-        $form->add('code', $this->type, array_merge(
-            ['label' => 'sylius.ui.code'],
-            $this->options,
-            ['disabled' => $disabled],
-        ));
+        $form = $event->get_form();
+        $form->add('code', $this->type, array_merge(['label' => 'sylius.ui.code'], $this->options, ['disabled' => $disabled]));
     }
 }

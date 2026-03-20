@@ -8,47 +8,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\State\Provider;
 
 use Sylius\Resource\Context\Context;
-use Sylius\Resource\Context\Option\RequestOption;
-use Sylius\Resource\Metadata\CreateOperationInterface;
+use Sylius\Resource\Context\Option\Request_Option;
+use Sylius\Resource\Metadata\Create_Operation_Interface;
 use Sylius\Resource\Metadata\Operation;
-use Sylius\Resource\State\ProviderInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Sylius\Resource\State\Provider_Interface;
+use Symfony\Component\Http_Kernel\Exception\Not_Found_Http_Exception;
 /**
  * @experimental
  */
-final readonly class ReadProvider implements ProviderInterface
+final readonly class Read_Provider implements Provider_Interface
 {
-    public function __construct(
-        private ProviderInterface $provider,
-    ) {
+    public function __construct(private Provider_Interface $provider)
+    {
     }
-
     public function provide(Operation $operation, Context $context): object|array|null
     {
-        $request = $context->get(RequestOption::class)?->request();
-
-        if (
-            $operation instanceof CreateOperationInterface ||
-            !($operation->canRead() ?? true)
-        ) {
+        $request = $context->get(Request_Option::class)?->request();
+        if ($operation instanceof Create_Operation_Interface || !($operation->can_read() ?? true)) {
             return null;
         }
-
         $data = $this->provider->provide($operation, $context);
-
         if (null === $data) {
-            throw new NotFoundHttpException('Resource has not been found.');
+            throw new Not_Found_Http_Exception('Resource has not been found.');
         }
-
         $request?->attributes->set('data', $data);
-
         return $data;
     }
 }

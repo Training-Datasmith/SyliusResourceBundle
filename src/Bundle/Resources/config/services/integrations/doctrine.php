@@ -8,33 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Symfony\Component\Dependency_Injection\Loader\Configurator;
 
-declare(strict_types=1);
-
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
-
-use Sylius\Bundle\ResourceBundle\Doctrine\ResourceMappingDriverChain;
-use Sylius\Resource\Doctrine\Common\State\PersistProcessor;
-use Sylius\Resource\Doctrine\Common\State\RemoveProcessor;
-
-return static function (ContainerConfigurator $container): void {
+use Sylius\Bundle\Resource_Bundle\Doctrine\Resource_Mapping_Driver_Chain;
+use Sylius\Resource\Doctrine\Common\State\Persist_Processor;
+use Sylius\Resource\Doctrine\Common\State\Remove_Processor;
+return static function (Container_Configurator $container): void {
     $services = $container->services();
-
-    $services->set(ResourceMappingDriverChain::class)
-        ->public()
-        ->decorate('doctrine.orm.default_metadata_driver')
-        ->args([
-            service(ResourceMappingDriverChain::class . '.inner'),
-            service('sylius.resource_registry'),
-        ]);
-
-    $services->alias('sylius_resource.doctrine.mapping_driver_chain', ResourceMappingDriverChain::class);
-
-    $services->set(PersistProcessor::class)
-        ->args([service('doctrine')])
-        ->tag('sylius.state_processor');
-
-    $services->set(RemoveProcessor::class)
-        ->args([service('doctrine')])
-        ->tag('sylius.state_processor');
+    $services->set(Resource_Mapping_Driver_Chain::class)->public()->decorate('doctrine.orm.default_metadata_driver')->args([service(Resource_Mapping_Driver_Chain::class . '.inner'), service('sylius.resource_registry')]);
+    $services->alias('sylius_resource.doctrine.mapping_driver_chain', Resource_Mapping_Driver_Chain::class);
+    $services->set(Persist_Processor::class)->args([service('doctrine')])->tag('sylius.state_processor');
+    $services->set(Remove_Processor::class)->args([service('doctrine')])->tag('sylius.state_processor');
 };

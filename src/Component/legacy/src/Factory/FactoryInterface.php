@@ -8,18 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Component\Resource\Factory;
 
-interface_exists(\Sylius\Resource\Factory\FactoryInterface::class);
-
+interface_exists(\Sylius\Resource\Factory\Factory_Interface::class);
 if (false) {
     /**
      * @inheritDoc
      */
-    interface FactoryInterface extends \Sylius\Resource\Factory\FactoryInterface
+    interface Factory_Interface extends \Sylius\Resource\Factory\Factory_Interface
     {
     }
 }

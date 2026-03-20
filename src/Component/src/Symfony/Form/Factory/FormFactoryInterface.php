@@ -8,19 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Symfony\Form\Factory;
 
 use Sylius\Resource\Context\Context;
 use Sylius\Resource\Metadata\Operation;
-use Symfony\Component\Form\FormInterface;
-
+use Symfony\Component\Form\Form_Interface;
 /**
  * @experimental
  */
-interface FormFactoryInterface
+interface Form_Factory_Interface
 {
-    public function create(Operation $operation, Context $context, mixed $data = null): FormInterface;
+    public function create(Operation $operation, Context $context, mixed $data = null): Form_Interface;
 }

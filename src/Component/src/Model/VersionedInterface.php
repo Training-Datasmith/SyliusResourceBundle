@@ -8,18 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Model;
 
-interface VersionedInterface
+interface Versioned_Interface
 {
-    public function getVersion(): ?int;
-
-    public function setVersion(?int $version): void;
+    public function get_version(): ?int;
+    public function set_version(?int $version): void;
 }
-
-if (!class_exists(\Sylius\Component\Resource\Model\VersionedInterface::class, false)) {
-    class_alias(VersionedInterface::class, \Sylius\Component\Resource\Model\VersionedInterface::class);
+if (!class_exists(\Sylius\Component\Resource\Model\Versioned_Interface::class, false)) {
+    class_alias(Versioned_Interface::class, \Sylius\Component\Resource\Model\Versioned_Interface::class);
 }

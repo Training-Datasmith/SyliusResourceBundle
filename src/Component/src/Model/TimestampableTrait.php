@@ -8,40 +8,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-declare(strict_types=1);
-
+declare (strict_types=1);
 namespace Sylius\Resource\Model;
 
-trait TimestampableTrait
+trait Timestampable_Trait
 {
     /** @var \DateTimeInterface|null */
-    protected $createdAt;
-
+    protected $created_at;
     /** @var \DateTimeInterface|null */
-    protected $updatedAt;
-
-    public function getCreatedAt(): ?\DateTimeInterface
+    protected $updated_at;
+    public function get_created_at(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
-
-    public function setCreatedAt(?\DateTimeInterface $createdAt): void
+    public function set_created_at(?\DateTimeInterface $created_at): void
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
     }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function get_updated_at(): ?\DateTimeInterface
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
+    public function set_updated_at(?\DateTimeInterface $updated_at): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
     }
 }
-
-if (!class_exists(\Sylius\Component\Resource\Model\TimestampableTrait::class, false)) {
-    class_alias(TimestampableTrait::class, \Sylius\Component\Resource\Model\TimestampableTrait::class);
+if (!class_exists(\Sylius\Component\Resource\Model\Timestampable_Trait::class, false)) {
+    class_alias(Timestampable_Trait::class, \Sylius\Component\Resource\Model\Timestampable_Trait::class);
 }

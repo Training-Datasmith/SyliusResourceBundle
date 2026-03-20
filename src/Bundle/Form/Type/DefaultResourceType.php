@@ -8,48 +8,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Form\Type;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Form\Type;
-
-use Sylius\Bundle\ResourceBundle\Form\Builder\DefaultFormBuilderInterface;
-use Sylius\Component\Registry\ServiceRegistryInterface;
-use Sylius\Resource\Metadata\RegistryInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Sylius\Bundle\Resource_Bundle\Form\Builder\Default_Form_Builder_Interface;
+use Sylius\Component\Registry\Service_Registry_Interface;
+use Sylius\Resource\Metadata\Registry_Interface;
+use Symfony\Component\Form\Abstract_Type;
+use Symfony\Component\Form\Form_Builder_Interface;
 use Webmozart\Assert\Assert;
-
-final class DefaultResourceType extends AbstractType
+final class Default_Resource_Type extends Abstract_Type
 {
-    private readonly ServiceRegistryInterface $formBuilderRegistry;
-
-    public function __construct(private readonly RegistryInterface $metadataRegistry, ServiceRegistryInterface $formBuilderRegistry)
+    private readonly Service_Registry_Interface $form_builder_registry;
+    public function __construct(private readonly Registry_Interface $metadata_registry, Service_Registry_Interface $form_builder_registry)
     {
-        $this->formBuilderRegistry = $formBuilderRegistry;
+        $this->form_builder_registry = $form_builder_registry;
     }
-
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function build_form(Form_Builder_Interface $builder, array $options): void
     {
         Assert::string($options['data_class']);
-
-        $metadata = $this->metadataRegistry->getByClass($options['data_class']);
-
-        $driver = $metadata->getDriver();
-
-        Assert::notFalse($driver, sprintf(
-            'Form "%s" cannot be used with no driver configured on the resource "%s". Please define a form.',
-            self::class,
-            $metadata->getAlias(),
-        ));
-
+        $metadata = $this->metadata_registry->get_by_class($options['data_class']);
+        $driver = $metadata->get_driver();
+        Assert::not_false($driver, sprintf('Form "%s" cannot be used with no driver configured on the resource "%s". Please define a form.', self::class, $metadata->get_alias()));
         /** @var DefaultFormBuilderInterface $formBuilder */
-        $formBuilder = $this->formBuilderRegistry->get($driver);
-
-        $formBuilder->build($metadata, $builder, $options);
+        $form_builder = $this->form_builder_registry->get($driver);
+        $form_builder->build($metadata, $builder, $options);
     }
-
-    public function getBlockPrefix(): string
+    public function get_block_prefix(): string
     {
         return 'sylius_resource';
     }

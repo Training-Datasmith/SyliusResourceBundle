@@ -8,13 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Symfony\Component\Dependency_Injection\Container_Interface;
 /**
  * Copied from Symfony to keep using ResourceController as this trait has been removed in Symfony 7.
  * Do not use this trait on your projects, use dependency injection instead.
@@ -23,11 +20,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @internal
  */
-trait ContainerAwareTrait
+trait Container_Aware_Trait
 {
-    protected ?ContainerInterface $container = null;
-
-    public function setContainer(?ContainerInterface $container = null): void
+    protected ?Container_Interface $container = null;
+    public function set_container(?Container_Interface $container = null): void
     {
         $this->container = $container;
     }

@@ -8,26 +8,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Resource\Symfony\Expression_Language;
 
-declare(strict_types=1);
-
-namespace Sylius\Resource\Symfony\ExpressionLanguage;
-
-use Symfony\Component\HttpFoundation\RequestStack;
-
+use Symfony\Component\Http_Foundation\Request_Stack;
 /**
  * @experimental
  */
-final readonly class RequestVariables implements VariablesInterface
+final readonly class Request_Variables implements Variables_Interface
 {
-    public function __construct(private RequestStack $requestStack)
+    public function __construct(private Request_Stack $request_stack)
     {
     }
-
-    public function getVariables(): array
+    public function get_variables(): array
     {
-        return [
-            'request' => $this->requestStack->getCurrentRequest(),
-        ];
+        return ['request' => $this->request_stack->get_current_request()];
     }
 }

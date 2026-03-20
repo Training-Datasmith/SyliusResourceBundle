@@ -8,48 +8,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+declare (strict_types=1);
+namespace Sylius\Bundle\Resource_Bundle\Controller;
 
-declare(strict_types=1);
-
-namespace Sylius\Bundle\ResourceBundle\Controller;
-
-use SM\Factory\FactoryInterface;
-use Sylius\Resource\Model\ResourceInterface;
-
-final readonly class StateMachine implements StateMachineInterface
+use SM\Factory\Factory_Interface;
+use Sylius\Resource\Model\Resource_Interface;
+final readonly class State_Machine implements State_Machine_Interface
 {
-    private FactoryInterface $stateMachineFactory;
-
-    public function __construct(FactoryInterface $stateMachineFactory)
+    private Factory_Interface $state_machine_factory;
+    public function __construct(Factory_Interface $state_machine_factory)
     {
-        $this->stateMachineFactory = $stateMachineFactory;
+        $this->state_machine_factory = $state_machine_factory;
     }
-
-    public function can(RequestConfiguration $configuration, ResourceInterface $resource): bool
+    public function can(Request_Configuration $configuration, Resource_Interface $resource): bool
     {
-        if (!$configuration->hasStateMachine()) {
+        if (!$configuration->has_state_machine()) {
             throw new \InvalidArgumentException('State machine must be configured to apply transition, check your routing.');
         }
-
-        $graph = $configuration->getStateMachineGraph() ?? 'default';
-
+        $graph = $configuration->get_state_machine_graph() ?? 'default';
         /** @var string $transition */
-        $transition = $configuration->getStateMachineTransition();
-
-        return $this->stateMachineFactory->get($resource, $graph)->can($transition);
+        $transition = $configuration->get_state_machine_transition();
+        return $this->state_machine_factory->get($resource, $graph)->can($transition);
     }
-
-    public function apply(RequestConfiguration $configuration, ResourceInterface $resource): void
+    public function apply(Request_Configuration $configuration, Resource_Interface $resource): void
     {
-        if (!$configuration->hasStateMachine()) {
+        if (!$configuration->has_state_machine()) {
             throw new \InvalidArgumentException('State machine must be configured to apply transition, check your routing.');
         }
-
-        $graph = $configuration->getStateMachineGraph() ?? 'default';
-
+        $graph = $configuration->get_state_machine_graph() ?? 'default';
         /** @var string $transition */
-        $transition = $configuration->getStateMachineTransition();
-
-        $this->stateMachineFactory->get($resource, $graph)->apply($transition);
+        $transition = $configuration->get_state_machine_transition();
+        $this->state_machine_factory->get($resource, $graph)->apply($transition);
     }
 }
