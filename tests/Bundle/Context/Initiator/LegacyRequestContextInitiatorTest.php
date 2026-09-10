@@ -17,6 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\ResourceBundle\Context\Initiator\LegacyRequestContextInitiator;
 use Sylius\Bundle\ResourceBundle\Context\Option\RequestConfigurationOption;
+use Sylius\Bundle\ResourceBundle\Controller\Parameters;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface;
 use Sylius\Resource\Context\Context;
@@ -60,7 +61,7 @@ final class LegacyRequestContextInitiatorTest extends TestCase
 
     public function testAddsMetadataAndRequestConfigurationToTheContext(): void
     {
-        $parameterBag = new ParameterBag(['_sylius' => ['resource' => 'app.dummy']]);
+        $parameterBag = new Parameters(['_sylius' => ['resource' => 'app.dummy']]);
 
         $this->requestConfigurationMock->expects($this->once())->method('getParameters')->willReturn($parameterBag);
         $this->requestConfigurationMock->expects($this->once())->method('getVars')->willReturn([]);

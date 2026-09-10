@@ -207,7 +207,7 @@ final class SyliusResourceExtensionTest extends AbstractExtensionTestCase
 
         $emptyPhpFile = realpath(__DIR__ . '/php/empty_file.php');
         $this->assertContainerBuilderHasService('sylius.metadata.resource_extractor.php_file');
-        $this->assertSame([$emptyPhpFile], $this->container->getDefinition('sylius.metadata.resource_extractor.php_file')->getArgument(0));
+        $this->assertImportPaths([$emptyPhpFile], $this->container->getDefinition('sylius.metadata.resource_extractor.php_file')->getArgument(0));
     }
 
     public function testItRegistersMetadataConfigurationWithAFileAsImportPath(): void
@@ -222,7 +222,7 @@ final class SyliusResourceExtensionTest extends AbstractExtensionTestCase
 
         $emptyPhpFile = realpath(__DIR__ . '/php/empty_file.php');
         $this->assertContainerBuilderHasService('sylius.metadata.resource_extractor.php_file');
-        $this->assertSame([$emptyPhpFile], $this->container->getDefinition('sylius.metadata.resource_extractor.php_file')->getArgument(0));
+        $this->assertImportPaths([$emptyPhpFile], $this->container->getDefinition('sylius.metadata.resource_extractor.php_file')->getArgument(0));
     }
 
     public function testItRegistersRoutingPathBcLayerAutomatically(): void
@@ -274,6 +274,20 @@ final class SyliusResourceExtensionTest extends AbstractExtensionTestCase
         ]);
 
         $this->assertSame('sylius.metadata.path_segment_name_generator.underscore', $this->container->getAlias('sylius.path_segment_name_generator')->__toString());
+    }
+
+    /**
+     * @param list<string|null> $expected
+     * @param list<string>      $actual
+     */
+    private function assertImportPaths(array $expected, array $actual): void
+    {
+        $normalize = static fn (?string $path): ?string => null === $path ? null : str_replace('\\', '/', $path);
+
+        $this->assertSame(
+            array_map($normalize, $expected),
+            array_map($normalize, $actual),
+        );
     }
 
     protected function getContainerExtensions(): array

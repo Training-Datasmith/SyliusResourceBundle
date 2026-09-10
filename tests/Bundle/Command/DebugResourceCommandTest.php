@@ -45,6 +45,11 @@ final class DebugResourceCommandTest extends TestCase
         $this->tester = new CommandTester($command);
     }
 
+    private function commandOutput(): string
+    {
+        return str_replace("\r\n", "\n", $this->tester->getDisplay());
+    }
+
     /**
      * @test
      */
@@ -53,7 +58,7 @@ final class DebugResourceCommandTest extends TestCase
         $this->registry->method('getAll')->willReturn([$this->createMetadata('one'), $this->createMetadata('two')]);
 
         $this->tester->execute([]);
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertEquals(
             <<<TXT
@@ -86,7 +91,7 @@ final class DebugResourceCommandTest extends TestCase
             'resource' => 'metadata.one',
         ]);
 
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertStringContainsString('[INFO] This resource has no defined operations.', $display);
     }
@@ -111,7 +116,7 @@ final class DebugResourceCommandTest extends TestCase
             'resource' => 'metadata.one',
         ]);
 
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertEquals(
             <<<TXT
@@ -179,7 +184,7 @@ final class DebugResourceCommandTest extends TestCase
             'resource' => 'App\Resource',
         ]);
 
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertEquals(
             <<<TXT
@@ -259,7 +264,7 @@ final class DebugResourceCommandTest extends TestCase
             'operation' => 'app_one_create',
         ]);
 
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertEquals(
             <<<TXT
@@ -343,7 +348,7 @@ final class DebugResourceCommandTest extends TestCase
             '--legacy' => true,
         ]);
 
-        $display = $this->tester->getDisplay();
+        $display = $this->commandOutput();
 
         $this->assertEquals(
             <<<TXT
@@ -354,11 +359,11 @@ final class DebugResourceCommandTest extends TestCase
              ----------------------- ----------------------------- 
               Option                  Value                        
              ----------------------- ----------------------------- 
-              name                    "one"                        
-              applicationName         "sylius"                     
               driver                  "doctrine/foobar"            
               stateMachineComponent   null                         
               templatesNamespace      null                         
+              name                    "one"                        
+              applicationName         "sylius"                     
               classes                 [                            
                                         "model" => "App\One",      
                                         "foo" => "bar",            

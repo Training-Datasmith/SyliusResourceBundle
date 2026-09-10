@@ -38,7 +38,7 @@ final class DriverProvider
         }
 
         Assert::notFalse($type, sprintf('No driver was configured on the resource "%s".', $metadata->getAlias()));
-        self::$drivers[$type] = match ($type) {
+        return self::$drivers[$type] = match ($type) {
             SyliusResourceBundle::DRIVER_DOCTRINE_ORM => new DoctrineORMDriver(),
             SyliusResourceBundle::DRIVER_DOCTRINE_MONGODB_ODM => new DoctrineODMDriver(),
             SyliusResourceBundle::DRIVER_DOCTRINE_PHPCR_ODM => new DoctrinePHPCRDriver(),
