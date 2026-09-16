@@ -22,6 +22,7 @@ use Sylius\Bundle\ResourceBundle\Controller\AuthorizationCheckerInterface;
 use Sylius\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
 use Sylius\Bundle\ResourceBundle\Controller\FlashHelperInterface;
 use Sylius\Bundle\ResourceBundle\Controller\NewResourceFactoryInterface;
+use Sylius\Bundle\ResourceBundle\Controller\Parameters;
 use Sylius\Bundle\ResourceBundle\Controller\RedirectHandlerInterface;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfiguration;
 use Sylius\Bundle\ResourceBundle\Controller\RequestConfigurationFactoryInterface;
@@ -41,7 +42,6 @@ use Sylius\Resource\Metadata\MetadataInterface;
 use Sylius\Resource\Model\ResourceInterface;
 use Sylius\Resource\ResourceActions;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -1612,8 +1612,8 @@ final class ResourceControllerTest extends TestCase
     {
         $this->markAsSkippedIfFosRestBundleIsNotAvailable();
 
-        /** @var ParameterBagInterface|MockObject $parameterBagMock */
-        $parameterBagMock = $this->createMock(ParameterBagInterface::class);
+        /** @var Parameters|MockObject $parameterBagMock */
+        $parameterBagMock = $this->createMock(Parameters::class);
         /** @var RequestConfiguration|MockObject $configurationMock */
         $configurationMock = $this->createMock(RequestConfiguration::class);
         /** @var ResourceInterface|MockObject $resourceMock */
@@ -2693,8 +2693,8 @@ final class ResourceControllerTest extends TestCase
     {
         $this->markAsSkippedIfFosRestBundleIsNotAvailable();
 
-        /** @var ParameterBagInterface|MockObject $parameterBagMock */
-        $parameterBagMock = $this->createMock(ParameterBagInterface::class);
+        /** @var Parameters|MockObject $parameterBagMock */
+        $parameterBagMock = $this->createMock(Parameters::class);
         /** @var RequestConfiguration|MockObject $configurationMock */
         $configurationMock = $this->createMock(RequestConfiguration::class);
         /** @var ResourceInterface|MockObject $resourceMock */
@@ -2776,8 +2776,8 @@ final class ResourceControllerTest extends TestCase
     {
         $this->markAsSkippedIfFosRestBundleIsNotAvailable();
 
-        /** @var ParameterBagInterface|MockObject $parameterBagMock */
-        $parameterBagMock = $this->createMock(ParameterBagInterface::class);
+        /** @var Parameters|MockObject $parameterBagMock */
+        $parameterBagMock = $this->createMock(Parameters::class);
         /** @var RequestConfiguration|MockObject $configurationMock */
         $configurationMock = $this->createMock(RequestConfiguration::class);
         /** @var ResourceInterface|MockObject $resourceMock */
